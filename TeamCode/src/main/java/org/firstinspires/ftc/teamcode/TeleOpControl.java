@@ -6,19 +6,21 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "TeleOp")
 public class TeleOpControl extends OpMode {
 
-    HardwareRobot robot = new HardwareRobot(hardwareMap);
-    MovementController mController = new MovementController(robot, telemetry);
+    MovementController mController;
+    HardwareRobot robot;
+
     @Override
     public void init() {
+        robot = new HardwareRobot(hardwareMap);
+        mController = new MovementController(robot, telemetry);
     }
 
     @Override
     public void loop() {
-        if(gamepad1.left_stick_y > 0.5){
-            mController.moveForward(0.2);
-        }
-        if(gamepad1.left_stick_y < -0.5){
-            mController.moveBackwards(0.2);
-        }
+        double xMovement = gamepad1.left_stick_x;
+        double yMovement = gamepad1.left_stick_y;
+
+        mController.joystickMovement(xMovement, yMovement);
+        mController.update();
     }
 }
