@@ -20,7 +20,13 @@ public class TeleOpControl extends OpMode {
         double xMovement = gamepad1.left_stick_x;
         double yMovement = gamepad1.left_stick_y;
 
+        double xLook = gamepad1.right_stick_x;
+
         mController.joystickMovement(xMovement, yMovement);
         mController.update();
+
+        mController.rotate(xLook);
+
+
     }
 }
