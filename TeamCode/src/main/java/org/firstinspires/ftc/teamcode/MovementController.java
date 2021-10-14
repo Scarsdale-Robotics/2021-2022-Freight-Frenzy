@@ -24,14 +24,7 @@ public class MovementController {
         this.limit = limit;
     }
 
-    protected void rotateCounterClockwise(double power) {
-        leftFrontPower = -power;
-        leftBackPower = -power;
-        rightFrontPower = power;
-        rightBackPower = power;
-    }
-
-    protected void rotateClockwise(double power) {
+    protected void rotate(double power) {
         leftFrontPower = power;
         leftBackPower = power;
         rightFrontPower = -power;
@@ -51,7 +44,7 @@ public class MovementController {
         rightBackPower = (y / maxValue) - (x / maxValue);
     }
 
-    protected void moveForward(double power) {
+    protected void drive(double power) {
         leftFrontPower = power;
         leftBackPower = power;
         rightFrontPower = power;
@@ -60,16 +53,8 @@ public class MovementController {
         update();
     }
 
-    protected void moveBackwards(double power) {
-        leftFrontPower = -power;
-        leftBackPower = -power;
-        rightFrontPower = -power;
-        rightBackPower = -power;
 
-        update();
-    }
-
-    protected void moveRight(double power) {
+    protected void strafe(double power) {
         leftFrontPower = power;
         leftBackPower = -power;
         rightFrontPower = -power;
@@ -78,14 +63,6 @@ public class MovementController {
         update();
     }
 
-    protected void moveLeft(double power) {
-        leftFrontPower = -power;
-        leftBackPower = power;
-        rightFrontPower = power;
-        rightBackPower = -power;
-
-        update();
-    }
 
     protected void rotationalModifier(double rotationPower) {
         double x = -rotationPower * 0.85;
@@ -132,7 +109,7 @@ public class MovementController {
             calculatedRotationalPower = Math.signum(calculatedRotationalPower);
         }
 
-        moveForward(power);
+        drive(power);
         rotationalModifier(calculatedRotationalPower);
 
         telemetry.addData("Rotation", rotation);
