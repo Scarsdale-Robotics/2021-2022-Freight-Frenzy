@@ -17,15 +17,17 @@ public class TeleOpControl extends OpMode {
 
     @Override
     public void loop() {
+
         double xMovement = gamepad1.left_stick_x;
-        double yMovement = gamepad1.left_stick_y;
+        double yMovement = -gamepad1.left_stick_y;
 
         double xLook = gamepad1.right_stick_x;
 
-        mController.joystickMovement(xMovement, yMovement);
+        mController.drive(yMovement);
+        mController.strafe(xMovement);
+//        mController.joystickMovement(xMovement, yMovement);
 
         mController.rotate(xLook);
-
         mController.update();
 
 
