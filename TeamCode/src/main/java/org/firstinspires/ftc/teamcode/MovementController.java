@@ -129,6 +129,8 @@ public class MovementController {
             @Override
             public void run() {
                 stop();
+                update();
+
             }
         }, ms);
     }
@@ -152,6 +154,8 @@ public class MovementController {
         }
 
         stop();
+        update();
+
     }
 
     protected void stop() {
@@ -160,7 +164,6 @@ public class MovementController {
         rightFrontPower = 0;
         rightBackPower = 0;
 
-        update();
     }
 
     protected void update() {
