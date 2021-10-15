@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+
 @TeleOp(name = "TeleOp")
 public class TeleOpControl extends OpMode {
 
@@ -30,6 +32,6 @@ public class TeleOpControl extends OpMode {
         mController.rotate(xLook);
         mController.update();
 
-
+        telemetry.addData("Distance: ", robot.testDist.getDistance(DistanceUnit.CM));
     }
 }

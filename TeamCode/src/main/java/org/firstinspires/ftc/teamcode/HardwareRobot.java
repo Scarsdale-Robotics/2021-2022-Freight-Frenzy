@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.UltrasonicSensor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -22,6 +23,8 @@ public class HardwareRobot {
     public DcMotor leftBack = null;
     public DcMotor rightFront = null;
     public DcMotor rightBack = null;
+
+    public Rev2mDistanceSensor testDist = null;
 
     public BNO055IMU imu = null;
 
@@ -51,6 +54,10 @@ public class HardwareRobot {
         leftBack = hwMap.dcMotor.get("leftBack");
         rightFront = hwMap.dcMotor.get("rightFront");
         rightBack = hwMap.dcMotor.get("rightBack");
+
+
+        // sensors
+        testDist = hwMap.get(Rev2mDistanceSensor.class, "testDist");
 
         // set direction of motors
         leftFront.setDirection(DcMotor.Direction.REVERSE);
