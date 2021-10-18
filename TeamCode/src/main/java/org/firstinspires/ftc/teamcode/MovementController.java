@@ -49,8 +49,6 @@ public class MovementController {
         leftBackPower = power;
         rightFrontPower = power;
         rightBackPower = power;
-
-        update();
     }
 
 
@@ -60,7 +58,6 @@ public class MovementController {
         rightFrontPower = -power;
         rightBackPower = power;
 
-        update();
     }
 
 

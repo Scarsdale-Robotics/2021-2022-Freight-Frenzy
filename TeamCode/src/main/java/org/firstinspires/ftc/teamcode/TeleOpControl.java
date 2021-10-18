@@ -32,6 +32,6 @@ public class TeleOpControl extends OpMode {
         mController.rotate(xLook);
         mController.update();
 
-        telemetry.addData("Distance: ", robot.testDist.getDistance(DistanceUnit.CM));
+        telemetry.addData("Distance: ", robot.frontDist.getDistance(DistanceUnit.CM));
     }
 }
