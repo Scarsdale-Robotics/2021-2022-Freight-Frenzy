@@ -13,15 +13,12 @@ public class DistStoppingDemo extends LinearOpMode {
         HardwareRobot robot = new HardwareRobot(hardwareMap);
         MovementController mController = new MovementController(robot, telemetry);
         while (opModeIsActive()) {
-            if (robot.testDist.getDistance(DistanceUnit.CM) > 50) {
+            if (robot.frontDist.getDistance(DistanceUnit.CM) > 50) {
                 mController.drive(1);
             } else {
                 mController.stop();
 
-                robot.testServo.setPosition(1.0);
 
-                while(robot.testServo.getPosition()<0.9);
-                robot.testServo.setPosition(0);
                 stop();
             }
             mController.update();
