@@ -24,6 +24,9 @@ public class HardwareRobot {
     public DcMotor rightFront = null;
     public DcMotor rightBack = null;
 
+    public Servo leftArm = null;
+    public Servo rightArm = null;
+
     public Rev2mDistanceSensor frontDist = null;
     public Rev2mDistanceSensor leftDist = null;
     public Rev2mDistanceSensor rightDist = null;
@@ -68,6 +71,9 @@ public class HardwareRobot {
         leftDist = hwMap.get(Rev2mDistanceSensor.class, "leftDist");
         rightDist = hwMap.get(Rev2mDistanceSensor.class, "rightDist");
 
+
+        rightArm = hwMap.servo.get("rightArm");
+        leftArm = hwMap.servo.get("leftArm");
 
         // set direction of motors
         leftFront.setDirection(DcMotor.Direction.REVERSE);

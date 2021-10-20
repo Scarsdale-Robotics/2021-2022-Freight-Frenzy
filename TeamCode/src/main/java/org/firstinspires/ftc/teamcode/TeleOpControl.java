@@ -25,17 +25,31 @@ public class TeleOpControl extends OpMode {
 
         double xLook = gamepad1.right_stick_x;
 
-        mController.drive(yMovement);
-        mController.strafe(xMovement);
-//        mController.joystickMovement(xMovement, yMovement);
 
-        mController.rotate(xLook);
+
+
+        mController.joystickMovement(xMovement, yMovement);
+
+        mController.rotationalModifier(xLook);
         mController.update();
 
+
+
+        if(gamepad1.a){
+            robot.rightArm.setPosition(0);
+            robot.leftArm.setPosition(0);
+        }
+
+        if(gamepad1.b){
+            robot.rightArm.setPosition(1);
+            robot.leftArm.setPosition(1);
+        }
         telemetry.addData("Distance Front: ", robot.frontDist.getDistance(DistanceUnit.CM));
         telemetry.addData("Distance Back: ", robot.backDist.getDistance(DistanceUnit.CM));
         telemetry.addData("Distance Left: ", robot.leftDist.getDistance(DistanceUnit.CM));
         telemetry.addData("Distance Right: ", robot.rightDist.getDistance(DistanceUnit.CM));
+        telemetry.addData("LS Y:", yMovement);
+        telemetry.addData("LS S:", xMovement);
 
     }
 }
