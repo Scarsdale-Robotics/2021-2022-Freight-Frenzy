@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-@TeleOp(name = "TeleOp")
+@TeleOp(name = "TeleOpReeeeee")
 public class TeleOpControl extends OpMode {
 
     MovementController mController;
@@ -26,24 +26,35 @@ public class TeleOpControl extends OpMode {
         double xLook = gamepad1.right_stick_x;
 
 
-
-
         mController.joystickMovement(xMovement, yMovement);
 
         mController.rotationalModifier(xLook);
         mController.update();
 
 
-
-        if(gamepad1.a){
-            robot.rightArm.setPosition(0);
-            robot.leftArm.setPosition(0);
+        if (gamepad1.a) {
+            double lc = robot.leftClaw.getPosition();
+            double rc = robot.rightClaw.getPosition();
+            robot.rightClaw.setPosition(lc-0.01);
+            robot.leftClaw.setPosition(rc-0.01);
         }
 
-        if(gamepad1.b){
-            robot.rightArm.setPosition(1);
-            robot.leftArm.setPosition(1);
+        if (gamepad1.b) {
+            double lc = robot.leftClaw.getPosition();
+            double rc = robot.rightClaw.getPosition();
+
+            robot.rightClaw.setPosition(lc+0.01);
+            robot.leftClaw.setPosition(rc+0.01);
         }
+
+        if (gamepad1.right_trigger > 0.1) {
+            robot.clawArm.setPower(gamepad1.right_trigger);
+        } else if (gamepad1.left_trigger > 0.1) {
+            robot.clawArm.setPower(-gamepad1.left_trigger);
+        }else{
+        robot.clawArm.setPower(0);
+        }
+
         telemetry.addData("Distance Front: ", robot.frontDist.getDistance(DistanceUnit.CM));
         telemetry.addData("Distance Back: ", robot.backDist.getDistance(DistanceUnit.CM));
         telemetry.addData("Distance Left: ", robot.leftDist.getDistance(DistanceUnit.CM));

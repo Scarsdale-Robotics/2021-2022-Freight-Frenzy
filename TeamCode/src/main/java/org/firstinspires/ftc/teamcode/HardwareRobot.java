@@ -3,18 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
-import com.qualcomm.hardware.rev.RevColorSensorV3;
-import com.qualcomm.robotcore.hardware.DistanceSensor;
-import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.UltrasonicSensor;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
 public class HardwareRobot {
@@ -24,8 +15,9 @@ public class HardwareRobot {
     public DcMotor rightFront = null;
     public DcMotor rightBack = null;
 
-    public Servo leftArm = null;
-    public Servo rightArm = null;
+    public DcMotor clawArm = null;
+    public Servo leftClaw = null;
+    public Servo rightClaw = null;
 
     public Rev2mDistanceSensor frontDist = null;
     public Rev2mDistanceSensor leftDist = null;
@@ -65,15 +57,20 @@ public class HardwareRobot {
         rightBack = hwMap.dcMotor.get("rightBack");
 
 
+        //claw arm
+        clawArm = hwMap.dcMotor.get("clawArm");
+        leftClaw = hwMap.servo.get("leftClaw");
+        rightClaw = hwMap.servo.get("rightClaw");
+
+
+
+
         // sensors
         frontDist = hwMap.get(Rev2mDistanceSensor.class, "frontDist");
         backDist = hwMap.get(Rev2mDistanceSensor.class, "backDist");
         leftDist = hwMap.get(Rev2mDistanceSensor.class, "leftDist");
         rightDist = hwMap.get(Rev2mDistanceSensor.class, "rightDist");
 
-
-        rightArm = hwMap.servo.get("rightArm");
-        leftArm = hwMap.servo.get("leftArm");
 
         // set direction of motors
         leftFront.setDirection(DcMotor.Direction.REVERSE);
