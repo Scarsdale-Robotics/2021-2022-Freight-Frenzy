@@ -11,6 +11,9 @@ public class DistStoppingDemo extends LinearOpMode {
     @Override
     public void runOpMode() {
         HardwareRobot robot = new HardwareRobot(hardwareMap);
+
+        robot.imu.getAngularOrientation();
+
         MovementController mController = new MovementController(robot, telemetry);
         while (opModeIsActive()) {
             if (robot.frontDist.getDistance(DistanceUnit.CM) > 50) {
