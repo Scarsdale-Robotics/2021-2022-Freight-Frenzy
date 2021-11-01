@@ -15,6 +15,9 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
+import org.opencv.core.MatOfPoint;
+import java.util.ArrayList;
+import java.util.List;
 
 @TeleOp
 public class CVTest extends LinearOpMode {
@@ -27,6 +30,7 @@ public class CVTest extends LinearOpMode {
 
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 
+        phoneCam.setPipeline(new CVPipeline());
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -43,6 +47,28 @@ public class CVTest extends LinearOpMode {
 
         while (opModeIsActive()) {
             sleep(50);
+        }
+    }
+
+
+    class CVPipeline extends OpenCvPipeline {
+        List<MatOfPoint> contours = new ArrayList<>();
+        @Override
+        public Mat processFrame(Mat frame) {
+            Mat hsv = new Mat();
+            Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_BGR2HSV);
+
+
+            Scalar lower_red = new Scalar(120, 50, 50);
+
+            Scalar upper_red = new Scalar(130, 255, 255);
+
+
+            Core.inRange(hsv, lower_red, upper_red, hsv);
+
+            contours = new ArrayList<>();
+
+            return  hsv;
         }
     }
 }
