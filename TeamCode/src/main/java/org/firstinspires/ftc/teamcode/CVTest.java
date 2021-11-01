@@ -53,10 +53,11 @@ public class CVTest extends LinearOpMode {
 
     class CVPipeline extends OpenCvPipeline {
         List<MatOfPoint> contours = new ArrayList<>();
+        Rect rect = new Rect();
         @Override
         public Mat processFrame(Mat frame) {
-            Mat hsv = new Mat();
-            Imgproc.cvtColor(frame, hsv, Imgproc.COLOR_BGR2HSV);
+            Mat mask = new Mat();
+            Imgproc.cvtColor(frame, mask, Imgproc.COLOR_BGR2HSV);
 
 
             Scalar lower_red = new Scalar(120, 50, 50);
@@ -64,11 +65,34 @@ public class CVTest extends LinearOpMode {
             Scalar upper_red = new Scalar(130, 255, 255);
 
 
-            Core.inRange(hsv, lower_red, upper_red, hsv);
+            Core.inRange(mask, lower_red, upper_red, mask);
 
             contours = new ArrayList<>();
 
-            return  hsv;
+
+            Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+
+            Imgproc.cvtColor(mask, mask, Imgproc.COLOR_GRAY2BGR);
+
+            int size = 0;
+            for (MatOfPoint c : contours) {
+                ArrayList<MatOfPoint> cList = new ArrayList<MatOfPoint>();
+                cList.add(c);
+                Rect currentRect = Imgproc.boundingRect(c);
+                if(currentRect.width * currentRect.height > size){
+                    rect = currentRect;
+                    size = currentRect.height * currentRect.width;
+                }
+
+            }
+            Imgproc.rectangle(frame, rect, new Scalar(0, 255, 0));
+
+//            Imgproc.drawContours(mask, contours, -1, new Scalar(255, 0, 0));
+
+
+
+
+            return  frame;
         }
     }
 }
