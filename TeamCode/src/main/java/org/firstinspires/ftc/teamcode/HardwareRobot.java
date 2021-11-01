@@ -61,7 +61,8 @@ public class HardwareRobot {
         clawArm = hwMap.dcMotor.get("clawArm");
         leftClaw = hwMap.servo.get("leftClaw");
         rightClaw = hwMap.servo.get("rightClaw");
-
+        rightClaw.scaleRange(-1, 1);
+        leftClaw.scaleRange(-1, 1);
 
 
 

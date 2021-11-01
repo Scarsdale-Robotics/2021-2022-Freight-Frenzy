@@ -33,18 +33,14 @@ public class TeleOpControl extends OpMode {
 
 
         if (gamepad1.a) {
-            double lc = robot.leftClaw.getPosition();
-            double rc = robot.rightClaw.getPosition();
-            robot.rightClaw.setPosition(lc-0.01);
-            robot.leftClaw.setPosition(rc-0.01);
+
+            robot.rightClaw.setPosition(0.5);
+            robot.leftClaw.setPosition(-0.5);
         }
 
         if (gamepad1.b) {
-            double lc = robot.leftClaw.getPosition();
-            double rc = robot.rightClaw.getPosition();
-
-            robot.rightClaw.setPosition(lc+0.01);
-            robot.leftClaw.setPosition(rc+0.01);
+            robot.rightClaw.setPosition(-0.5);
+            robot.leftClaw.setPosition(0.5);
         }
 
         if (gamepad1.right_trigger > 0.1) {
