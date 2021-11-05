@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.hardware.rev.RevColorSensorV3;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -23,6 +24,8 @@ public class HardwareRobot {
     public Rev2mDistanceSensor leftDist = null;
     public Rev2mDistanceSensor rightDist = null;
     public Rev2mDistanceSensor backDist = null;
+
+    public RevColorSensorV3 color = null;
 
 
 
@@ -71,6 +74,7 @@ public class HardwareRobot {
         leftDist = hwMap.get(Rev2mDistanceSensor.class, "leftDist");
         rightDist = hwMap.get(Rev2mDistanceSensor.class, "rightDist");
 
+        color = hwMap.get(RevColorSensorV3.class, "color");
 
         // set direction of motors
         leftFront.setDirection(DcMotor.Direction.REVERSE);
