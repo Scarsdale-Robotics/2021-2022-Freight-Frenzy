@@ -19,13 +19,13 @@ import org.opencv.core.MatOfPoint;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp
-public class CVTest extends LinearOpMode {
+public class duckCV {
     OpenCvInternalCamera phoneCam;
+    private float duckX = -1;
+    private float duckY = -1;
 
-    @Override
-    public void runOpMode() {
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+    public void beep(int cameraMonitorViewId) {
+//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
@@ -39,17 +39,18 @@ public class CVTest extends LinearOpMode {
 
             @Override
             public void onError(int errorCode) {
-                telemetry.addData("Error", errorCode);
-                telemetry.update();
+
             }
         });
 
-        waitForStart();
-
-        while (opModeIsActive()) {
-         }
     }
 
+    int getDuckPosition(){
+        if(duckX == -1) return -1;
+        if(duckX < 65) return 0;
+        else if (duckX < 180) return 1 ;
+        return 2;
+    }
 
     class CVPipeline extends OpenCvPipeline {
         List<MatOfPoint> contours = new ArrayList<>();
@@ -85,19 +86,21 @@ public class CVTest extends LinearOpMode {
                 }
 
             }
-            Imgproc.rectangle(mask, rect, new Scalar(0, 255, 0));
+            Imgproc.rectangle(frame, rect, new Scalar(0, 255, 0));
 
             //Woman whore1 = new Woman();
             //telemetry.addData("Bitches": whore1)
             //womn be lke stop objectingy me
-            telemetry.addData("Box XY: ", (rect.x + rect.width/2) + ", " + (rect.y + rect.height/2));
-            telemetry.update();
+
+            //cv is dumb so xy are flipped becaue reaspons i wanna die
+             duckY = rect.x + rect.width/2;
+             duckX = rect.y + rect.height/2;
+
 //            Imgproc.drawContours(mask, contours, -1, new Scalar(255, 0, 0));
 
 
 
-
-            return mask;
+            return  frame;
         }
     }
 }
