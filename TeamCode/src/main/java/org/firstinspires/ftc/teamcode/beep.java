@@ -14,6 +14,9 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.opencv.core.MatOfPoint;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @TeleOp
@@ -27,6 +30,7 @@ public class beep extends LinearOpMode {
 
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
 
+        phoneCam.setPipeline(new RedPipeline());
         phoneCam.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -53,13 +57,18 @@ public class beep extends LinearOpMode {
             Mat hsv = new Mat();
             Imgproc.cvtColor(input, hsv, Imgproc.COLOR_BGR2HSV);
 
-            Scalar lower_red = new Scalar(80, 70, 50);
-            Scalar upper_red = new Scalar(100, 255, 255);
+            Scalar lower_red = new Scalar(120, 50, 50);
+            Scalar upper_red = new Scalar(130, 255, 255);
 
             Core.inRange(hsv, lower_red, upper_red, hsv);
             //Core.bitwise_and();
 
             return hsv;
+
+
+
+
+
         }
     }
 }

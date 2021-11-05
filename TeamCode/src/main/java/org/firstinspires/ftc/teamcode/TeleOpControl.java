@@ -5,8 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
+//import duck
 @TeleOp(name = "TeleOpReeeeee")
 public class TeleOpControl extends OpMode {
+
+    duckCV duckDetector = new duckCV();
 
     MovementController mController;
     HardwareRobot robot;
@@ -47,9 +50,16 @@ public class TeleOpControl extends OpMode {
             robot.clawArm.setPower(gamepad1.right_trigger);
         } else if (gamepad1.left_trigger > 0.1) {
             robot.clawArm.setPower(-gamepad1.left_trigger);
-        }else{
-        robot.clawArm.setPower(0);
+        } else {
+            robot.clawArm.setPower(0);
         }
+
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        duckDetector.beep(cameraMonitorViewId);
+        int duckPos = duckDetector.getDuckPosition();
+        telemetry.addData("Duck Pos: ", duckPos);
+
 
         telemetry.addData("Distance Front: ", robot.frontDist.getDistance(DistanceUnit.CM));
         telemetry.addData("Distance Back: ", robot.backDist.getDistance(DistanceUnit.CM));
