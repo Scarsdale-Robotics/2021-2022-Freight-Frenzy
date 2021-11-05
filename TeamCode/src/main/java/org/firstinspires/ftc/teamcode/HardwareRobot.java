@@ -14,6 +14,8 @@ public class HardwareRobot {
     public DcMotor leftBack = null;
     public DcMotor rightFront = null;
     public DcMotor rightBack = null;
+    public DcMotor spinThing = null;
+
 
     public DcMotor clawArm = null;
     public Servo leftClaw = null;
@@ -56,6 +58,10 @@ public class HardwareRobot {
         rightFront = hwMap.dcMotor.get("rightFront");
         rightBack = hwMap.dcMotor.get("rightBack");
 
+        spinThing = hwMap.dcMotor.get("spinThing");
+
+
+
 
         //claw arm
         clawArm = hwMap.dcMotor.get("clawArm");
@@ -78,22 +84,30 @@ public class HardwareRobot {
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
+        spinThing.setDirection(DcMotor.Direction.REVERSE);
+
 
         // set power for dc motors and position of servos
         leftFront.setPower(0);
         leftBack.setPower(0);
         rightFront.setPower(0);
         rightBack.setPower(0);
+        spinThing.setPower(0);
+
 
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        spinThing.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         // set motor modes
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        spinThing.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
     }
 }

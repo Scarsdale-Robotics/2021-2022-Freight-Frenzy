@@ -51,12 +51,18 @@ public class TeleOpControl extends OpMode {
         robot.clawArm.setPower(0);
         }
 
-        telemetry.addData("Distance Front: ", robot.frontDist.getDistance(DistanceUnit.CM));
-        telemetry.addData("Distance Back: ", robot.backDist.getDistance(DistanceUnit.CM));
-        telemetry.addData("Distance Left: ", robot.leftDist.getDistance(DistanceUnit.CM));
-        telemetry.addData("Distance Right: ", robot.rightDist.getDistance(DistanceUnit.CM));
-        telemetry.addData("LS Y:", yMovement);
-        telemetry.addData("LS S:", xMovement);
 
+        if(gamepad1.right_bumper){
+            robot.spinThing.setPower(0.5);
+        }else{
+            robot.spinThing.setPower(0);
+        }
+
+//        telemetry.addData("Distance Front: ", robot.frontDist.getDistance(DistanceUnit.CM));
+//        telemetry.addData("Distance Back: ", robot.backDist.getDistance(DistanceUnit.CM));
+//        telemetry.addData("Distance Left: ", robot.leftDist.getDistance(DistanceUnit.CM));
+//        telemetry.addData("Distance Right: ", robot.rightDist.getDistance(DistanceUnit.CM));
+//        telemetry.addData("LS Y:", yMovement);
+//        telemetry.addData("LS S:", xMovement);
     }
 }
