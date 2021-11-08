@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-//import duck
 @TeleOp(name = "TeleOpReeeeee")
 public class TeleOpControl extends OpMode {
 
@@ -18,13 +17,14 @@ public class TeleOpControl extends OpMode {
     public void init() {
         robot = new HardwareRobot(hardwareMap);
         mController = new MovementController(robot, telemetry);
+
     }
 
     @Override
     public void loop() {
 
         double xMovement = gamepad1.left_stick_x;
-        double yMovement = -gamepad1.left_stick_y;
+        double yMovement = gamepad1.left_stick_y;
 
         double xLook = gamepad1.right_stick_x;
 
@@ -38,11 +38,11 @@ public class TeleOpControl extends OpMode {
         if (gamepad1.a) {
 
             robot.rightClaw.setPosition(0.5);
-            robot.leftClaw.setPosition(-0.5);
+            robot.leftClaw.setPosition(0);
         }
 
         if (gamepad1.b) {
-            robot.rightClaw.setPosition(-0.5);
+            robot.rightClaw.setPosition(0);
             robot.leftClaw.setPosition(0.5);
         }
 
@@ -55,10 +55,10 @@ public class TeleOpControl extends OpMode {
         }
 
 
-        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        duckDetector.beep(cameraMonitorViewId);
-        int duckPos = duckDetector.getDuckPosition();
-        telemetry.addData("Duck Pos: ", duckPos);
+//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+//        duckDetector.beep(cameraMonitorViewId);
+//        int duckPos = duckDetector.getDuckPosition();
+//        telemetry.addData("Duck Pos: ", duckPos);
 
 
         telemetry.addData("Distance Front: ", robot.frontDist.getDistance(DistanceUnit.CM));
@@ -74,11 +74,5 @@ public class TeleOpControl extends OpMode {
             robot.spinThing.setPower(0);
         }
 
-//        telemetry.addData("Distance Front: ", robot.frontDist.getDistance(DistanceUnit.CM));
-//        telemetry.addData("Distance Back: ", robot.backDist.getDistance(DistanceUnit.CM));
-//        telemetry.addData("Distance Left: ", robot.leftDist.getDistance(DistanceUnit.CM));
-//        telemetry.addData("Distance Right: ", robot.rightDist.getDistance(DistanceUnit.CM));
-//        telemetry.addData("LS Y:", yMovement);
-//        telemetry.addData("LS S:", xMovement);
     }
 }
