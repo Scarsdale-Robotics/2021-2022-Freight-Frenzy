@@ -57,17 +57,19 @@ public class DuckCV {
         final Scalar upper_red = new Scalar(110, 255, 255);
         final Scalar rectangle_color = new Scalar(0, 255, 0);
 
+        Mat mask = new Mat();
+        Mat trashMat = new Mat();
+
         @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public Mat processFrame(Mat frame) {
-            Mat mask = frame.clone();
             Imgproc.cvtColor(frame, mask, Imgproc.COLOR_BGR2HSV);
 
             Core.inRange(mask, lower_red, upper_red, mask);
 
             List<MatOfPoint> contours = new ArrayList<>();
 
-            Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
+            Imgproc.findContours(mask, contours, trashMat, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
             mask.release();
 
             Rect rect = new Rect();
@@ -79,9 +81,6 @@ public class DuckCV {
                     size = currentRect.height * currentRect.width;
                 }
             }
-//            Optional<Rect> biggestRect = contours.stream()
-//                    .map(Imgproc::boundingRect)
-//                    .max(Comparator.comparing((r) -> r.width * r.height));
 
             Imgproc.rectangle(frame, rect, rectangle_color);
 
