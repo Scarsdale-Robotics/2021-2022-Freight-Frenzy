@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfPoint;
@@ -49,21 +53,22 @@ public class DuckCV {
 
     class CVPipeline extends OpenCvPipeline {
 
+        final Scalar lower_red = new Scalar(90, 50, 50);
+        final Scalar upper_red = new Scalar(110, 255, 255);
+        final Scalar rectangle_color = new Scalar(0, 255, 0);
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
         @Override
         public Mat processFrame(Mat frame) {
-            Mat mask = new Mat();
+            Mat mask = frame.clone();
             Imgproc.cvtColor(frame, mask, Imgproc.COLOR_BGR2HSV);
-
-            Scalar lower_red = new Scalar(90, 50, 50);
-            Scalar upper_red = new Scalar(110, 255, 255);
 
             Core.inRange(mask, lower_red, upper_red, mask);
 
             List<MatOfPoint> contours = new ArrayList<>();
 
             Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
-
-            Imgproc.cvtColor(mask, mask, Imgproc.COLOR_GRAY2BGR);
+            mask.release();
 
             Rect rect = new Rect();
             int size = 0;
@@ -74,10 +79,14 @@ public class DuckCV {
                     size = currentRect.height * currentRect.width;
                 }
             }
-            Imgproc.rectangle(frame, rect, new Scalar(0, 255, 0));
+//            Optional<Rect> biggestRect = contours.stream()
+//                    .map(Imgproc::boundingRect)
+//                    .max(Comparator.comparing((r) -> r.width * r.height));
 
-            duckY = rect.x + rect.width / 2;
-            duckX = rect.y + rect.height / 2;
+            Imgproc.rectangle(frame, rect, rectangle_color);
+
+            duckY = rect.x + rect.width / 2.0f;
+            duckX = rect.y + rect.height / 2.0f;
 
             return frame;
         }
