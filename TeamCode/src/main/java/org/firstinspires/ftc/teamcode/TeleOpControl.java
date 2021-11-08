@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @TeleOp(name = "TeleOpReeeeee")
 public class TeleOpControl extends OpMode {
 
-    duckCV duckDetector = new duckCV();
+    DuckCV duckDetector = new DuckCV();
 
     MovementController mController;
     HardwareRobot robot;

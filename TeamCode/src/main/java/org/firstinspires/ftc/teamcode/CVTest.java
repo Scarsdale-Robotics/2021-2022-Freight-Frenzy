@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -15,7 +15,6 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-import org.opencv.core.MatOfPoint;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,55 +46,40 @@ public class CVTest extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-         }
+        }
     }
 
-
     class CVPipeline extends OpenCvPipeline {
-        List<MatOfPoint> contours = new ArrayList<>();
-        Rect rect = new Rect();
+
         @Override
         public Mat processFrame(Mat frame) {
             Mat mask = new Mat();
             Imgproc.cvtColor(frame, mask, Imgproc.COLOR_BGR2HSV);
 
-
             Scalar lower_red = new Scalar(90, 50, 50);
-
             Scalar upper_red = new Scalar(110, 255, 255);
-
 
             Core.inRange(mask, lower_red, upper_red, mask);
 
-            contours = new ArrayList<>();
-
+            List<MatOfPoint> contours = new ArrayList<>();
 
             Imgproc.findContours(mask, contours, new Mat(), Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
             Imgproc.cvtColor(mask, mask, Imgproc.COLOR_GRAY2BGR);
 
+            Rect rect = new Rect();
             int size = 0;
             for (MatOfPoint c : contours) {
-                ArrayList<MatOfPoint> cList = new ArrayList<MatOfPoint>();
-                cList.add(c);
                 Rect currentRect = Imgproc.boundingRect(c);
-                if(currentRect.width * currentRect.height > size){
+                if (currentRect.width * currentRect.height > size) {
                     rect = currentRect;
                     size = currentRect.height * currentRect.width;
                 }
-
             }
             Imgproc.rectangle(mask, rect, new Scalar(0, 255, 0));
 
-            //Woman whore1 = new Woman();
-            //telemetry.addData("Bitches": whore1)
-            //womn be lke stop objectingy me
-            telemetry.addData("Box XY: ", (rect.x + rect.width/2) + ", " + (rect.y + rect.height/2));
+            telemetry.addData("Box XY: ", (rect.x + rect.width / 2) + ", " + (rect.y + rect.height / 2));
             telemetry.update();
-//            Imgproc.drawContours(mask, contours, -1, new Scalar(255, 0, 0));
-
-
-
 
             return mask;
         }
