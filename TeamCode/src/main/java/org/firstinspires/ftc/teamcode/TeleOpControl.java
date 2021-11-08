@@ -8,7 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @TeleOp(name = "TeleOpReeeeee")
 public class TeleOpControl extends OpMode {
 
-    DuckCV duckDetector = new DuckCV();
+    DuckCV duckDetector;
 
     MovementController mController;
     HardwareRobot robot;
@@ -17,7 +17,8 @@ public class TeleOpControl extends OpMode {
     public void init() {
         robot = new HardwareRobot(hardwareMap);
         mController = new MovementController(robot, telemetry);
-
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        duckDetector = new DuckCV(cameraMonitorViewId);
     }
 
     @Override
@@ -37,13 +38,13 @@ public class TeleOpControl extends OpMode {
 
         if (gamepad1.a) {
 
-            robot.rightClaw.setPosition(0.5);
-            robot.leftClaw.setPosition(0);
+            robot.rightClaw.setPosition(1);
+            robot.leftClaw.setPosition(-1);
         }
 
         if (gamepad1.b) {
-            robot.rightClaw.setPosition(0);
-            robot.leftClaw.setPosition(0.5);
+            robot.rightClaw.setPosition(0.5);
+            robot.leftClaw.setPosition(-0.5);
         }
 
         if (gamepad1.right_trigger > 0.1) {
@@ -55,10 +56,8 @@ public class TeleOpControl extends OpMode {
         }
 
 
-//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-//        duckDetector.beep(cameraMonitorViewId);
-//        int duckPos = duckDetector.getDuckPosition();
-//        telemetry.addData("Duck Pos: ", duckPos);
+        int duckPos = duckDetector.getDuckPosition();
+        telemetry.addData("Duck Pos: ", duckPos);
 
 
         telemetry.addData("Distance Front: ", robot.frontDist.getDistance(DistanceUnit.CM));
@@ -68,9 +67,9 @@ public class TeleOpControl extends OpMode {
         telemetry.addData("LS Y:", yMovement);
         telemetry.addData("LS S:", xMovement);
 
-        if(gamepad1.right_bumper){
+        if (gamepad1.right_bumper) {
             robot.spinThing.setPower(0.5);
-        }else{
+        } else {
             robot.spinThing.setPower(0);
         }
 
