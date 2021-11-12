@@ -14,7 +14,7 @@ public class MovementController {
     private double leftBackPower = 0;
     private double rightFrontPower = 0;
     private double rightBackPower = 0;
-    private int levelArray[] = {0, 0, 0, 0};
+    public int levelArray[] = {0, 0, 0, 0};
 
     public MovementController(HardwareRobot r, Telemetry t) {
         robot = r;

@@ -13,6 +13,8 @@ public class TeleOpControl extends OpMode {
     MovementController mController;
     HardwareRobot robot;
 
+    int elevatorLevel = 0;
+
     @Override
     public void init() {
         robot = new HardwareRobot(hardwareMap);
@@ -36,9 +38,47 @@ public class TeleOpControl extends OpMode {
         mController.update();
 
 
-
         int duckPos = duckDetector.getDuckPosition();
         telemetry.addData("Duck Pos: ", duckPos);
+
+
+        if (gamepad1.right_bumper) {
+            robot.duckSpin.setPower(0.5);
+        } else {
+            robot.duckSpin.setPower(0);
+        }
+
+
+        // raise lower elevator linear slide
+        if (gamepad1.dpad_up) {
+            robot.elevatorCable.setPower(1);
+        } else if (gamepad1.dpad_down) {
+            robot.elevatorCable.setPower(-1);
+        } else {
+            robot.elevatorCable.setPower(0);
+        }
+
+        if (gamepad1.dpad_right) {
+            if (elevatorLevel < mController.levelArray.length) elevatorLevel++;
+            mController.lift(elevatorLevel);
+        } else if (gamepad1.dpad_left) {
+            if (elevatorLevel > 0) elevatorLevel--;
+            mController.lift(elevatorLevel);
+        }
+
+        if (gamepad1.a) {
+            robot.elevatorDoor.setPosition(1);
+        }
+        if (gamepad1.b) {
+            robot.elevatorDoor.setPosition(0);
+        }
+
+        // elevator intake
+        if (gamepad1.x) {
+            robot.elevatorIntake.setPower(1);
+        } else {
+            robot.elevatorIntake.setPower(0);
+        }
 
 
         telemetry.addData("Distance Front: ", robot.frontDist.getDistance(DistanceUnit.CM));
@@ -47,13 +87,5 @@ public class TeleOpControl extends OpMode {
         telemetry.addData("Distance Right: ", robot.rightDist.getDistance(DistanceUnit.CM));
         telemetry.addData("LS Y:", yMovement);
         telemetry.addData("LS S:", xMovement);
-
-        if(gamepad1.right_bumper){
-            robot.duckSpin.setPower(0.5);
-        }else{
-            robot.duckSpin.setPower(0);
-
-        }
-
     }
 }
