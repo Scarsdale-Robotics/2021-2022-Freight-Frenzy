@@ -15,7 +15,7 @@ public class WarehouseAutoBlue extends LinearOpMode {
         mController.strafe(-1.0);
         mController.update();
 
-        while (robot.leftDist.getDistance(DistanceUnit.CM)<68.58);
+        while (robot.leftDist.getDistance(DistanceUnit.CM) > 68.58);
 
         mController.stop();
         mController.update();
