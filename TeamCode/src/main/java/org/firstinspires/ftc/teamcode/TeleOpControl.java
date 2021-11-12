@@ -5,11 +5,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-//import duck
 @TeleOp(name = "TeleOpReeeeee")
 public class TeleOpControl extends OpMode {
 
-    duckCV duckDetector;
+    DuckCV duckDetector;
 
     MovementController mController;
     HardwareRobot robot;
@@ -19,7 +18,7 @@ public class TeleOpControl extends OpMode {
         robot = new HardwareRobot(hardwareMap);
         mController = new MovementController(robot, telemetry);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        duckDetector = new duckCV(cameraMonitorViewId);
+        duckDetector = new DuckCV(cameraMonitorViewId);
     }
 
     @Override
@@ -38,7 +37,6 @@ public class TeleOpControl extends OpMode {
 
 
 
-
         int duckPos = duckDetector.getDuckPosition();
         telemetry.addData("Duck Pos: ", duckPos);
 
@@ -54,6 +52,7 @@ public class TeleOpControl extends OpMode {
             robot.duckSpin.setPower(0.5);
         }else{
             robot.duckSpin.setPower(0);
+
         }
 
     }

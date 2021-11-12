@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
+import org.opencv.core.MatOfPoint;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
@@ -12,18 +12,15 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-import org.opencv.core.MatOfPoint;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class duckCV {
+public class DuckCV {
     OpenCvInternalCamera phoneCam;
     private float duckX = -1;
     private float duckY = -1;
 
-    public duckCV(int cameraMonitorViewId) {
-//        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+    public DuckCV(int cameraMonitorViewId) {
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
@@ -51,25 +48,23 @@ public class duckCV {
     }
 
     class CVPipeline extends OpenCvPipeline {
-        List<MatOfPoint> contours = new ArrayList<>();
-        Rect rect = new Rect();
+        final Scalar lower_red = new Scalar(90, 210, 180);
+        final Scalar upper_red = new Scalar(110, 255, 225);
 
-        // Everything unneeded goes in here. Rather that passing in a new mat each time we'll just allocate it once
+        final Scalar rectangle_color = new Scalar(0, 255, 0);
+
+        Mat mask = new Mat();
         Mat trashMat = new Mat();
+
+        Rect rect = new Rect();
 
         @Override
         public Mat processFrame(Mat frame) {
-            Mat mask = new Mat();
             Imgproc.cvtColor(frame, mask, Imgproc.COLOR_BGR2HSV);
-
-
-            Scalar lower_red = new Scalar(90, 210, 180);
-
-            Scalar upper_red = new Scalar(110, 255, 225);
 
             Core.inRange(mask, lower_red, upper_red, mask);
 
-            contours = new ArrayList<>();
+            List<MatOfPoint> contours = new ArrayList<>();
 
             Imgproc.findContours(mask, contours, trashMat, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
@@ -84,13 +79,8 @@ public class duckCV {
                 }
 
             }
-            Imgproc.rectangle(mask, rect, new Scalar(0, 255, 0));
+            Imgproc.rectangle(mask, rect, rectangle_color);
 
-            //Woman whore1 = new Woman();
-            //telemetry.addData("Bitches": whore1)
-            //womn be lke stop objectingy me
-
-            //cv is dumb so xy are flipped becaue reaspons i wanna die
             duckY = rect.x + rect.width / 2;
             duckX = rect.y + rect.height / 2;
 

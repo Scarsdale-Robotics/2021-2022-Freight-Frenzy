@@ -7,8 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 @TeleOp(name = "intakeTester")
 public class intakeTester extends OpMode {
 
-    duckCV duckDetector;
-
     MovementController mController;
     HardwareRobot robot;
 

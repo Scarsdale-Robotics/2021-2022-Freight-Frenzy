@@ -15,23 +15,23 @@ public class MovementController {
     private double rightFrontPower = 0;
     private double rightBackPower = 0;
 
-    protected MovementController(HardwareRobot r, Telemetry t) {
+    public MovementController(HardwareRobot r, Telemetry t) {
         robot = r;
         telemetry = t;
     }
 
-    protected void setLimit(double limit) {
+    public void setLimit(double limit) {
         this.limit = limit;
     }
 
-    protected void rotate(double power) {
+    public void rotate(double power) {
         leftFrontPower = power;
         leftBackPower = power;
         rightFrontPower = -power;
         rightBackPower = -power;
     }
 
-    protected void joystickMovement(double x, double y) {
+    public void joystickMovement(double x, double y) {
         double maxValue = Math.abs(x) + Math.abs(y);
         maxValue = (maxValue < 1) ? 1 : maxValue;
 
@@ -44,7 +44,7 @@ public class MovementController {
         rightBackPower = (y / maxValue) - (x / maxValue);
     }
 
-    protected void drive(double power) {
+    public void drive(double power) {
         leftFrontPower = power;
         leftBackPower = power;
         rightFrontPower = power;
@@ -52,16 +52,15 @@ public class MovementController {
     }
 
 
-    protected void strafe(double power) {
+    public void strafe(double power) {
         leftFrontPower = power;
         leftBackPower = -power;
         rightFrontPower = -power;
         rightBackPower = power;
-
     }
 
 
-    protected void rotationalModifier(double rotationPower) {
+    public void rotationalModifier(double rotationPower) {
         double x = -rotationPower * 0.85;
 
         rightFrontPower = ((Math.abs(rightFrontPower) > 1) ? Math.signum(rightFrontPower) : rightFrontPower);
@@ -89,7 +88,7 @@ public class MovementController {
         }
     }
 
-    protected void rotationalForward(double power, double rotation) {
+    public void rotationalForward(double power, double rotation) {
         // rotational power calculated from current heading (in degrees)
         double calculatedRotationalPower = rotation;
 
@@ -114,7 +113,7 @@ public class MovementController {
     }
 
     //WARNING: Will complete function before it stops
-    protected void brakeForAsync(int ms) {
+    public void brakeForAsync(int ms) {
         leftFrontPower *= -1;
         leftBackPower *= -1;
         rightFrontPower *= -1;
@@ -127,16 +126,15 @@ public class MovementController {
             public void run() {
                 stop();
                 update();
-
             }
         }, ms);
     }
 
-    protected void brake() {
+    public void brake() {
         brakeFor(50);
     }
 
-    protected void brakeFor(int ms) {
+    public void brakeFor(int ms) {
         leftFrontPower *= -1;
         leftBackPower *= -1;
         rightFrontPower *= -1;
@@ -152,10 +150,9 @@ public class MovementController {
 
         stop();
         update();
-
     }
 
-    protected void stop() {
+    public void stop() {
         leftFrontPower = 0;
         leftBackPower = 0;
         rightFrontPower = 0;
@@ -163,7 +160,7 @@ public class MovementController {
 
     }
 
-    protected void update() {
+    public void update() {
         if(limit <= 1) {
             leftFrontPower *= limit;
             leftBackPower *= limit;
