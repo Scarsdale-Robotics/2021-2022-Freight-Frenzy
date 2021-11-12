@@ -37,25 +37,6 @@ public class TeleOpControl extends OpMode {
         mController.update();
 
 
-        if (gamepad1.a) {
-
-            robot.rightClaw.setPosition(1);
-            robot.leftClaw.setPosition(-1);
-        }
-
-        if (gamepad1.b) {
-            robot.rightClaw.setPosition(0.5);
-            robot.leftClaw.setPosition(-0.5);
-        }
-
-        if (gamepad1.right_trigger > 0.1) {
-            robot.clawArm.setPower(gamepad1.right_trigger);
-        } else if (gamepad1.left_trigger > 0.1) {
-            robot.clawArm.setPower(-gamepad1.left_trigger);
-        } else {
-            robot.clawArm.setPower(0);
-        }
-
 
 
         int duckPos = duckDetector.getDuckPosition();
@@ -70,9 +51,9 @@ public class TeleOpControl extends OpMode {
         telemetry.addData("LS S:", xMovement);
 
         if(gamepad1.right_bumper){
-            robot.spinThing.setPower(0.5);
+            robot.duckSpin.setPower(0.5);
         }else{
-            robot.spinThing.setPower(0);
+            robot.duckSpin.setPower(0);
         }
 
     }

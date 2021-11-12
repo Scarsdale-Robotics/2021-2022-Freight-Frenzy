@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
-import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -14,12 +13,14 @@ public class HardwareRobot {
     public DcMotor leftBack = null;
     public DcMotor rightFront = null;
     public DcMotor rightBack = null;
-    public DcMotor spinThing = null;
+    public DcMotor duckSpin = null;
 
 
-    public DcMotor clawArm = null;
-    public Servo leftClaw = null;
-    public Servo rightClaw = null;
+    public DcMotor elevatorCable = null;
+    public DcMotor elevatorIntake = null;
+
+
+    public Servo elevatorDoor = null;
 
     public Rev2mDistanceSensor frontDist = null;
     public Rev2mDistanceSensor leftDist = null;
@@ -58,17 +59,16 @@ public class HardwareRobot {
         rightFront = hwMap.dcMotor.get("rightFront");
         rightBack = hwMap.dcMotor.get("rightBack");
 
-        spinThing = hwMap.dcMotor.get("spinThing");
+        duckSpin = hwMap.dcMotor.get("duckSpin");
 
 
+        elevatorCable = hwMap.dcMotor.get("elevatorCable");
+        elevatorIntake = hwMap.dcMotor.get("elevatorIntake");
+
+        elevatorDoor = hwMap.servo.get("elevatorDoor");
 
 
-        //claw arm
-        clawArm = hwMap.dcMotor.get("clawArm");
-        leftClaw = hwMap.servo.get("leftClaw");
-        rightClaw = hwMap.servo.get("rightClaw");
-        rightClaw.scaleRange(-1, 1);
-        leftClaw.scaleRange(-1, 1);
+        elevatorDoor.scaleRange(-1, 1);
 
 
 
@@ -84,7 +84,10 @@ public class HardwareRobot {
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
-        spinThing.setDirection(DcMotor.Direction.REVERSE);
+        duckSpin.setDirection(DcMotor.Direction.REVERSE);
+        elevatorCable.setDirection(DcMotor.Direction.REVERSE);
+        elevatorIntake.setDirection(DcMotor.Direction.REVERSE);
+
 
 
         // set power for dc motors and position of servos
@@ -92,14 +95,17 @@ public class HardwareRobot {
         leftBack.setPower(0);
         rightFront.setPower(0);
         rightBack.setPower(0);
-        spinThing.setPower(0);
-
+        duckSpin.setPower(0);
+        elevatorCable.setPower(0);
+        elevatorIntake.setPower(0);
 
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        spinThing.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        duckSpin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevatorCable.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        elevatorIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
         // set motor modes
@@ -107,7 +113,9 @@ public class HardwareRobot {
         leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        spinThing.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        duckSpin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        elevatorIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
+        elevatorCable.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }
