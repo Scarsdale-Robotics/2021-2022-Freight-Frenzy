@@ -51,23 +51,22 @@ public class TeleOpControl extends OpMode {
 
         // raise lower elevator linear slide
         if (gamepad1.dpad_up) {
+            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() + 50);
             robot.elevatorCable.setPower(-1);
-//            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() + 50);
         } else if (gamepad1.dpad_down) {
+            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() - 50);
             robot.elevatorCable.setPower(1);
-
-//            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() - 50);
         }else{
             robot.elevatorCable.setPower(0);
 
         }
-//        if (gamepad1.dpad_right) {
-//            if (elevatorLevel < mController.levelArray.length) elevatorLevel++;
-//            mController.lift(elevatorLevel);
-//        } else if (gamepad1.dpad_left) {
-//            if (elevatorLevel > 0) elevatorLevel--;
-//            mController.lift(elevatorLevel);
-//        }
+        if (gamepad1.dpad_right) {
+            if (elevatorLevel < mController.levelArray.length) elevatorLevel++;
+            mController.lift(elevatorLevel);
+        } else if (gamepad1.dpad_left) {
+            if (elevatorLevel > 0) elevatorLevel--;
+            mController.lift(elevatorLevel);
+        }
 
         if (gamepad1.y) {
             robot.elevatorDoor.setPosition(0);

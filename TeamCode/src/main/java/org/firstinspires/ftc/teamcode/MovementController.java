@@ -180,7 +180,8 @@ public class MovementController {
         robot.rightBack.setPower(-rightBackPower);
     }
 
-//    public void lift(int level){
-//        robot.elevatorCable.setTargetPosition(levelArray[level]);
-//    }
+    public void lift(int level){
+        robot.elevatorCable.setTargetPosition(levelArray[level]);
+        robot.elevatorCable.setPower(1);
+    }
 }
