@@ -116,6 +116,6 @@ public class HardwareRobot {
         duckSpin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         elevatorIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        elevatorCable.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevatorCable.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }

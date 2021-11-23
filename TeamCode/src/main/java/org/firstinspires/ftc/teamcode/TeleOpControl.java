@@ -51,31 +51,37 @@ public class TeleOpControl extends OpMode {
 
         // raise lower elevator linear slide
         if (gamepad1.dpad_up) {
-            robot.elevatorCable.setPower(1);
-        } else if (gamepad1.dpad_down) {
             robot.elevatorCable.setPower(-1);
-        } else {
+//            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() + 50);
+        } else if (gamepad1.dpad_down) {
+            robot.elevatorCable.setPower(1);
+
+//            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() - 50);
+        }else{
             robot.elevatorCable.setPower(0);
-        }
 
-        if (gamepad1.dpad_right) {
-            if (elevatorLevel < mController.levelArray.length) elevatorLevel++;
-            mController.lift(elevatorLevel);
-        } else if (gamepad1.dpad_left) {
-            if (elevatorLevel > 0) elevatorLevel--;
-            mController.lift(elevatorLevel);
         }
+//        if (gamepad1.dpad_right) {
+//            if (elevatorLevel < mController.levelArray.length) elevatorLevel++;
+//            mController.lift(elevatorLevel);
+//        } else if (gamepad1.dpad_left) {
+//            if (elevatorLevel > 0) elevatorLevel--;
+//            mController.lift(elevatorLevel);
+//        }
 
-        if (gamepad1.a) {
-            robot.elevatorDoor.setPosition(1);
+        if (gamepad1.y) {
+            robot.elevatorDoor.setPosition(0);
         }
         if (gamepad1.b) {
-            robot.elevatorDoor.setPosition(0);
+            robot.elevatorDoor.setPosition(0.5);
+        }
+        if (gamepad1.a) {
+            robot.elevatorDoor.setPosition(1);
         }
 
         // elevator intake
         if (gamepad1.x) {
-            robot.elevatorIntake.setPower(1);
+            robot.elevatorIntake.setPower(-0.75);
         } else {
             robot.elevatorIntake.setPower(0);
         }
