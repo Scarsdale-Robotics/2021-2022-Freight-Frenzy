@@ -105,9 +105,8 @@ public class HardwareRobot {
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         duckSpin.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elevatorCable.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         elevatorIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        elevatorCable.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         // set motor modes
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);

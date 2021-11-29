@@ -1,20 +1,22 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class MovementController {
-    private final HardwareRobot robot;
-    private final Telemetry telemetry;
+    protected final HardwareRobot robot;
+    protected final Telemetry telemetry;
 
     private double limit = 1.0;
-    private double leftFrontPower = 0;
-    private double leftBackPower = 0;
-    private double rightFrontPower = 0;
-    private double rightBackPower = 0;
-    public int levelArray[] = {0, 0, 0, 0};
+    protected double leftFrontPower = 0;
+    protected double leftBackPower = 0;
+    protected double rightFrontPower = 0;
+    protected double rightBackPower = 0;
+    private int levelArray[] = {0, 0, 0, 0};
 
     public MovementController(HardwareRobot r, Telemetry t) {
         robot = r;
@@ -113,7 +115,6 @@ public class MovementController {
         telemetry.addData("Calculated Rotational Power", calculatedRotationalPower);
     }
 
-    //WARNING: Will complete function before it stops
     public void brakeForAsync(int ms) {
         leftFrontPower *= -1;
         leftBackPower *= -1;
@@ -129,28 +130,6 @@ public class MovementController {
                 update();
             }
         }, ms);
-    }
-
-    public void brake() {
-        brakeFor(50);
-    }
-
-    public void brakeFor(int ms) {
-        leftFrontPower *= -1;
-        leftBackPower *= -1;
-        rightFrontPower *= -1;
-        rightBackPower *= -1;
-
-        update();
-
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            telemetry.log().add("Thread interrupted while braking! This should never happen.");
-        }
-
-        stop();
-        update();
     }
 
     public void stop() {
@@ -179,9 +158,10 @@ public class MovementController {
         robot.rightFront.setPower(-rightFrontPower);
         robot.rightBack.setPower(-rightBackPower);
     }
-//
-//    public void lift(int level){
-//        robot.elevatorCable.setTargetPosition(levelArray[level]);
-//        robot.elevatorCable.setPower(1);
-//    }
+
+    public void liftAsync(int level){
+        robot.elevatorCable.setTargetPosition(levelArray[level]);
+        robot.elevatorCable.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.elevatorCable.setPower(1);
+    }
 }
