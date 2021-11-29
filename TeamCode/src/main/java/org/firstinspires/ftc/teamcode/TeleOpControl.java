@@ -42,7 +42,7 @@ public class TeleOpControl extends OpMode {
         telemetry.addData("Duck Pos: ", duckPos);
 
 
-        if (gamepad1.right_bumper) {
+        if (gamepad1.x) {
             robot.duckSpin.setPower(0.5);
         } else {
             robot.duckSpin.setPower(0);
@@ -70,7 +70,7 @@ public class TeleOpControl extends OpMode {
 //        }
 
         if (gamepad1.y) {
-            robot.elevatorDoor.setPosition(0);
+            robot.elevatorDoor.setPosition(0.25);
         }
         if (gamepad1.b) {
             robot.elevatorDoor.setPosition(0.5);
@@ -80,9 +80,11 @@ public class TeleOpControl extends OpMode {
         }
 
         // elevator intake
-        if (gamepad1.x) {
-            robot.elevatorIntake.setPower(-0.75);
-        } else {
+        if (gamepad1.right_bumper) {
+            robot.elevatorIntake.setPower(-1); //intake
+        }  if (gamepad1.left_bumper) {
+            robot.elevatorIntake.setPower(1); //unintake
+        }else {
             robot.elevatorIntake.setPower(0);
         }
 
