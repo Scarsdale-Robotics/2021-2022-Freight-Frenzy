@@ -96,6 +96,7 @@ public class HardwareRobot {
         rightFront.setPower(0);
         rightBack.setPower(0);
         duckSpin.setPower(0);
+        duckSpin.setPower(0);
         elevatorCable.setPower(0);
         elevatorIntake.setPower(0);
 
@@ -115,7 +116,6 @@ public class HardwareRobot {
         rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         duckSpin.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         elevatorIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        elevatorCable.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        elevatorCable.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 }

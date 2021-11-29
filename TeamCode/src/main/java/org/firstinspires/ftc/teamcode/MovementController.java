@@ -179,9 +179,9 @@ public class MovementController {
         robot.rightFront.setPower(-rightFrontPower);
         robot.rightBack.setPower(-rightBackPower);
     }
-
-    public void lift(int level){
-        robot.elevatorCable.setTargetPosition(levelArray[level]);
-        robot.elevatorCable.setPower(1);
-    }
+//
+//    public void lift(int level){
+//        robot.elevatorCable.setTargetPosition(levelArray[level]);
+//        robot.elevatorCable.setPower(1);
+//    }
 }
