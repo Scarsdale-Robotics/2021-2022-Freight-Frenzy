@@ -160,7 +160,7 @@ public class MovementController {
     }
 
     public void liftAsync(int level){
-        robot.elevatorCable.setTargetPosition(levelArray[level]);
+        robot.elevatorCable.setTargetPosition(levelArray[level] % levelArray.length);
         robot.elevatorCable.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.elevatorCable.setPower(1);
     }
