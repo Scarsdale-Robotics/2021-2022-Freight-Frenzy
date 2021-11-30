@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
@@ -21,6 +22,8 @@ public class TeleOpControl extends OpMode {
         mController = new MovementController(robot, telemetry);
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         duckDetector = new DuckCV(cameraMonitorViewId);
+
+        robot.elevatorCable.setTargetPosition(0);
     }
 
     @Override
@@ -29,7 +32,7 @@ public class TeleOpControl extends OpMode {
         double xMovement = gamepad1.left_stick_x;
         double yMovement = gamepad1.left_stick_y;
 
-        double xLook = gamepad1.right_stick_x;
+        double xLook = gamepad1.right_stick_x/2;
 
 
         mController.joystickMovement(xMovement, yMovement);
@@ -51,16 +54,19 @@ public class TeleOpControl extends OpMode {
 
         // raise lower elevator linear slide
         if (gamepad1.dpad_up) {
-            robot.elevatorCable.setPower(-1);
-//            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() + 50);
+            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() - 500);
         } else if (gamepad1.dpad_down) {
-            robot.elevatorCable.setPower(1);
+            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() + 500);
 
-//            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition() - 50);
         }else{
-            robot.elevatorCable.setPower(0);
+//            robot.elevatorCable.setTargetPosition(robot.elevatorCable.getCurrentPosition());
 
+            robot.elevatorCable.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            robot.elevatorCable.setPower(1);
         }
+
+        telemetry.addData("Level: ", robot.elevatorCable.getCurrentPosition());
 //        if (gamepad1.dpad_right) {
 //            if (elevatorLevel < mController.levelArray.length) elevatorLevel++;
 //            mController.lift(elevatorLevel);
@@ -70,7 +76,7 @@ public class TeleOpControl extends OpMode {
 //        }
 
         if (gamepad1.y) {
-            robot.elevatorDoor.setPosition(0.25);
+            robot.elevatorDoor.setPosition(-0.1);
         }
         if (gamepad1.b) {
             robot.elevatorDoor.setPosition(0.5);
