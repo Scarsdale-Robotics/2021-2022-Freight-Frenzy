@@ -16,6 +16,8 @@ public class MovementController {
     protected double leftBackPower = 0;
     protected double rightFrontPower = 0;
     protected double rightBackPower = 0;
+
+    // TODO: Measure
     private int levelArray[] = {0, 0, 0, 0};
 
     public MovementController(HardwareRobot r, Telemetry t) {

@@ -70,8 +70,7 @@ public class TeleOpControl extends OpMode {
         // elevator intake
         if (gamepad1.right_bumper) {
             robot.elevatorIntake.setPower(-1); //intake
-        }
-        if (gamepad1.left_bumper) {
+        } else if (gamepad1.left_bumper) {
             robot.elevatorIntake.setPower(1); //unintake
         } else {
             robot.elevatorIntake.setPower(0);
