@@ -14,7 +14,7 @@ public class MovementController {
     private double leftBackPower = 0;
     private double rightFrontPower = 0;
     private double rightBackPower = 0;
-    public int levelArray[] = {0, 0, 0, 0};
+    public int levelArray[] = {0, 300, 3300};
 
     public MovementController(HardwareRobot r, Telemetry t) {
         robot = r;
@@ -181,6 +181,6 @@ public class MovementController {
     }
 
     public void lift(int level){
-        robot.elevatorCable.setTargetPosition(levelArray[level]);
+        robot.clawArm.setTargetPosition(levelArray[level]);
     }
 }

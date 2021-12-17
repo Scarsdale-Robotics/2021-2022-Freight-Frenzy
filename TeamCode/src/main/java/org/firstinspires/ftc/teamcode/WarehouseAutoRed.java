@@ -9,13 +9,21 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 public class WarehouseAutoRed extends LinearOpMode {
     @Override
     public void runOpMode() {
+        waitForStart();
+
         HardwareRobot robot = new HardwareRobot(hardwareMap);
         MovementController mController = new MovementController(robot, telemetry);
 
-        while (opModeIsActive() && robot.rightDist.getDistance(DistanceUnit.INCH) > 24) {
-            mController.strafe(1);
+        while (opModeIsActive() && robot.frontDist.getDistance(DistanceUnit.INCH) > 24) {
+            mController.joystickMovement(0, -1);
             mController.update();
+            telemetry.addData("front: ", robot.frontDist.getDistance(DistanceUnit.INCH));
+            telemetry.addData("left: ", robot.leftDist.getDistance(DistanceUnit.INCH));
+            telemetry.addData("right: ", robot.rightDist.getDistance(DistanceUnit.INCH));
+            telemetry.addData("back: ", robot.backDist.getDistance(DistanceUnit.INCH));
+
         }
+
         mController.stop();
         mController.update();
 

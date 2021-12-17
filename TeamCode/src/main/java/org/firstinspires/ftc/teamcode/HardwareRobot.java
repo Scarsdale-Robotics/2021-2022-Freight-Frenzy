@@ -68,10 +68,10 @@ public class HardwareRobot {
         duckSpinLeft = hwMap.dcMotor.get("duckSpinLeft");
 
 
-        elevatorCable = hwMap.dcMotor.get("elevatorCable");
-        elevatorIntake = hwMap.dcMotor.get("elevatorIntake");
-
-        elevatorDoor = hwMap.servo.get("elevatorDoor");
+//        elevatorCable = hwMap.dcMotor.get("elevatorCable");
+//        elevatorIntake = hwMap.dcMotor.get("elevatorIntake");
+//
+//        elevatorDoor = hwMap.servo.get("elevatorDoor");
 
 
         clawArm = hwMap.dcMotor.get("clawArm");
@@ -80,7 +80,7 @@ public class HardwareRobot {
         clawRight = hwMap.servo.get("clawRight");
 
 
-        elevatorDoor.scaleRange(0, 1);
+//        elevatorDoor.scaleRange(0, 1);
         clawLeft.scaleRange(0, 1);
         clawRight.scaleRange(0, 1);
 
@@ -101,8 +101,8 @@ public class HardwareRobot {
         duckSpinLeft.setDirection(DcMotor.Direction.REVERSE);
         duckSpinRight.setDirection(DcMotor.Direction.REVERSE);
 
-        elevatorIntake.setDirection(DcMotor.Direction.REVERSE);
-        elevatorCable.setDirection(DcMotor.Direction.REVERSE);
+//        elevatorIntake.setDirection(DcMotor.Direction.REVERSE);
+//        elevatorCable.setDirection(DcMotor.Direction.REVERSE);
         clawArm.setDirection(DcMotor.Direction.REVERSE);
 
 
@@ -115,8 +115,8 @@ public class HardwareRobot {
         duckSpinLeft.setPower(0);
         duckSpinRight.setPower(0);
 
-        elevatorCable.setPower(0);
-        elevatorIntake.setPower(0);
+//        elevatorCable.setPower(0);
+//        elevatorIntake.setPower(0);
         clawArm.setPower(0);
 
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -126,9 +126,8 @@ public class HardwareRobot {
         duckSpinLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         duckSpinRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        elevatorIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        elevatorCable.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        elevatorIntake.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+//        elevatorCable.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         clawArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
@@ -140,18 +139,18 @@ public class HardwareRobot {
         duckSpinLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         duckSpinRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        elevatorIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        elevatorCable.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        elevatorIntake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        elevatorCable.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         clawArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
 
         clawArm.setTargetPosition(0);
-        elevatorCable.setTargetPosition(0);
+//        elevatorCable.setTargetPosition(0);
 
 
         clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elevatorCable.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+//        elevatorCable.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
 }
