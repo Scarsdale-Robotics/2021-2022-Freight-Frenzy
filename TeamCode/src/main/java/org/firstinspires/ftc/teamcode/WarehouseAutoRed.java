@@ -21,11 +21,19 @@ public class WarehouseAutoRed extends LinearOpMode {
             telemetry.addData("left: ", robot.leftDist.getDistance(DistanceUnit.INCH));
             telemetry.addData("right: ", robot.rightDist.getDistance(DistanceUnit.INCH));
             telemetry.addData("back: ", robot.backDist.getDistance(DistanceUnit.INCH));
-
+            telemetry.update();
         }
 
         mController.stop();
         mController.update();
+
+        while(opModeIsActive()){
+            telemetry.addData("front: ", robot.frontDist.getDistance(DistanceUnit.INCH));
+            telemetry.addData("left: ", robot.leftDist.getDistance(DistanceUnit.INCH));
+            telemetry.addData("right: ", robot.rightDist.getDistance(DistanceUnit.INCH));
+            telemetry.addData("back: ", robot.backDist.getDistance(DistanceUnit.INCH));
+            telemetry.update();
+        }
 
     }
 }

@@ -48,8 +48,8 @@ public class DuckCV {
     }
 
     class CVPipeline extends OpenCvPipeline {
-        final Scalar lower_yellow = new Scalar(90, 210, 180);
-        final Scalar upper_yellow = new Scalar(110, 255, 225);
+        final Scalar lower_green = new Scalar(30, 100, 50);
+        final Scalar upper_green = new Scalar(100, 255, 200);
 
         final Scalar rectangle_color = new Scalar(0, 255, 0);
 
@@ -62,7 +62,7 @@ public class DuckCV {
         public Mat processFrame(Mat frame) {
             Imgproc.cvtColor(frame, mask, Imgproc.COLOR_BGR2HSV);
 
-            Core.inRange(mask, lower_yellow, upper_yellow, mask);
+            Core.inRange(mask, lower_green, upper_green, mask);
 
             List<MatOfPoint> contours = new ArrayList<>();
 

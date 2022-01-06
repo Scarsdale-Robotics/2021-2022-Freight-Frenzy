@@ -45,7 +45,6 @@ public class TeleopClaw extends OpMode {
         }    if (gamepad2.right_trigger > 0.01) {
             robot.clawArm.setTargetPosition(robot.clawArm.getCurrentPosition() + (int)(100 * gamepad2.right_trigger));
         }
-
         if(gamepad2.dpad_left){
             robot.clawArm.setTargetPosition(3600);
         }
@@ -93,6 +92,7 @@ public class TeleopClaw extends OpMode {
 
         telemetry.addData("Arm Endcoder: ", robot.clawArm.getCurrentPosition());
         telemetry.addData("Front Dist: ", robot.frontDist.getDistance(DistanceUnit.INCH));
+        telemetry.addData("Imu: ", robot.imu.getAngularOrientation());
 
         telemetry.update();
     }

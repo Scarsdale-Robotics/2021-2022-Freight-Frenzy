@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -46,6 +47,8 @@ public class HardwareRobot {
 
     private void init()
     {
+
+
 //        imu = hwMap.get(BNO055IMU.class, "imu");
 //
 //        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -57,6 +60,7 @@ public class HardwareRobot {
 //        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 //
 //        imu.initialize(parameters);
+
 
         // match motors to phone labels
         leftFront = hwMap.dcMotor.get("leftFront");
