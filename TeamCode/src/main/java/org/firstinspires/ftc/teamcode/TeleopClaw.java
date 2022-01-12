@@ -34,7 +34,7 @@ public class TeleopClaw extends OpMode {
         double xLook = gamepad1.right_stick_x/1.25;
 
 
-        mController.joystickMovement(xMovement, yMovement);
+        mController.joystickMovement(xMovement, -yMovement);
 
         mController.rotationalModifier(xLook);
         mController.update();
@@ -59,12 +59,10 @@ public class TeleopClaw extends OpMode {
         //servos
 
         if (gamepad2.y) { //open
-            robot.clawLeft.setPosition(0.7);
-            robot.clawRight.setPosition(0.3);
+            mController.openClaw();
         }
         if (gamepad2.b) { //close
-            robot.clawLeft.setPosition(1.0);
-            robot.clawRight.setPosition(0.0);
+            mController.closeCLaw();
         }
 
 
@@ -87,6 +85,8 @@ public class TeleopClaw extends OpMode {
             gamepad1.rumble(2000);
 
         }
+
+
 
 
 

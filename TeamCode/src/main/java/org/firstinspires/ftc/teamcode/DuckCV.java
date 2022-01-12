@@ -41,14 +41,14 @@ public class DuckCV {
     }
 
     int getDuckPosition() {
-        if (duckX == -1) return -1;
-        if (duckX < 65) return 0;
-        else if (duckX < 180) return 1;
+        if (duckY == -1) return -1;
+        if (duckY < 80) return 0;
+        else if (duckY < 200) return 1;
         return 2;
     }
 
     class CVPipeline extends OpenCvPipeline {
-        final Scalar lower_green = new Scalar(30, 100, 50);
+        final Scalar lower_green = new Scalar(30, 175, 75);
         final Scalar upper_green = new Scalar(100, 255, 200);
 
         final Scalar rectangle_color = new Scalar(0, 255, 0);

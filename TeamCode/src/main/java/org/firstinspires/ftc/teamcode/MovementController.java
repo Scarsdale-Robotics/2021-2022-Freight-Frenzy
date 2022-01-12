@@ -36,7 +36,6 @@ public class MovementController {
         double maxValue = Math.abs(x) + Math.abs(y);
         maxValue = (maxValue < 1) ? 1 : maxValue;
 
-        y = -y;
         x = -x;
 
         leftFrontPower = (y / maxValue) - (x / maxValue);
@@ -180,6 +179,14 @@ public class MovementController {
         robot.rightBack.setPower(-rightBackPower);
     }
 
+    public void closeCLaw(){
+        robot.clawLeft.setPosition(1.0);
+        robot.clawRight.setPosition(0.0);
+    }
+    public void openClaw(){
+        robot.clawLeft.setPosition(0.7);
+        robot.clawRight.setPosition(0.3);
+    }
     public void lift(int level){
         robot.clawArm.setTargetPosition(levelArray[level]);
     }
