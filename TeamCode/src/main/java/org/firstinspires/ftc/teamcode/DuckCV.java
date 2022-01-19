@@ -42,9 +42,9 @@ public class DuckCV {
 
     int getDuckPosition() {
         if (duckY == -1) return -1;
-        if (duckY < 80) return 0;
+        if (duckY < 80) return 2;
         else if (duckY < 200) return 1;
-        return 2;
+        return 0;
     }
 
     class CVPipeline extends OpenCvPipeline {
