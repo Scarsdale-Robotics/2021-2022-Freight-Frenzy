@@ -17,9 +17,9 @@ import java.util.List;
 
 public class DuckCV {
     OpenCvInternalCamera phoneCam;
-    private float duckX = -1;
-    private float duckY = -1;
-
+    public float duckX = -1;
+    public float duckY = -1;
+    public boolean camOpen = false;
     public DuckCV(int cameraMonitorViewId) {
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
@@ -30,6 +30,7 @@ public class DuckCV {
             @Override
             public void onOpened() {
                 phoneCam.startStreaming(320, 240, OpenCvCameraRotation.SIDEWAYS_LEFT);
+                camOpen = true;
             }
 
             @Override
@@ -41,9 +42,10 @@ public class DuckCV {
     }
 
     int getDuckPosition() {
-        if (duckY == -1) return -1;
-        if (duckY < 80) return 2;
-        else if (duckY < 200) return 1;
+        if(duckY <= 0 || duckX <= 0 || Math.abs(60-duckX) > 30) return -1;
+
+        if(duckY < 86) return 2;
+        if(duckY < 176) return 1;
         return 0;
     }
 

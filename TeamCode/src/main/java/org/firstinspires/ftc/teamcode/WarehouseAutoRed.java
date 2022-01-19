@@ -28,14 +28,30 @@ public class WarehouseAutoRed extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         duckDetector = new DuckCV(cameraMonitorViewId);
 
-        int duckPos = duckDetector.getDuckPosition();
-        for (int i = 0; i < 50; i++) {
+        int votes[] = {0, 0, 0};
+        int duckPos = -1;
+        startTimer = System.currentTimeMillis();
+        while (opModeIsActive() && (System.currentTimeMillis() - startTimer < 1500)) {
+            duckPos = duckDetector.getDuckPosition();
+            telemetry.addData("pos: ", duckPos);
+//            telemetry.addData("i: ", i);
+
+            telemetry.addData("x: ", duckDetector.duckX);
+            telemetry.addData("y: ", duckDetector.duckY);
+            telemetry.update();
+
             if (duckPos != -1) {
-                duckPos = duckDetector.getDuckPosition();
-                break;
+                votes[duckPos]++;
             }
         }
-
+        int max = -1;
+        duckPos = -1;
+        for (int i = 0; i < 3; i++) {
+            if (votes[i] >= max) {
+                max = (votes[i]);
+                duckPos = i;
+            }
+        }
 
 
         //move back
@@ -47,9 +63,9 @@ public class WarehouseAutoRed extends LinearOpMode {
             }
         }
 
-        telemetry.addData("reeee: ", duckPos);
+        //telemetry.addData("position: ", duckPos);
 
-        telemetry.update();
+        //telemetry.update();
 
         mController.stop();
         mController.update();
@@ -60,15 +76,15 @@ public class WarehouseAutoRed extends LinearOpMode {
         while (opModeIsActive() && robot.clawArm.isBusy()) ;
 
         float startAngle = robot.imu.getAngularOrientation().firstAngle;
-        mController.rotate(-0.5);
+        mController.rotate(-0.2);
         mController.update();
-        while (opModeIsActive() && startAngle - robot.imu.getAngularOrientation().firstAngle > -15)
+        while (opModeIsActive() && startAngle - robot.imu.getAngularOrientation().firstAngle > -329)
             ;
         mController.stop();
         mController.update();
 
 
-        int levels[] = {4800, 4050, 3500};
+        int levels[] = {5000, 4200, 3500};
         if (duckPos == -1) {
             duckPos = 2;
         }
@@ -83,7 +99,8 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.update();
 
 
-        mController.openClaw();
+        robot.clawLeft.setPosition(0);
+        robot.clawRight.setPosition(0);
         startTimer = System.currentTimeMillis();
         while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
 
@@ -99,11 +116,27 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.update();
 
 
-        startAngle = robot.imu.getAngularOrientation().firstAngle;
-        mController.rotate(0.5);
+        mController.rotate(-0.2);
         mController.update();
-        while (opModeIsActive() && startAngle - robot.imu.getAngularOrientation().firstAngle < 105)
+        while (opModeIsActive() && startAngle - robot.imu.getAngularOrientation().firstAngle > -90)
             ;
+        mController.stop();
+        mController.update();
+
+
+        mController.joystickMovement(0, -0.6);
+        mController.update();
+        startTimer = System.currentTimeMillis();
+        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 500) ;
+        mController.stop();
+        mController.update();
+
+        sleep(200);
+
+        mController.joystickMovement(0, 1.0);
+        mController.update();
+        startTimer = System.currentTimeMillis();
+        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 1500) ;
         mController.stop();
         mController.update();
 
