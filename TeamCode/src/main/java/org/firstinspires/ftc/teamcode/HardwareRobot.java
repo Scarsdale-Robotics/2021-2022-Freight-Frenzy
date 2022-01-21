@@ -127,6 +127,8 @@ public class HardwareRobot {
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
         duckSpinLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         duckSpinRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
@@ -136,10 +138,10 @@ public class HardwareRobot {
 
 
         // set motor modes
-        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         duckSpinLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         duckSpinRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
@@ -152,6 +154,10 @@ public class HardwareRobot {
         clawArm.setTargetPosition(0);
 //        elevatorCable.setTargetPosition(0);
 
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        elevatorCable.setMode(DcMotor.RunMode.RUN_TO_POSITION);
