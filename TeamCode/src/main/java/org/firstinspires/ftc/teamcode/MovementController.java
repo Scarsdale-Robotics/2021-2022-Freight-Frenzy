@@ -25,10 +25,6 @@ public class MovementController {
         startAngle = robot.imu.getAngularOrientation().firstAngle;
     }
 
-    public void setLimit(double limit) {
-        this.limit = limit;
-    }
-
     public void rotate(double power) {
         leftFrontPower = power;
         leftBackPower = power;
@@ -102,9 +98,6 @@ public class MovementController {
 
         drive(power);
         rotationalModifier(calculatedRotationalPower);
-
-        telemetry.addData("Rotation", rotation);
-        telemetry.addData("Calculated Rotational Power", calculatedRotationalPower);
     }
 
     public void brakeFor(int ms) {
