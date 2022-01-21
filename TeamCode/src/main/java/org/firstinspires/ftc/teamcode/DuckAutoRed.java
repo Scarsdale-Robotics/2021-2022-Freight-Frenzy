@@ -29,7 +29,6 @@ public class DuckAutoRed extends LinearOpMode {
         waitForStart();
         int duckPos = duckDetector.getDuckPosition();
         int levels[] = {3491, 3965, 4408};
-        
 
 
 
