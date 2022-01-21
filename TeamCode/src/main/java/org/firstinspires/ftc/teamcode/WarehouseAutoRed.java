@@ -78,7 +78,7 @@ public class WarehouseAutoRed extends LinearOpMode {
         float startAngle = robot.imu.getAngularOrientation().firstAngle;
         mController.rotate(-0.2);
         mController.update();
-        while (opModeIsActive() && startAngle - robot.imu.getAngularOrientation().firstAngle > -329)
+        while (opModeIsActive() && startAngle - robot.imu.getAngularOrientation().firstAngle > -32)
             ;
         mController.stop();
         mController.update();
@@ -98,15 +98,25 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.stop();
         mController.update();
 
-
         robot.clawLeft.setPosition(0);
         robot.clawRight.setPosition(0);
         startTimer = System.currentTimeMillis();
         while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
 
-        robot.clawRight.setPosition(1);
-        robot.clawLeft.setPosition(-1);
+        if(duckPos == 0){
+            int targetPos = 4550;
+            robot.clawArm.setTargetPosition(targetPos);
+            telemetry.addData("Waiting", null);
+            while(Math.abs(robot.clawArm.getCurrentPosition() - targetPos) > 50);
+        }
 
+
+        if(duckPos != 0) {
+            robot.clawRight.setPosition(1);
+            robot.clawLeft.setPosition(-1);
+            startTimer = System.currentTimeMillis();
+            while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
+        }
 
         mController.joystickMovement(0, 0.7);
         mController.update();
@@ -116,12 +126,14 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.update();
 
 
+        robot.clawArm.setTargetPosition(400);
         mController.rotate(-0.2);
         mController.update();
         while (opModeIsActive() && startAngle - robot.imu.getAngularOrientation().firstAngle > -90)
             ;
         mController.stop();
         mController.update();
+        mController.openClaw();
 
 
         mController.joystickMovement(0, -0.6);
