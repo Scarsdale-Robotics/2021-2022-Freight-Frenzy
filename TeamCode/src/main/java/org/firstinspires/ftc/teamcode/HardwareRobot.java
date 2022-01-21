@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 
 public class HardwareRobot {
     //Motors
@@ -110,5 +113,21 @@ public class HardwareRobot {
         clawArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         clawArm.setTargetPosition(0);
         clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        clawArm.setPower(1);
+    }
+
+    public void closeCLaw(){
+        clawLeft.setPosition(1.0);
+        clawRight.setPosition(0.0);
+    }
+
+    public void openClaw(){
+        clawLeft.setPosition(0.7);
+        clawRight.setPosition(0.3);
+    }
+
+    public double getImuAngle() {
+        Orientation orientation = imu.getAngularOrientation();
+        return AngleUnit.DEGREES.fromUnit(orientation.angleUnit, orientation.firstAngle);
     }
 }

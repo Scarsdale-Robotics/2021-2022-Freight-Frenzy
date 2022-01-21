@@ -17,8 +17,7 @@ public class MovementController {
     private double leftBackPower = 0;
     private double rightFrontPower = 0;
     private double rightBackPower = 0;
-    private float startAngle;
-    public int levelArray[] = {0, 300, 3300};
+    private final float startAngle;
 
     public MovementController(HardwareRobot r, Telemetry t) {
         robot = r;
@@ -55,15 +54,6 @@ public class MovementController {
         rightFrontPower = power;
         rightBackPower = power;
     }
-
-
-    public void strafe(double power) {
-        leftFrontPower = power;
-        leftBackPower = -power;
-        rightFrontPower = -power;
-        rightBackPower = power;
-    }
-
 
     public void rotationalModifier(double rotationPower) {
         double x = -rotationPower * 0.85;
@@ -117,8 +107,7 @@ public class MovementController {
         telemetry.addData("Calculated Rotational Power", calculatedRotationalPower);
     }
 
-    //WARNING: Will complete function before it stops
-    public void brakeForAsync(int ms) {
+    public void brakeFor(int ms) {
         leftFrontPower *= -1;
         leftBackPower *= -1;
         rightFrontPower *= -1;
@@ -135,34 +124,11 @@ public class MovementController {
         }, ms);
     }
 
-    public void brake() {
-        brakeFor(50);
-    }
-
-    public void brakeFor(int ms) {
-        leftFrontPower *= -1;
-        leftBackPower *= -1;
-        rightFrontPower *= -1;
-        rightBackPower *= -1;
-
-        update();
-
-        try {
-            Thread.sleep(ms);
-        } catch (InterruptedException e) {
-            telemetry.log().add("Thread interrupted while braking! This should never happen.");
-        }
-
-        stop();
-        update();
-    }
-
     public void stop() {
         leftFrontPower = 0;
         leftBackPower = 0;
         rightFrontPower = 0;
         rightBackPower = 0;
-
     }
 
     public void update() {
@@ -184,17 +150,6 @@ public class MovementController {
         robot.rightBack.setPower(-rightBackPower);
     }
 
-    public void closeCLaw() {
-        robot.clawLeft.setPosition(1.0);
-        robot.clawRight.setPosition(0.0);
-    }
-
-    public void openClaw() {
-        robot.clawLeft.setPosition(0.7);
-        robot.clawRight.setPosition(0.3);
-    }
-
-
     //Blocking movement calls
     public void driveByEncoders(float power, int encoderSteps) {
         int[] startEncoders = {robot.leftBack.getCurrentPosition(), robot.rightBack.getCurrentPosition()};
@@ -202,19 +157,20 @@ public class MovementController {
 
         if (Math.signum(power) != Math.signum(encoderSteps)) power *= -1;
 
-        joystickMovement(0, power);
+        drive(power);
         update();
         while (Math.abs((deltaEncoders[0] + deltaEncoders[1]) / 2) < Math.abs(encoderSteps)) {
             deltaEncoders[0] = robot.leftBack.getCurrentPosition() - startEncoders[0];
             deltaEncoders[1] = robot.rightBack.getCurrentPosition() - startEncoders[1];
         }
-        joystickMovement(0, 0);
+        stop();
         update();
     }
 
     public void driveByDistance(double power, Rev2mDistanceSensor distanceSensor, double inches, boolean approaching) {
-        joystickMovement(0, power);
+        drive(power);
         update();
+
         double distance;
         if (approaching) { //drive until distance is smaller than inches
             distance = 9999999;
@@ -230,37 +186,30 @@ public class MovementController {
             }
         }
 
-        joystickMovement(0, 0);
-        update();
-    }
-    public void driveByTime(double power, long millis) { //Please never use
-        long startTime = System.currentTimeMillis();
-        joystickMovement(0, power);
-        update();
-        while(System.currentTimeMillis() - startTime < millis);
-        joystickMovement(0, 0);
+        stop();
         update();
     }
 
-    public void rotateToByIMU(double power, float angle){
+    public void driveByTime(double power, long millis) { //Please never use
+        long startTime = System.currentTimeMillis();
+        drive(power);
+        update();
+        while (System.currentTimeMillis() - startTime < millis) ;
+        stop();
+        update();
+    }
+
+    public void rotateToByIMU(double power, float angle) {
         rotate(power);
         update();
 
-        if(angle < robot.imu.getAngularOrientation().firstAngle - startAngle){
-            while (angle < robot.imu.getAngularOrientation().firstAngle - startAngle);
+        if (angle < robot.getImuAngle() - startAngle) {
+            while (angle < robot.getImuAngle() - startAngle) ;
+        } else if (angle > robot.getImuAngle() - startAngle) {
+            while (angle > robot.getImuAngle() - startAngle) ;
         }
-        else if(angle > robot.imu.getAngularOrientation().firstAngle - startAngle){
-            while (angle > robot.imu.getAngularOrientation().firstAngle - startAngle);
-        }
+
         rotate(0);
         update();
     }
-
-
-
-    public void lift(int level) {
-        robot.clawArm.setTargetPosition(levelArray[level]);
-    }
-
-
 }

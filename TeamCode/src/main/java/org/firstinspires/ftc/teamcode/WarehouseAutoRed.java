@@ -103,7 +103,7 @@ public class WarehouseAutoRed extends LinearOpMode {
         //rotate to face the warehouse and lower arm
         robot.clawArm.setTargetPosition(400);
         mController.rotateToByIMU(-0.2, -90);
-        mController.openClaw();
+        robot.openClaw();
 
 
         // Drive backwards because there is not enough room accellerate to full speed to get over barriers
