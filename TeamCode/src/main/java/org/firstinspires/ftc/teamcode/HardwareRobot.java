@@ -126,7 +126,7 @@ public class HardwareRobot {
         clawRight.setPosition(0.3);
     }
 
-    public double getImuAngle() {
+    public float getImuAngle() {
         Orientation orientation = imu.getAngularOrientation();
         return AngleUnit.DEGREES.fromUnit(orientation.angleUnit, orientation.firstAngle);
     }

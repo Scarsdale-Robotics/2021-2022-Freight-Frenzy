@@ -28,14 +28,14 @@ public class WarehouseAutoRed extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         duckDetector = new DuckCV(cameraMonitorViewId);
 
-        int votes[] = {0, 0, 0};
+        // detect ducks, taking the position with the most occurrences within 1.5 seconds
+        int[] votes = {0, 0, 0};
         int duckPos = -1;
         startTimer = System.currentTimeMillis();
         while (opModeIsActive() && (System.currentTimeMillis() - startTimer < 1500)) {
             duckPos = duckDetector.getDuckPosition();
-            telemetry.addData("pos: ", duckPos);
-//            telemetry.addData("i: ", i);
 
+            telemetry.addData("pos: ", duckPos);
             telemetry.addData("x: ", duckDetector.duckX);
             telemetry.addData("y: ", duckDetector.duckY);
             telemetry.update();
@@ -44,6 +44,7 @@ public class WarehouseAutoRed extends LinearOpMode {
                 votes[duckPos]++;
             }
         }
+
         int max = -1;
         duckPos = -1;
         for (int i = 0; i < 3; i++) {
@@ -52,7 +53,6 @@ public class WarehouseAutoRed extends LinearOpMode {
                 duckPos = i;
             }
         }
-
 
         //move back
         mController.driveByDistance(-0.5, robot.frontDist, 5, false);
@@ -83,7 +83,6 @@ public class WarehouseAutoRed extends LinearOpMode {
         startTimer = System.currentTimeMillis();
         while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
 
-
         //Bottom level uses ramp which requires placing on the ramp then lifting the arm up
         if(duckPos == 0){
             int targetPos = 4550;
@@ -104,7 +103,6 @@ public class WarehouseAutoRed extends LinearOpMode {
         robot.clawArm.setTargetPosition(400);
         mController.rotateToByIMU(-0.2, -90);
         robot.openClaw();
-
 
         // Drive backwards because there is not enough room accellerate to full speed to get over barriers
         mController.driveByTime(-0.6, 500);
