@@ -92,16 +92,16 @@ public class MovementController {
         // rotational power calculated from current heading (in degrees)
         double calculatedRotationalPower = rotation;
 
-        if(270 <= rotation && rotation < 360) {
+        if (270 <= rotation && rotation < 360) {
             calculatedRotationalPower = -(calculatedRotationalPower - 360) / 90.0;
-        } else if(0 < rotation && rotation <= 90) {
+        } else if (0 < rotation && rotation <= 90) {
             calculatedRotationalPower /= -90;
         }
 
         double COEFFICIENT = 10 / Math.PI;
         calculatedRotationalPower = -0.8 * Math.atan(COEFFICIENT * calculatedRotationalPower);
 
-        if(-1 > calculatedRotationalPower || calculatedRotationalPower > 1) {
+        if (-1 > calculatedRotationalPower || calculatedRotationalPower > 1) {
             calculatedRotationalPower = Math.signum(calculatedRotationalPower);
         }
 
@@ -161,7 +161,7 @@ public class MovementController {
     }
 
     public void update() {
-        if(limit <= 1) {
+        if (limit <= 1) {
             leftFrontPower *= limit;
             leftBackPower *= limit;
             rightFrontPower *= limit;
@@ -179,15 +179,36 @@ public class MovementController {
         robot.rightBack.setPower(-rightBackPower);
     }
 
-    public void closeCLaw(){
+    public void closeCLaw() {
         robot.clawLeft.setPosition(1.0);
         robot.clawRight.setPosition(0.0);
     }
-    public void openClaw(){
+
+    public void openClaw() {
         robot.clawLeft.setPosition(0.7);
         robot.clawRight.setPosition(0.3);
     }
-    public void lift(int level){
+
+
+    //Blocking movement calls
+    public void driveForwardEncoders(float power, int encoderSteps) {
+        int[] startEncoders = {robot.leftBack.getCurrentPosition(), robot.rightBack.getCurrentPosition()};
+        int[] deltaEncoders = {0, 0};
+
+        if (Math.signum(power) != Math.signum(encoderSteps)) power *= -1;
+
+        joystickMovement(0, power);
+        while (Math.abs((deltaEncoders[0] + deltaEncoders[1])/2) < Math.abs(encoderSteps)){
+            deltaEncoders[0] = robot.leftBack.getCurrentPosition() - startEncoders[0];
+            deltaEncoders[1] = robot.rightBack.getCurrentPosition() - startEncoders[1];
+        }
+        joystickMovement(0, 0);
+    }
+
+
+    public void lift(int level) {
         robot.clawArm.setTargetPosition(levelArray[level]);
     }
+
+
 }
