@@ -7,9 +7,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-/**
- *A class that allows you to control a robot through motors, servos, sensors, etc.
- */
 public class HardwareRobot {
 
     //Motors

@@ -37,6 +37,5 @@ public class WarehouseAutoRed extends LinearOpMode {
 
 
 
-
     }
 }
