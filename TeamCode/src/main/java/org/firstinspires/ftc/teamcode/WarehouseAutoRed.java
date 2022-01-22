@@ -55,25 +55,12 @@ public class WarehouseAutoRed extends LinearOpMode {
 
 
         //move back
-        mController.joystickMovement(0, -0.5);
-        mController.update();
-        while (opModeIsActive() && (robot.frontDist.getDistance(DistanceUnit.INCH) < 5 || robot.frontDist.getDistance(DistanceUnit.CM) > 999)) {
-            if (duckPos == -1) {
-                duckPos = duckDetector.getDuckPosition();
-            }
-        }
-
-        //telemetry.addData("position: ", duckPos);
-
-        //telemetry.update();
-
-        mController.stop();
-        mController.update();
+        mController.driveByDistance(-0.5, robot.frontDist, 5, false);
 
         robot.clawArm.setTargetPosition(1600);
 
 
-        while (opModeIsActive() && robot.clawArm.isBusy()) ;
+        while (opModeIsActive() && robot.clawArm.isBusy());
 
         float startAngle = robot.imu.getAngularOrientation().firstAngle;
         mController.rotate(-0.2);

@@ -17,11 +17,13 @@ public class MovementController {
     private double leftBackPower = 0;
     private double rightFrontPower = 0;
     private double rightBackPower = 0;
+//    private float startAngle;
     public int levelArray[] = {0, 300, 3300};
 
     public MovementController(HardwareRobot r, Telemetry t) {
         robot = r;
         telemetry = t;
+//        startAngle = robot.imu.getAngularOrientation().firstAngle;
     }
 
     public void setLimit(double limit) {
@@ -239,6 +241,22 @@ public class MovementController {
         joystickMovement(0, 0);
         update();
     }
+
+    public void turnToByIMU(double power, float angle){
+        rotate(power);
+        update();
+
+        if(angle < robot.imu.getAngularOrientation().firstAngle){
+            while (angle < robot.imu.getAngularOrientation().firstAngle);
+        }
+        else if(angle > robot.imu.getAngularOrientation().firstAngle){
+            while (angle > robot.imu.getAngularOrientation().firstAngle);
+        }
+        rotate(0);
+        update();
+    }
+
+
 
     public void lift(int level) {
         robot.clawArm.setTargetPosition(levelArray[level]);
