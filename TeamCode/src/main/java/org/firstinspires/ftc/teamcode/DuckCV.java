@@ -42,10 +42,10 @@ public class DuckCV {
     }
 
     int getDuckPosition() {
-        if(duckY <= 0 || duckX <= 0 || Math.abs(60-duckX) > 30) return -1;
+        if(duckY <= 0 || duckX <= 0 || Math.abs(100-duckX) > 30) return -1;
 
-        if(duckY < 86) return 2;
-        if(duckY < 176) return 1;
+        if(duckY < 112) return 2;
+        if(duckY < 180  ) return 1;
         return 0;
     }
 
