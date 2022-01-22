@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
 public class HardwareRobot {
+
     //Motors
     public DcMotor leftFront = null;
     public DcMotor leftBack = null;
@@ -40,10 +40,19 @@ public class HardwareRobot {
 
     HardwareMap hwMap;
 
+    /**
+     * Sets up a new robot with a given list of electronics that the robot can use
+     * @param map maps fields to electronics
+     */
+
     public HardwareRobot(HardwareMap map) {
         hwMap = map;
         init();
     }
+
+    /**
+     * Initializes HardwareRobot's fields to electronics
+     */
 
     private void init()
     {
