@@ -194,7 +194,7 @@ public class MovementController {
 
 
     //Blocking movement calls
-    public void driveEncoders(float power, int encoderSteps) {
+    public void driveByEncoders(float power, int encoderSteps) {
         int[] startEncoders = {robot.leftBack.getCurrentPosition(), robot.rightBack.getCurrentPosition()};
         int[] deltaEncoders = {0, 0};
 
@@ -210,7 +210,7 @@ public class MovementController {
         update();
     }
 
-    public void driveFurtherDistance(double power, Rev2mDistanceSensor distanceSensor, double inches, boolean approaching) {
+    public void driveByDistance(double power, Rev2mDistanceSensor distanceSensor, double inches, boolean approaching) {
         joystickMovement(0, power);
         update();
         double distance;
@@ -231,7 +231,14 @@ public class MovementController {
         joystickMovement(0, 0);
         update();
     }
-
+    public void driveByTime(double power, long millis) { //Please never use
+        long startTime = System.currentTimeMillis();
+        joystickMovement(0, power);
+        update();
+        while(System.currentTimeMillis() - startTime < millis);
+        joystickMovement(0, 0);
+        update();
+    }
 
     public void lift(int level) {
         robot.clawArm.setTargetPosition(levelArray[level]);
