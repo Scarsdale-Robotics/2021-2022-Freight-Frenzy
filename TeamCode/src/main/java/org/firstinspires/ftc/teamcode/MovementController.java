@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -11,6 +12,7 @@ import java.util.TimerTask;
 public class MovementController {
     private final HardwareRobot robot;
     private final Telemetry telemetry;
+    private LinearOpMode linearOpMode = null;
 
     private double limit = 1.0;
     private double leftFrontPower = 0;
@@ -23,6 +25,11 @@ public class MovementController {
         robot = r;
         telemetry = t;
         startAngle = robot.imu.getAngularOrientation().firstAngle;
+    }
+
+    public MovementController(HardwareRobot r, Telemetry t, LinearOpMode opMode) {
+        this(r, t);
+        linearOpMode = opMode;
     }
 
     public void rotate(double power) {
@@ -152,7 +159,7 @@ public class MovementController {
 
         drive(power);
         update();
-        while (Math.abs((deltaEncoders[0] + deltaEncoders[1]) / 2) < Math.abs(encoderSteps)) {
+        while (opModeIsActive() && Math.abs((deltaEncoders[0] + deltaEncoders[1]) / 2) < Math.abs(encoderSteps)) {
             deltaEncoders[0] = robot.leftBack.getCurrentPosition() - startEncoders[0];
             deltaEncoders[1] = robot.rightBack.getCurrentPosition() - startEncoders[1];
         }
@@ -167,14 +174,14 @@ public class MovementController {
         double distance;
         if (approaching) { //drive until distance is smaller than inches
             distance = 9999999;
-            while (distance > inches) {
+            while (opModeIsActive() && distance > inches) {
                 distance = distanceSensor.getDistance(DistanceUnit.INCH);
             }
 
         } else { //drive until distance is larger than inches
             distance = 0;
 
-            while (distance < inches) {
+            while (opModeIsActive() && distance < inches) {
                 distance = distanceSensor.getDistance(DistanceUnit.INCH);
             }
         }
@@ -187,7 +194,7 @@ public class MovementController {
         long startTime = System.currentTimeMillis();
         drive(power);
         update();
-        while (System.currentTimeMillis() - startTime < millis) ;
+        while (opModeIsActive() && System.currentTimeMillis() - startTime < millis) ;
         stop();
         update();
     }
@@ -197,12 +204,16 @@ public class MovementController {
         update();
 
         if (angle < robot.getImuAngle() - startAngle) {
-            while (angle < robot.getImuAngle() - startAngle) ;
+            while (opModeIsActive() && angle < robot.getImuAngle() - startAngle) ;
         } else if (angle > robot.getImuAngle() - startAngle) {
-            while (angle > robot.getImuAngle() - startAngle) ;
+            while (opModeIsActive() && angle > robot.getImuAngle() - startAngle) ;
         }
 
         rotate(0);
         update();
+    }
+
+    public boolean opModeIsActive() {
+       return linearOpMode == null || linearOpMode.opModeIsActive();
     }
 }

@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 @Autonomous(name = "WarehouseRed")
 public class WarehouseAutoRed extends LinearOpMode {
 
@@ -13,16 +11,14 @@ public class WarehouseAutoRed extends LinearOpMode {
     MovementController mController;
     HardwareRobot robot;
 
-    int elevatorLevel = 0;
     long startTimer;
 
     @Override
     public void runOpMode() {
 
-        //Init
-        robot = new HardwareRobot(hardwareMap);
-        mController = new MovementController(robot, telemetry);
-        robot.clawArm.setPower(1);
+        // Init
+        robot = new HardwareRobot(hardwareMap, this);
+        mController = new MovementController(robot, telemetry, this);
 
         waitForStart();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -57,54 +53,45 @@ public class WarehouseAutoRed extends LinearOpMode {
         //move back
         mController.driveByDistance(-0.5, robot.frontDist, 5, false);
 
-        robot.clawArm.setTargetPosition(1600);
-        while (opModeIsActive() && robot.clawArm.isBusy());
-
-        //turn to shipping hub
-        mController.rotateToByIMU(-0.2, -32);
-
-
-        // Set claw arm to correct position by ducklevel
-        int levels[] = {5000, 4200, 3500};
+        // Set claw arm to correct position by duckLevel
+        int[] levels = {5000, 4200, 3500};
         if (duckPos == -1) {
             duckPos = 2;
         }
         robot.clawArm.setTargetPosition(levels[duckPos]);
-        while (opModeIsActive() && robot.clawArm.isBusy()) ;
 
+        //turn to shipping hub
+        mController.rotateToByIMU(-0.2, -32);
+        robot.waitForArm();
 
         //drive to alliance shipping hub
         mController.driveByTime(-0.7, 1000);
 
-
         //open claw dropping the cube. Delay because of servo latency
         robot.clawLeft.setPosition(0);
         robot.clawRight.setPosition(0);
-        startTimer = System.currentTimeMillis();
-        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
+        robot.waitForClaw();
 
         //Bottom level uses ramp which requires placing on the ramp then lifting the arm up
-        if(duckPos == 0){
+        if (duckPos == 0) {
             int targetPos = 4550;
             robot.clawArm.setTargetPosition(targetPos);
-            while(Math.abs(robot.clawArm.getCurrentPosition() - targetPos) > 50);
-        }else { // Other levels need the claw recrossed
+            robot.waitForArm();
+        } else { // Other levels need the claw recrossed
             robot.clawRight.setPosition(1);
             robot.clawLeft.setPosition(-1);
-            startTimer = System.currentTimeMillis();
-            while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
+            robot.waitForClaw();
         }
 
         //drive away from alliance shipping hub
         mController.driveByTime(0.7, 900);
-
 
         //rotate to face the warehouse and lower arm
         robot.clawArm.setTargetPosition(400);
         mController.rotateToByIMU(-0.2, -90);
         robot.openClaw();
 
-        // Drive backwards because there is not enough room accellerate to full speed to get over barriers
+        // Drive backwards because there is not enough room accelerate to full speed to get over barriers
         mController.driveByTime(-0.6, 500);
         sleep(200);
 

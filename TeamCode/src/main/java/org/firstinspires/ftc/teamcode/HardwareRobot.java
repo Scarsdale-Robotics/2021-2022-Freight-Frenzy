@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -33,22 +34,27 @@ public class HardwareRobot {
     public Servo clawRight = null;
 
     HardwareMap hwMap;
+    LinearOpMode linearOpMode = null;
 
     public HardwareRobot(HardwareMap map) {
         hwMap = map;
         init();
     }
 
-    private void init()
-    {
+    public HardwareRobot(HardwareMap map, LinearOpMode opMode) {
+        this(map);
+        linearOpMode = opMode;
+    }
+
+    private void init() {
         imu = hwMap.get(BNO055IMU.class, "imu");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         imu.initialize(parameters);
@@ -116,12 +122,12 @@ public class HardwareRobot {
         clawArm.setPower(1);
     }
 
-    public void closeCLaw(){
+    public void closeCLaw() {
         clawLeft.setPosition(1.0);
         clawRight.setPosition(0.0);
     }
 
-    public void openClaw(){
+    public void openClaw() {
         clawLeft.setPosition(0.7);
         clawRight.setPosition(0.3);
     }
@@ -129,5 +135,18 @@ public class HardwareRobot {
     public float getImuAngle() {
         Orientation orientation = imu.getAngularOrientation();
         return AngleUnit.DEGREES.fromUnit(orientation.angleUnit, orientation.firstAngle);
+    }
+
+    public void waitForArm() {
+        while (opModeIsActive() && clawArm.isBusy()) ;
+    }
+
+    public void waitForClaw() {
+        long startTimer = System.currentTimeMillis();
+        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
+    }
+
+    public boolean opModeIsActive() {
+        return linearOpMode == null || linearOpMode.opModeIsActive();
     }
 }
