@@ -1,6 +1,9 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -191,18 +194,42 @@ public class MovementController {
 
 
     //Blocking movement calls
-    public void driveForwardEncoders(float power, int encoderSteps) {
+    public void driveEncoders(float power, int encoderSteps) {
         int[] startEncoders = {robot.leftBack.getCurrentPosition(), robot.rightBack.getCurrentPosition()};
         int[] deltaEncoders = {0, 0};
 
         if (Math.signum(power) != Math.signum(encoderSteps)) power *= -1;
 
         joystickMovement(0, power);
-        while (Math.abs((deltaEncoders[0] + deltaEncoders[1])/2) < Math.abs(encoderSteps)){
+        update();
+        while (Math.abs((deltaEncoders[0] + deltaEncoders[1]) / 2) < Math.abs(encoderSteps)) {
             deltaEncoders[0] = robot.leftBack.getCurrentPosition() - startEncoders[0];
             deltaEncoders[1] = robot.rightBack.getCurrentPosition() - startEncoders[1];
         }
         joystickMovement(0, 0);
+        update();
+    }
+
+    public void driveFurtherDistance(double power, Rev2mDistanceSensor distanceSensor, double inches, boolean approaching) {
+        joystickMovement(0, power);
+        update();
+        double distance;
+        if (approaching) { //drive until distance is smaller than inches
+            distance = 9999999;
+            while (distance > inches) {
+                distance = distanceSensor.getDistance(DistanceUnit.INCH);
+            }
+
+        } else { //drive until distance is larger than inches
+            distance = 0;
+
+            while (distance < inches) {
+                distance = distanceSensor.getDistance(DistanceUnit.INCH);
+            }
+        }
+
+        joystickMovement(0, 0);
+        update();
     }
 
 
