@@ -58,19 +58,13 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.driveByDistance(-0.5, robot.frontDist, 5, false);
 
         robot.clawArm.setTargetPosition(1600);
-
-
         while (opModeIsActive() && robot.clawArm.isBusy());
 
-        float startAngle = robot.imu.getAngularOrientation().firstAngle;
-        mController.rotate(-0.2);
-        mController.update();
-        while (opModeIsActive() && startAngle - robot.imu.getAngularOrientation().firstAngle > -32)
-            ;
-        mController.stop();
-        mController.update();
+        //turn to shipping hub
+        mController.rotateToByIMU(-0.2, -32);
 
 
+        // Set claw arm to correct position by ducklevel
         int levels[] = {5000, 4200, 3500};
         if (duckPos == -1) {
             duckPos = 2;
@@ -78,66 +72,45 @@ public class WarehouseAutoRed extends LinearOpMode {
         robot.clawArm.setTargetPosition(levels[duckPos]);
         while (opModeIsActive() && robot.clawArm.isBusy()) ;
 
-        mController.joystickMovement(0, -0.7);
-        mController.update();
-        startTimer = System.currentTimeMillis();
-        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 1000) ;
-        mController.stop();
-        mController.update();
 
+        //drive to alliance shipping hub
+        mController.driveByTime(-0.7, 1000);
+
+
+        //open claw dropping the cube. Delay because of servo latency
         robot.clawLeft.setPosition(0);
         robot.clawRight.setPosition(0);
         startTimer = System.currentTimeMillis();
         while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
 
+
+        //Bottom level uses ramp which requires placing on the ramp then lifting the arm up
         if(duckPos == 0){
             int targetPos = 4550;
             robot.clawArm.setTargetPosition(targetPos);
-            telemetry.addData("Waiting", null);
             while(Math.abs(robot.clawArm.getCurrentPosition() - targetPos) > 50);
-        }
-
-
-        if(duckPos != 0) {
+        }else { // Other levels need the claw recrossed
             robot.clawRight.setPosition(1);
             robot.clawLeft.setPosition(-1);
             startTimer = System.currentTimeMillis();
             while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
         }
 
-        mController.joystickMovement(0, 0.7);
-        mController.update();
-        startTimer = System.currentTimeMillis();
-        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 1000) ;
-        mController.stop();
-        mController.update();
+        //drive away from alliance shipping hub
+        mController.driveByTime(0.7, 900);
 
 
+        //rotate to face the warehouse and lower arm
         robot.clawArm.setTargetPosition(400);
-        mController.rotate(-0.2);
-        mController.update();
-        while (opModeIsActive() && startAngle - robot.imu.getAngularOrientation().firstAngle > -90)
-            ;
-        mController.stop();
-        mController.update();
+        mController.rotateToByIMU(-0.2, -90);
         mController.openClaw();
 
 
-        mController.joystickMovement(0, -0.6);
-        mController.update();
-        startTimer = System.currentTimeMillis();
-        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 500) ;
-        mController.stop();
-        mController.update();
-
+        // Drive backwards because there is not enough room accellerate to full speed to get over barriers
+        mController.driveByTime(-0.6, 500);
         sleep(200);
 
-        mController.joystickMovement(0, 1.0);
-        mController.update();
-        startTimer = System.currentTimeMillis();
-        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 1500) ;
-        mController.stop();
-        mController.update();
-
+        // Drive into the warehouse
+        mController.driveByTime(1, 1500);
     }
 }
