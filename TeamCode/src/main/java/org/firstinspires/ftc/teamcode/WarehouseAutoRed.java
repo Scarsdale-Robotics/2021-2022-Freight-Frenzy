@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Autonomous(name = "WarehouseRed")
 public class WarehouseAutoRed extends LinearOpMode {
 
@@ -10,6 +13,7 @@ public class WarehouseAutoRed extends LinearOpMode {
 
     MovementController mController;
     HardwareRobot robot;
+    InDepSystem inDep;
 
     long startTimer;
 
@@ -17,36 +21,35 @@ public class WarehouseAutoRed extends LinearOpMode {
     public void runOpMode() {
 
         // Init
-        robot = new HardwareRobot(hardwareMap, this);
-        mController = new MovementController(robot, telemetry, this);
+        robot = new HardwareRobot(hardwareMap);
+        mController = new MovementController(robot, this);
+        inDep = new InDepSystem(robot, this);
 
         waitForStart();
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         barcodeDetector = new BarcodeCV(cameraMonitorViewId);
 
         // detect ducks, taking the position with the most occurrences within 1.5 seconds
         int[] votes = {0, 0, 0};
-        int duckPos = -1;
         startTimer = System.currentTimeMillis();
         while (opModeIsActive() && (System.currentTimeMillis() - startTimer < 1500)) {
-            duckPos = barcodeDetector.getBarcodePosition();
+            int barcodePosition = barcodeDetector.getBarcodePosition();
 
-            telemetry.addData("pos: ", duckPos);
+            telemetry.addData("pos: ", barcodePosition);
             telemetry.addData("x: ", barcodeDetector.itemX);
             telemetry.addData("y: ", barcodeDetector.itemY);
             telemetry.update();
 
-            if (duckPos != -1) {
-                votes[duckPos]++;
+            if (barcodePosition != -1) {
+                votes[barcodePosition]++;
             }
         }
 
-        int max = -1;
-        duckPos = -1;
-        for (int i = 0; i < 3; i++) {
-            if (votes[i] >= max) {
-                max = (votes[i]);
-                duckPos = i;
+        int bestPos = 2;
+        for (int i = 0; i < votes.length; i++) {
+            if (votes[i] >= votes[bestPos]) {
+                bestPos = i;
             }
         }
 
@@ -54,42 +57,35 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.driveByDistance(-0.5, robot.frontDist, 5, false);
 
         // Set claw arm to correct position by duckLevel
-        int[] levels = {5000, 4200, 3500};
-        if (duckPos == -1) {
-            duckPos = 2;
-        }
-        robot.clawArm.setTargetPosition(levels[duckPos]);
+        inDep.liftToHubLevel(bestPos);
 
         //turn to shipping hub
         mController.rotateToByIMU(-0.2, -32);
-        robot.waitForArm();
+        inDep.waitForArm();
 
         //drive to alliance shipping hub
         mController.driveByTime(-0.7, 1000);
 
         //open claw dropping the cube. Delay because of servo latency
-        robot.clawLeft.setPosition(0);
-        robot.clawRight.setPosition(0);
-        robot.waitForClaw();
+        inDep.setClawPosition(0, 0);
+        inDep.waitForClaw();
 
         //Bottom level uses ramp which requires placing on the ramp then lifting the arm up
-        if (duckPos == 0) {
-            int targetPos = 4550;
-            robot.clawArm.setTargetPosition(targetPos);
-            robot.waitForArm();
+        if (bestPos == 0) {
+            inDep.setArmPosition(4550);
+            inDep.waitForArm();
         } else { // Other levels need the claw recrossed
-            robot.clawRight.setPosition(1);
-            robot.clawLeft.setPosition(-1);
-            robot.waitForClaw();
+            inDep.setClawPosition(-1, 1);
+            inDep.waitForClaw();
         }
 
         //drive away from alliance shipping hub
         mController.driveByTime(0.7, 900);
 
         //rotate to face the warehouse and lower arm
-        robot.clawArm.setTargetPosition(400);
+        inDep.liftToBarrier();
         mController.rotateToByIMU(-0.2, -90);
-        robot.openClaw();
+        inDep.openClaw();
 
         // Drive backwards because there is not enough room accelerate to full speed to get over barriers
         mController.driveByTime(-0.6, 500);

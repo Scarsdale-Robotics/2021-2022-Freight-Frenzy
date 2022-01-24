@@ -3,19 +3,18 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 @TeleOp(name = "TeleOpClaw")
 public class TeleOpClaw extends OpMode {
     MovementController mController;
     HardwareRobot robot;
+    InDepSystem inDep;
 
     @Override
     public void init() {
         robot = new HardwareRobot(hardwareMap);
-        mController = new MovementController(robot, telemetry);
+        mController = new MovementController(robot, this);
+        inDep = new InDepSystem(robot, this);
     }
 
     @Override
@@ -47,9 +46,9 @@ public class TeleOpClaw extends OpMode {
 
         //servos
         if (gamepad2.y) {
-            robot.openClaw();
+            inDep.openClaw();
         } else if (gamepad2.b) {
-            robot.closeCLaw();
+            inDep.closeClaw();
         }
 
         if (gamepad1.x) {

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -21,15 +22,15 @@ public class MovementController {
     private double rightBackPower = 0;
     private final float startAngle;
 
-    public MovementController(HardwareRobot r, Telemetry t) {
-        robot = r;
-        telemetry = t;
-        startAngle = robot.imu.getAngularOrientation().firstAngle;
-    }
+    public MovementController(HardwareRobot hwRobot, OpMode opMode) {
+        robot = hwRobot;
+        telemetry = opMode.telemetry;
 
-    public MovementController(HardwareRobot r, Telemetry t, LinearOpMode opMode) {
-        this(r, t);
-        linearOpMode = opMode;
+        if(opMode instanceof LinearOpMode) {
+            linearOpMode = (LinearOpMode) opMode;
+        }
+
+        startAngle = hwRobot.getImuAngle();
     }
 
     public void rotate(double power) {
