@@ -34,16 +34,10 @@ public class HardwareRobot {
     public Servo clawRight = null;
 
     HardwareMap hwMap;
-    LinearOpMode linearOpMode = null;
 
     public HardwareRobot(HardwareMap map) {
         hwMap = map;
         init();
-    }
-
-    public HardwareRobot(HardwareMap map, LinearOpMode opMode) {
-        this(map);
-        linearOpMode = opMode;
     }
 
     private void init() {
@@ -122,31 +116,8 @@ public class HardwareRobot {
         clawArm.setPower(1);
     }
 
-    public void closeCLaw() {
-        clawLeft.setPosition(1.0);
-        clawRight.setPosition(0.0);
-    }
-
-    public void openClaw() {
-        clawLeft.setPosition(0.7);
-        clawRight.setPosition(0.3);
-    }
-
     public float getImuAngle() {
         Orientation orientation = imu.getAngularOrientation();
         return AngleUnit.DEGREES.fromUnit(orientation.angleUnit, orientation.firstAngle);
-    }
-
-    public void waitForArm() {
-        while (opModeIsActive() && clawArm.isBusy()) ;
-    }
-
-    public void waitForClaw() {
-        long startTimer = System.currentTimeMillis();
-        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
-    }
-
-    public boolean opModeIsActive() {
-        return linearOpMode == null || linearOpMode.opModeIsActive();
     }
 }

@@ -17,7 +17,7 @@ public class BarcodeTester extends LinearOpMode {
     public void runOpMode() {
 
         robot = new HardwareRobot(hardwareMap);
-        mController = new MovementController(robot, telemetry);
+        mController = new MovementController(robot, this);
         robot.clawArm.setPower(1);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -28,15 +28,13 @@ public class BarcodeTester extends LinearOpMode {
         int duckPos = -1;
 
 
-        int votes[] = {0, 0, 0};
-
+        int[] votes = {0, 0, 0};
 
         long startTime = System.currentTimeMillis();
         while (opModeIsActive() && (System.currentTimeMillis() - startTime < 5000)) {
             duckPos = duckDetector.getBarcodePosition();
-            telemetry.addData("pos: ", duckPos);
-//            telemetry.addData("i: ", i);
 
+            telemetry.addData("pos: ", duckPos);
             telemetry.addData("x: ", duckDetector.itemX);
             telemetry.addData("y: ", duckDetector.itemY);
             telemetry.update();
@@ -59,21 +57,7 @@ public class BarcodeTester extends LinearOpMode {
 
         telemetry.addData("final: ", duckPos);
         telemetry.update();
+
         while (opModeIsActive()) ;
     }
 }
-
-    © 2022 GitHub, Inc.
-
-    Terms
-    Privacy
-    Security
-    Status
-    Docs
-    Contact GitHub
-    Pricing
-    API
-    Training
-    Blog
-    About
-
