@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 @Autonomous(name = "WarehouseRed")
 public class WarehouseAutoRed extends LinearOpMode {
 
-    DuckCV duckDetector;
+    BarcodeCV barcodeDetector;
 
     MovementController mController;
     HardwareRobot robot;
@@ -22,18 +22,18 @@ public class WarehouseAutoRed extends LinearOpMode {
 
         waitForStart();
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        duckDetector = new DuckCV(cameraMonitorViewId);
+        barcodeDetector = new BarcodeCV(cameraMonitorViewId);
 
         // detect ducks, taking the position with the most occurrences within 1.5 seconds
         int[] votes = {0, 0, 0};
         int duckPos = -1;
         startTimer = System.currentTimeMillis();
         while (opModeIsActive() && (System.currentTimeMillis() - startTimer < 1500)) {
-            duckPos = duckDetector.getDuckPosition();
+            duckPos = barcodeDetector.getBarcodePosition();
 
             telemetry.addData("pos: ", duckPos);
-            telemetry.addData("x: ", duckDetector.duckX);
-            telemetry.addData("y: ", duckDetector.duckY);
+            telemetry.addData("x: ", barcodeDetector.itemX);
+            telemetry.addData("y: ", barcodeDetector.itemY);
             telemetry.update();
 
             if (duckPos != -1) {

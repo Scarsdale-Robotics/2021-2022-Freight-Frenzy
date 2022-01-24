@@ -15,12 +15,12 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DuckCV {
+public class BarcodeCV {
     OpenCvInternalCamera phoneCam;
-    public float duckX = -1;
-    public float duckY = -1;
+    public float itemX = -1;
+    public float itemY = -1;
     public boolean camOpen = false;
-    public DuckCV(int cameraMonitorViewId) {
+    public BarcodeCV(int cameraMonitorViewId) {
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
         phoneCam.setViewportRenderingPolicy(OpenCvCamera.ViewportRenderingPolicy.OPTIMIZE_VIEW);
@@ -41,11 +41,11 @@ public class DuckCV {
 
     }
 
-    int getDuckPosition() {
-        if(duckY <= 0 || duckX <= 0 || Math.abs(100-duckX) > 30) return -1;
+    int getBarcodePosition() {
+        if(itemY <= 0 || itemX <= 0 || Math.abs(100- itemX) > 30) return -1;
 
-        if(duckY < 112) return 2;
-        if(duckY < 180  ) return 1;
+        if(itemY < 112) return 2;
+        if(itemY < 180  ) return 1;
         return 0;
     }
 
@@ -83,8 +83,8 @@ public class DuckCV {
             }
             Imgproc.rectangle(mask, rect, rectangle_color);
 
-            duckY = rect.x + rect.width / 2;
-            duckX = rect.y + rect.height / 2;
+            itemY = rect.x + rect.width / 2;
+            itemX = rect.y + rect.height / 2;
 
             return mask;
         }

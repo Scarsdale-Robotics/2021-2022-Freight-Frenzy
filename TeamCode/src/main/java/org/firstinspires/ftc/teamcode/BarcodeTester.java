@@ -1,20 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Gamepad;
-
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
-import java.util.Arrays;
 
 @Autonomous(name = "DuckTester")
-public class DuckTester extends LinearOpMode {
+public class BarcodeTester extends LinearOpMode {
 
-    DuckCV duckDetector;
+    BarcodeCV duckDetector;
 
     MovementController mController;
     HardwareRobot robot;
@@ -29,7 +21,7 @@ public class DuckTester extends LinearOpMode {
         robot.clawArm.setPower(1);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        duckDetector = new DuckCV(cameraMonitorViewId);
+        duckDetector = new BarcodeCV(cameraMonitorViewId);
 
         waitForStart();
 
@@ -41,12 +33,12 @@ public class DuckTester extends LinearOpMode {
 
         long startTime = System.currentTimeMillis();
         while (opModeIsActive() && (System.currentTimeMillis() - startTime < 5000)) {
-            duckPos = duckDetector.getDuckPosition();
+            duckPos = duckDetector.getBarcodePosition();
             telemetry.addData("pos: ", duckPos);
 //            telemetry.addData("i: ", i);
 
-            telemetry.addData("x: ", duckDetector.duckX);
-            telemetry.addData("y: ", duckDetector.duckY);
+            telemetry.addData("x: ", duckDetector.itemX);
+            telemetry.addData("y: ", duckDetector.itemY);
             telemetry.update();
 
             if (duckPos != -1) {
