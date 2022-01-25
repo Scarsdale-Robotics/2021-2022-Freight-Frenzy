@@ -152,17 +152,21 @@ public class MovementController {
     }
 
     //Blocking movement calls
-    public void driveByEncoders(float power, int encoderSteps) {
+    public void driveByEncoders(double power, int encoderSteps) {
         int[] startEncoders = {robot.leftBack.getCurrentPosition(), robot.rightBack.getCurrentPosition()};
         int[] deltaEncoders = {0, 0};
 
-        if (Math.signum(power) != Math.signum(encoderSteps)) power *= -1;
-
         drive(power);
         update();
-        while (opModeIsActive() && Math.abs((deltaEncoders[0] + deltaEncoders[1]) / 2) < Math.abs(encoderSteps)) {
+        while (opModeIsActive() && (Math.abs(deltaEncoders[0]) + Math.abs(deltaEncoders[1]) / 2) < encoderSteps) {
             deltaEncoders[0] = robot.leftBack.getCurrentPosition() - startEncoders[0];
             deltaEncoders[1] = robot.rightBack.getCurrentPosition() - startEncoders[1];
+            telemetry.addData("leftBack: ",deltaEncoders[0]);
+            telemetry.addData("rightBack: ", deltaEncoders[1]);
+//            telemetry.addData("rightFront: ", robot.rightFront.getCurrentPosition());
+//            telemetry.addData("leftFront: ", robot.leftFront.getCurrentPosition());
+
+            telemetry.update();
         }
         stop();
         update();

@@ -26,6 +26,7 @@ public class WarehouseAutoRed extends LinearOpMode {
         inDep = new InDepSystem(robot, this);
 
         waitForStart();
+        inDep.setClawPosition(0.2, 0.8);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         barcodeDetector = new BarcodeCV(cameraMonitorViewId);
@@ -60,17 +61,16 @@ public class WarehouseAutoRed extends LinearOpMode {
         inDep.liftToHubLevel(bestPos);
 
         //turn to shipping hub
-        mController.rotateToByIMU(-0.2, -32);
+        mController.rotateToByIMU(-0.2, 32);
         inDep.waitForArm();
 
         //drive to alliance shipping hub
-        mController.driveByTime(-0.7, 1000);
-
+        mController.driveByEncoders(-0.7, 100);
         //open claw dropping the cube. Delay because of servo latency
-        inDep.setClawPosition(0, 0);
+        inDep.setClawPosition(0, 1);
         inDep.waitForClaw();
 
-        //Bottom level uses ramp which requires placing on the ramp then lifting the arm up
+//        Bottom level uses ramp which requires placing on the ramp then lifting the arm up
         if (bestPos == 0) {
             inDep.setArmPosition(4550);
             inDep.waitForArm();
@@ -78,6 +78,7 @@ public class WarehouseAutoRed extends LinearOpMode {
             inDep.setClawPosition(-1, 1);
             inDep.waitForClaw();
         }
+
 
         //drive away from alliance shipping hub
         mController.driveByTime(0.7, 900);

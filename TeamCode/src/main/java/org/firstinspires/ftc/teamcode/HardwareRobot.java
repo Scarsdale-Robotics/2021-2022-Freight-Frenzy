@@ -80,6 +80,8 @@ public class HardwareRobot {
         leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
+
+
         duckSpinLeft.setDirection(DcMotor.Direction.REVERSE);
         duckSpinRight.setDirection(DcMotor.Direction.REVERSE);
 
@@ -90,6 +92,8 @@ public class HardwareRobot {
         leftBack.setPower(0);
         rightFront.setPower(0);
         rightBack.setPower(0);
+
+
         duckSpinLeft.setPower(0);
         duckSpinRight.setPower(0);
         clawArm.setPower(0);
@@ -98,6 +102,8 @@ public class HardwareRobot {
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+
         duckSpinLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         duckSpinRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         clawArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

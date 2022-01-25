@@ -49,7 +49,7 @@ public class InDepSystem {
             telemetry.update();
             return;
         }
-        robot.clawArm.setTargetPosition(level);
+        robot.clawArm.setTargetPosition(levels[level]);
     }
 
     public void liftToPickup() {
