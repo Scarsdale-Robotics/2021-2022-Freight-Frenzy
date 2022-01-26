@@ -33,18 +33,10 @@ public class MovementController {
         startAngle = hwRobot.getImuAngle();
     }
 
-    public void rotate(double power) {
-        leftFrontPower = power;
-        leftBackPower = power;
-        rightFrontPower = -power;
-        rightBackPower = -power;
-    }
-
     public void joystickMovement(double x, double y) {
         double maxValue = Math.abs(x) + Math.abs(y);
         maxValue = (maxValue < 1) ? 1 : maxValue;
 
-        x = -x;
 
         leftFrontPower = (y / maxValue) - (x / maxValue);
         leftBackPower = (y / maxValue) + (x / maxValue);
@@ -86,6 +78,15 @@ public class MovementController {
             leftFrontPower += leftBackPower - Math.signum(leftBackPower);
         }
     }
+
+    public void rotateInPlace(double power){
+        rightBackPower = -power;
+        rightFrontPower = -power;
+        leftBackPower = power;
+        leftFrontPower = power;
+    }
+
+
 
     public void rotationalForward(double power, double rotation) {
         // rotational power calculated from current heading (in degrees)
@@ -156,7 +157,7 @@ public class MovementController {
         int[] startEncoders = {robot.leftBack.getCurrentPosition(), robot.rightBack.getCurrentPosition()};
         int[] deltaEncoders = {0, 0};
 
-        drive(power);
+        joystickMovement(0, power);
         update();
         while (opModeIsActive() && (Math.abs(deltaEncoders[0]) + Math.abs(deltaEncoders[1]) / 2) < encoderSteps) {
             deltaEncoders[0] = robot.leftBack.getCurrentPosition() - startEncoders[0];
@@ -205,7 +206,8 @@ public class MovementController {
     }
 
     public void rotateToByIMU(double power, float angle) {
-        rotate(power);
+
+        rotateInPlace(power);
         update();
 
         if (angle < robot.getImuAngle() - startAngle) {
@@ -214,7 +216,7 @@ public class MovementController {
             while (opModeIsActive() && angle > robot.getImuAngle() - startAngle) ;
         }
 
-        rotate(0);
+        stop();
         update();
     }
 

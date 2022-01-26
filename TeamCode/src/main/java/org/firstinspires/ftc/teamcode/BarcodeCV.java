@@ -44,8 +44,8 @@ public class BarcodeCV {
     int getBarcodePosition() {
         if(itemY <= 0 || itemX <= 0 || Math.abs(100- itemX) > 30) return -1;
 
-        if(itemY < 112) return 2;
-        if(itemY < 180  ) return 1;
+        if(itemY < 74) return 2;
+        if(itemY < 145  ) return 1;
         return 0;
     }
 

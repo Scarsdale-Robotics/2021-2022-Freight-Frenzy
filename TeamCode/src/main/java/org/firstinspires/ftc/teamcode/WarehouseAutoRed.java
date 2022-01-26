@@ -26,7 +26,7 @@ public class WarehouseAutoRed extends LinearOpMode {
         inDep = new InDepSystem(robot, this);
 
         waitForStart();
-        inDep.setClawPosition(0.2, 0.8);
+        inDep.setClawPosition(0.2, 0.80);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         barcodeDetector = new BarcodeCV(cameraMonitorViewId);
@@ -56,7 +56,6 @@ public class WarehouseAutoRed extends LinearOpMode {
 
         //move back
         mController.driveByDistance(-0.5, robot.frontDist, 5, false);
-
         // Set claw arm to correct position by duckLevel
         inDep.liftToHubLevel(bestPos);
 
@@ -65,19 +64,14 @@ public class WarehouseAutoRed extends LinearOpMode {
         inDep.waitForArm();
 
         //drive to alliance shipping hub
-        mController.driveByEncoders(-0.7, 100);
+        mController.driveByEncoders(-0.7, 2300);
         //open claw dropping the cube. Delay because of servo latency
         inDep.setClawPosition(0, 1);
         inDep.waitForClaw();
 
-//        Bottom level uses ramp which requires placing on the ramp then lifting the arm up
-        if (bestPos == 0) {
-            inDep.setArmPosition(4550);
-            inDep.waitForArm();
-        } else { // Other levels need the claw recrossed
-            inDep.setClawPosition(-1, 1);
-            inDep.waitForClaw();
-        }
+
+        inDep.setClawPosition(0, 1);
+//        inDep.waitForClaw();
 
 
         //drive away from alliance shipping hub
@@ -85,7 +79,7 @@ public class WarehouseAutoRed extends LinearOpMode {
 
         //rotate to face the warehouse and lower arm
         inDep.liftToBarrier();
-        mController.rotateToByIMU(-0.2, -90);
+        mController.rotateToByIMU(-0.2, 90);
         inDep.openClaw();
 
         // Drive backwards because there is not enough room accelerate to full speed to get over barriers
@@ -93,6 +87,8 @@ public class WarehouseAutoRed extends LinearOpMode {
         sleep(200);
 
         // Drive into the warehouse
-        mController.driveByTime(1, 1500);
+        mController.driveByTime(1, 2000);
+        mController.rotateToByIMU(0.2, 90);
+
     }
 }
