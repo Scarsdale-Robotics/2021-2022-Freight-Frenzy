@@ -60,7 +60,7 @@ public class WarehouseAutoRed extends LinearOpMode {
         inDep.liftToHubLevel(bestPos);
 
         //turn to shipping hub
-        mController.rotateToByIMU(-0.2, 32);
+        mController.rotateToByIMU(0.2, 32);
         inDep.waitForArm();
 
         //drive to alliance shipping hub
@@ -79,7 +79,7 @@ public class WarehouseAutoRed extends LinearOpMode {
 
         //rotate to face the warehouse and lower arm
         inDep.liftToBarrier();
-        mController.rotateToByIMU(-0.2, 90);
+        mController.rotateToByIMU(0.2, 90);
         inDep.openClaw();
 
         // Drive backwards because there is not enough room accelerate to full speed to get over barriers

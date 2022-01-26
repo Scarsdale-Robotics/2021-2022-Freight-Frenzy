@@ -204,15 +204,18 @@ public class MovementController {
     }
 
     public void rotateToByIMU(double power, float angle) {
+        power = Math.abs(power);
 
+
+
+
+        if (angle < robot.getImuAngle()) {
+            power *= -1;
+        }
         rotateInPlace(power);
         update();
 
-        if (angle < robot.getImuAngle()) {
-            while (opModeIsActive() && angle < robot.getImuAngle()) ;
-        } else if (angle > robot.getImuAngle()) {
-            while (opModeIsActive() && angle > robot.getImuAngle()) ;
-        }
+        while(Math.abs(angle - robot.getImuAngle()) > 5);
 
         stop();
         update();
