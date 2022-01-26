@@ -28,6 +28,7 @@ public class HardwareRobot {
     public Rev2mDistanceSensor backDist = null;
 
     public BNO055IMU imu = null;
+    public final float startAngle;
 
     public DcMotor clawArm = null;
     public Servo clawLeft = null;
@@ -37,10 +38,7 @@ public class HardwareRobot {
 
     public HardwareRobot(HardwareMap map) {
         hwMap = map;
-        init();
-    }
 
-    private void init() {
         imu = hwMap.get(BNO055IMU.class, "imu");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -120,10 +118,12 @@ public class HardwareRobot {
         clawArm.setTargetPosition(0);
         clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         clawArm.setPower(1);
+
+        startAngle = imu.getAngularOrientation().firstAngle;
     }
 
     public float getImuAngle() {
         Orientation orientation = imu.getAngularOrientation();
-        return AngleUnit.DEGREES.fromUnit(orientation.angleUnit, orientation.firstAngle);
+        return AngleUnit.DEGREES.fromUnit(orientation.angleUnit, orientation.firstAngle) - startAngle;
     }
 }

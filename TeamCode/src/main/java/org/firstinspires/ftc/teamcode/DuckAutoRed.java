@@ -87,6 +87,10 @@ public class DuckAutoRed extends LinearOpMode {
         robot.duckSpinLeft.setPower(0.3);
         robot.duckSpinRight.setPower(-0.3);
         sleep(5000);
+        mController.driveByDistance(0.4, robot.backDist, 20, true);
+
+        mController.rotateToByIMU(0.2, 0);
+
 
     }
 }

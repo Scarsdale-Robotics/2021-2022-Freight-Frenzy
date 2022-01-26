@@ -20,7 +20,6 @@ public class MovementController {
     private double leftBackPower = 0;
     private double rightFrontPower = 0;
     private double rightBackPower = 0;
-    private final float startAngle;
 
     public MovementController(HardwareRobot hwRobot, OpMode opMode) {
         robot = hwRobot;
@@ -30,7 +29,6 @@ public class MovementController {
             linearOpMode = (LinearOpMode) opMode;
         }
 
-        startAngle = hwRobot.getImuAngle();
     }
 
     public void joystickMovement(double x, double y) {
@@ -210,10 +208,10 @@ public class MovementController {
         rotateInPlace(power);
         update();
 
-        if (angle < robot.getImuAngle() - startAngle) {
-            while (opModeIsActive() && angle < robot.getImuAngle() - startAngle) ;
-        } else if (angle > robot.getImuAngle() - startAngle) {
-            while (opModeIsActive() && angle > robot.getImuAngle() - startAngle) ;
+        if (angle < robot.getImuAngle()) {
+            while (opModeIsActive() && angle < robot.getImuAngle()) ;
+        } else if (angle > robot.getImuAngle()) {
+            while (opModeIsActive() && angle > robot.getImuAngle()) ;
         }
 
         stop();
