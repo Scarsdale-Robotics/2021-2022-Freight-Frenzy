@@ -66,7 +66,7 @@ public class InDepSystem {
 
     public void waitForClaw() {
         long startTimer = System.currentTimeMillis();
-        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 2000) ;
+        while (opModeIsActive() && System.currentTimeMillis() - startTimer < 1000) ;
     }
 
     public boolean opModeIsActive() {

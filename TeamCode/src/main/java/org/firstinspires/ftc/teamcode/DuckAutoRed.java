@@ -28,31 +28,12 @@ public class DuckAutoRed extends LinearOpMode {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         barcodeDetector = new BarcodeCV(cameraMonitorViewId);
 
-        // detect ducks, taking the position with the most occurrences within 1.5 seconds
-        int[] votes = {0, 0, 0};
-        startTimer = System.currentTimeMillis();
-        while (opModeIsActive() && (System.currentTimeMillis() - startTimer < 1500)) {
-            int barcodePosition = barcodeDetector.getBarcodePosition();
+        // detect team shipping element
+        int bestPos = barcodeDetector.getBarcodePosition();
 
-            telemetry.addData("pos: ", barcodePosition);
-            telemetry.addData("x: ", barcodeDetector.itemX);
-            telemetry.addData("y: ", barcodeDetector.itemY);
-            telemetry.update();
-
-            if (barcodePosition != -1) {
-                votes[barcodePosition]++;
-            }
-        }
-
-        int bestPos = 2;
-        for (int i = 0; i < votes.length; i++) {
-            if (votes[i] >= votes[bestPos]) {
-                bestPos = i;
-            }
-        }
-
-        //move back
+        //move back from wall towards barcode
         mController.driveByDistance(-0.5, robot.frontDist, 5, false);
+
         // Set claw arm to correct position by duckLevel
         inDep.liftToHubLevel(bestPos);
 
@@ -62,36 +43,46 @@ public class DuckAutoRed extends LinearOpMode {
 
         //drive to alliance shipping hub
         mController.driveByEncoders(-0.7, 3200);
+
         //open claw dropping the cube. Delay because of servo latency
         inDep.setClawPosition(0, 1);
         inDep.waitForClaw();
 
-
+        //Set claw position back
         inDep.setClawPosition(0, 1);
-//        inDep.waitForClaw();
 
 
         //drive away from alliance shipping hub
         mController.driveByTime(0.7, 900);
 
-        //rotate to face the warehouse and lower arm
+        //rotate towards the carousel wall
         inDep.liftToBarrier();
         mController.rotateToByIMU(-0.2, 90);
         inDep.openClaw();
 
-        // Drive backwards because there is not enough room accelerate to full speed to get over barriers
+        // Back up to the carousel wall
         mController.driveByDistance(-0.6, robot.backDist, 12, true);
 
+        // Rotate so back faces the carousel
         mController.rotateToByIMU(-0.2, 0);
+
+        //Drive to the carousel
         mController.driveByDistance(-0.6, robot.backDist, 15, true);
+
+        // SPIN THE DUCK
         robot.duckSpinLeft.setPower(0.3);
         robot.duckSpinRight.setPower(-0.3);
         sleep(5000);
+
+
+        //Drive forward away from the wall a bit
         mController.driveByDistance(0.4, robot.backDist, 20, false);
 
 
-
+        //Rerotate straight
         mController.rotateToByIMU(0.2, 0);
+
+        //Park
         mController.driveByDistance(0.4, robot.backDist, 25, false);
 
 

@@ -41,12 +41,32 @@ public class BarcodeCV {
 
     }
 
-    int getBarcodePosition() {
+    private int readPosition() {
         if(itemY <= 0 || itemX <= 0 || Math.abs(100- itemX) > 30) return -1;
 
         if(itemY < 74) return 2;
         if(itemY < 145  ) return 1;
         return 0;
+    }
+
+    public int getBarcodePosition(){
+        int[] votes = {0, 0, 0};
+        long startTimer = System.currentTimeMillis();
+        while ( (System.currentTimeMillis() - startTimer < 1000)) {
+            int barcodePosition = readPosition();
+
+            if (System.currentTimeMillis() - startTimer > 500 && barcodePosition != -1) {
+                votes[barcodePosition]++;
+            }
+        }
+
+        int bestPos = 2;
+        for (int i = 0; i < votes.length; i++) {
+            if (votes[i] >= votes[bestPos]) {
+                bestPos = i;
+            }
+        }
+        return bestPos;
     }
 
     class CVPipeline extends OpenCvPipeline {

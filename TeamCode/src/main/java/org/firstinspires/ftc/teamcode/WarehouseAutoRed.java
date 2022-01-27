@@ -26,45 +26,28 @@ public class WarehouseAutoRed extends LinearOpMode {
         inDep = new InDepSystem(robot, this);
 
         waitForStart();
+        //grip the cube
         inDep.setClawPosition(0.2, 0.80);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         barcodeDetector = new BarcodeCV(cameraMonitorViewId);
 
-        // detect ducks, taking the position with the most occurrences within 1.5 seconds
-        int[] votes = {0, 0, 0};
-        startTimer = System.currentTimeMillis();
-        while (opModeIsActive() && (System.currentTimeMillis() - startTimer < 1500)) {
-            int barcodePosition = barcodeDetector.getBarcodePosition();
+        // detect team shipping element
+        int bestPos = barcodeDetector.getBarcodePosition();
 
-            telemetry.addData("pos: ", barcodePosition);
-            telemetry.addData("x: ", barcodeDetector.itemX);
-            telemetry.addData("y: ", barcodeDetector.itemY);
-            telemetry.update();
-
-            if (barcodePosition != -1) {
-                votes[barcodePosition]++;
-            }
-        }
-
-        int bestPos = 2;
-        for (int i = 0; i < votes.length; i++) {
-            if (votes[i] >= votes[bestPos]) {
-                bestPos = i;
-            }
-        }
-
-        //move back
+        //move back from wall towards barcode
         mController.driveByDistance(-0.5, robot.frontDist, 5, false);
+
         // Set claw arm to correct position by duckLevel
         inDep.liftToHubLevel(bestPos);
 
-        //turn to shipping hub
+        //rotate towards shipping hub
         mController.rotateToByIMU(0.2, 32);
         inDep.waitForArm();
 
         //drive to alliance shipping hub
         mController.driveByEncoders(-0.7, 2300);
+
         //open claw dropping the cube. Delay because of servo latency
         inDep.setClawPosition(0, 1);
         inDep.waitForClaw();
