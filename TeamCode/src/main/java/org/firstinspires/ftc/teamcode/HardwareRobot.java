@@ -37,10 +37,6 @@ public class HardwareRobot {
 
     public HardwareRobot(HardwareMap map) {
         hwMap = map;
-        init();
-    }
-
-    private void init() {
         imu = hwMap.get(BNO055IMU.class, "imu");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
