@@ -133,7 +133,7 @@ public class MovementController {
     }
 
     public void update() {
-        if (limit <= 1) {
+        if (limit <= 1) { //this part not being used in freight
             leftFrontPower *= limit;
             leftBackPower *= limit;
             rightFrontPower *= limit;

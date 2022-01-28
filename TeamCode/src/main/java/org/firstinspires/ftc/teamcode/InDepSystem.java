@@ -11,7 +11,7 @@ public class InDepSystem {
     LinearOpMode linearOpMode;
     Telemetry telemetry;
 
-    int[] levels = {5000, 4200, 3500};
+    int[] levels = {5000, 4200, 3500}; //should be dictionary but whatever
     final int PICKUP_LEVEL = 0;
     final int BARRIER_LEVEL = 400;
 
@@ -35,6 +35,7 @@ public class InDepSystem {
     }
 
     public void setClawPosition(double left, double right) {
+        //maybe make private, then create invertClaw() function for the one time this is used in WarehouseAutoRed
         robot.clawLeft.setPosition(left);
         robot.clawRight.setPosition(right);
     }
