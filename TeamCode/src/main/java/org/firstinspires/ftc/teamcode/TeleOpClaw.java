@@ -52,8 +52,8 @@ public class TeleOpClaw extends OpMode {
         }
 
         if (gamepad1.x) {
-            robot.duckSpinLeft.setPower(-1);
-            robot.duckSpinRight.setPower(1);
+            robot.duckSpinLeft.setPower(-0.5);
+            robot.duckSpinRight.setPower(0.5);
         } else {
             robot.duckSpinLeft.setPower(0);
             robot.duckSpinRight.setPower(0);

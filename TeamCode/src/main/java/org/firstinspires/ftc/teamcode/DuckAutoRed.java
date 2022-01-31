@@ -38,7 +38,7 @@ public class DuckAutoRed extends LinearOpMode {
         inDep.liftToHubLevel(bestPos);
 
         //turn to shipping hub
-        mController.rotateToByIMU(0.2, -35);
+        mController.rotateToByIMU(0.2, -38);
         inDep.waitForArm();
 
         //drive to alliance shipping hub
@@ -64,10 +64,10 @@ public class DuckAutoRed extends LinearOpMode {
         mController.driveByDistance(-0.6, robot.backDist, 12, true);
 
         // Rotate so back faces the carousel
-        mController.rotateToByIMU(-0.2, 0);
+        mController.rotateToByIMU(0.2, 180);
 
         //Drive to the carousel
-        mController.driveByDistance(-0.6, robot.backDist, 15, true);
+        mController.driveByDistance(-0.6, robot.backDist, 14.5, true);
 
         // SPIN THE DUCK
         robot.duckSpinLeft.setPower(0.3);
@@ -80,10 +80,10 @@ public class DuckAutoRed extends LinearOpMode {
 
 
         //Rerotate straight
-        mController.rotateToByIMU(0.2, 0);
+//        mController.rotateToByIMU(0.2, 180);
 
         //Park
-        mController.driveByDistance(0.4, robot.backDist, 25, false);
+        mController.driveByDistance(0.4, robot.backDist, 27, false);
 
 
     }

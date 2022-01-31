@@ -30,8 +30,8 @@ public class InDepSystem {
     }
 
     public void openClaw() {
-        robot.clawLeft.setPosition(0.7);
-        robot.clawRight.setPosition(0.3);
+        robot.clawLeft.setPosition(0.725);
+        robot.clawRight.setPosition(0.225);
     }
 
     public void setClawPosition(double left, double right) {
