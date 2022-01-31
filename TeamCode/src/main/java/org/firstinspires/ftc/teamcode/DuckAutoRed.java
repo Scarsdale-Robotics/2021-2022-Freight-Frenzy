@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.vision.BarcodeCV;
-
 @Autonomous(name = "DuckAutoRed")
 public class DuckAutoRed extends LinearOpMode {
 
