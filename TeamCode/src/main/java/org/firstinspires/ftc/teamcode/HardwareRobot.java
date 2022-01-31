@@ -8,6 +8,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+
 
 public class HardwareRobot {
     //Motors
@@ -16,9 +19,8 @@ public class HardwareRobot {
     public DcMotor rightFront = null;
     public DcMotor rightBack = null;
 
-    public DcMotor clawArm = null;
-    public Servo leftClaw = null;
-    public Servo rightClaw = null;
+    public DcMotor duckSpinLeft = null;
+    public DcMotor duckSpinRight = null;
 
     public Rev2mDistanceSensor frontDist = null;
     public Rev2mDistanceSensor leftDist = null;
@@ -27,28 +29,26 @@ public class HardwareRobot {
 
     public RevColorSensorV3 color = null;
 
-
-
     public BNO055IMU imu = null;
+    public final float startAngle;
 
+    public DcMotor clawArm = null;
+    public Servo clawLeft = null;
+    public Servo clawRight = null;
 
     HardwareMap hwMap;
 
     public HardwareRobot(HardwareMap map) {
         hwMap = map;
-        init();
-    }
 
-    private void init()
-    {
         imu = hwMap.get(BNO055IMU.class, "imu");
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         imu.initialize(parameters);
@@ -59,14 +59,15 @@ public class HardwareRobot {
         rightFront = hwMap.dcMotor.get("rightFront");
         rightBack = hwMap.dcMotor.get("rightBack");
 
+        duckSpinRight = hwMap.dcMotor.get("duckSpinRight");
+        duckSpinLeft = hwMap.dcMotor.get("duckSpinLeft");
 
-        //claw arm
         clawArm = hwMap.dcMotor.get("clawArm");
-        leftClaw = hwMap.servo.get("leftClaw");
-        rightClaw = hwMap.servo.get("rightClaw");
 
-
-
+        clawLeft = hwMap.servo.get("clawLeft");
+        clawRight = hwMap.servo.get("clawRight");
+        clawLeft.scaleRange(0, 1);
+        clawRight.scaleRange(0, 1);
 
         // sensors
         frontDist = hwMap.get(Rev2mDistanceSensor.class, "frontDist");
@@ -82,21 +83,51 @@ public class HardwareRobot {
         rightFront.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.REVERSE);
 
+
+        duckSpinLeft.setDirection(DcMotor.Direction.REVERSE);
+        duckSpinRight.setDirection(DcMotor.Direction.REVERSE);
+
+        clawArm.setDirection(DcMotor.Direction.REVERSE);
+
         // set power for dc motors and position of servos
         leftFront.setPower(0);
         leftBack.setPower(0);
         rightFront.setPower(0);
         rightBack.setPower(0);
 
+
+        duckSpinLeft.setPower(0);
+        duckSpinRight.setPower(0);
+        clawArm.setPower(0);
+
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // set motor modes
-        leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        leftBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rightBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        duckSpinLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        duckSpinRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        clawArm.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        duckSpinLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        duckSpinRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        leftFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFront.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBack.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        clawArm.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        clawArm.setTargetPosition(0);
+        clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        clawArm.setPower(1);
+
+        startAngle = imu.getAngularOrientation().firstAngle;
+    }
+
+    public float getImuAngle() {
+        Orientation orientation = imu.getAngularOrientation();
+        return AngleUnit.DEGREES.fromUnit(orientation.angleUnit, orientation.firstAngle) - startAngle;
     }
 }
