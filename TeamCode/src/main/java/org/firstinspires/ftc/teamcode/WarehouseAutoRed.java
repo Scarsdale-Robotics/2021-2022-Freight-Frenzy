@@ -3,8 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.firstinspires.ftc.teamcode.vision.BarcodeCV;
 
 @Autonomous(name = "WarehouseRed")
 public class WarehouseAutoRed extends LinearOpMode {

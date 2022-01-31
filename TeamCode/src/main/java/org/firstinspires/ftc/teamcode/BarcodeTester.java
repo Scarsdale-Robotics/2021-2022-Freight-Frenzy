@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.vision.BarcodeCV;
+
 @Autonomous(name = "DuckTester")
 public class BarcodeTester extends LinearOpMode {
 
@@ -35,8 +37,8 @@ public class BarcodeTester extends LinearOpMode {
             duckPos = duckDetector.getBarcodePosition();
 
             telemetry.addData("pos: ", duckPos);
-            telemetry.addData("x: ", duckDetector.itemX);
-            telemetry.addData("y: ", duckDetector.itemY);
+            telemetry.addData("x: ", duckDetector.getXPosition());
+            telemetry.addData("y: ", duckDetector.getYPosition());
             telemetry.update();
 
             if (duckPos != -1) {
