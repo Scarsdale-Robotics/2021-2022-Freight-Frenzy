@@ -89,3 +89,5 @@ lint/tmp/
 # lint/reports/
 
 /.idea
+
+**/eocvsim_workspace.json
