@@ -1,4 +1,7 @@
-package org.firstinspires.ftc.teamcode.vision;
+package org.firstinspires.ftc.teamcode.vision.pipelines;
+
+import android.os.Build;
+import androidx.annotation.RequiresApi;
 
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -9,14 +12,18 @@ import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
 
-public class BarcodeCVPipeline extends OpenCvPipeline {
+@RequiresApi(api = Build.VERSION_CODES.N)
+public class AutoAlignPipeline extends OpenCvPipeline {
+
+    final Scalar upper_red = new Scalar(40, 100, 100);
+    final Scalar lower_red = new Scalar(0, 0, 0);
+
     public int itemX = -1;
     public int itemY = -1;
-
-    final Scalar lower_green = new Scalar(30, 175, 75);
-    final Scalar upper_green = new Scalar(100, 255, 200);
 
     final Scalar rectangle_color = new Scalar(0, 255, 0);
 
@@ -25,27 +32,23 @@ public class BarcodeCVPipeline extends OpenCvPipeline {
 
     Rect rect = new Rect();
 
+    Function<MatOfPoint, Rect> toRect = Imgproc::boundingRect;
+    Comparator<Rect> byArea = Comparator.comparing(Rect::area);
+
+    List<MatOfPoint> contours = new ArrayList<>();
+
     @Override
-    public Mat processFrame(Mat frame) {
-        Imgproc.cvtColor(frame, mask, Imgproc.COLOR_BGR2HSV);
+    public Mat processFrame(Mat input) {
+        Imgproc.cvtColor(input, mask, Imgproc.COLOR_BGR2HSV);
 
-        Core.inRange(mask, lower_green, upper_green, mask);
-
-        List<MatOfPoint> contours = new ArrayList<>();
+        Core.inRange(mask, lower_red, upper_red, mask);
 
         Imgproc.findContours(mask, contours, trashMat, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);
 
         Imgproc.cvtColor(mask, mask, Imgproc.COLOR_GRAY2BGR);
 
-        int size = 0;
-        for (MatOfPoint c : contours) {
-            Rect currentRect = Imgproc.boundingRect(c);
-            if (currentRect.width * currentRect.height > size) {
-                rect = currentRect;
-                size = currentRect.height * currentRect.width;
-            }
+        rect = contours.stream().map(toRect).max(byArea).orElse(rect);
 
-        }
         Imgproc.rectangle(mask, rect, rectangle_color);
 
         itemX = rect.x + rect.width / 2;

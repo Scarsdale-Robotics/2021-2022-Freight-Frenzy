@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.vision;
 
-import org.firstinspires.ftc.teamcode.vision.BarcodeCVPipeline;
+import org.firstinspires.ftc.teamcode.vision.pipelines.BarcodeCVPipeline;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
