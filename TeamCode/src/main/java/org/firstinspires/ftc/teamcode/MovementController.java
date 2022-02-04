@@ -212,10 +212,13 @@ public class MovementController {
         if (angle < robot.getImuAngle()) {
             power *= -1;
         }
-        rotateInPlace(power);
+        rotateInPlace(-power);
         update();
 
-        while(Math.abs(angle - robot.getImuAngle()) > 5);
+        while(opModeIsActive() && Math.abs(angle - robot.getImuAngle()) > 5) {
+            telemetry.addData("rot", robot.getImuAngle());
+            telemetry.update();
+        }
 
         stop();
         update();

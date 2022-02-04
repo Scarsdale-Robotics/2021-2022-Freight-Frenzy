@@ -25,10 +25,10 @@ public class SpinCollect extends LinearOpMode {
         inDep.waitForArm();
 
         //position: facing wall, claw down and open
-        //spin 90 degrees left while closing claw
-        mController.rotateToByIMU(-.5, -90);
-        mController.update();
+        //spin 90 degrees right while closing claw
+        mController.rotateToByIMU(.5, 180);
         inDep.closeClaw();
+        mController.update();
 
         // turn back
         mController.rotateToByIMU(.5, 90);
@@ -39,7 +39,7 @@ public class SpinCollect extends LinearOpMode {
         mController.update();
 
         //drop off the cargo
-        mController.rotateToByIMU(-.2, -45);
+        mController.rotateToByIMU(.2, -45);
         mController.update();
         inDep.openClaw();
         }
