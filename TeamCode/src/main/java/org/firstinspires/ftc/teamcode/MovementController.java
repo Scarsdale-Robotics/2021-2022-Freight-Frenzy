@@ -25,7 +25,7 @@ public class MovementController {
         robot = hwRobot;
         telemetry = opMode.telemetry;
 
-        if(opMode instanceof LinearOpMode) {
+        if (opMode instanceof LinearOpMode) {
             linearOpMode = (LinearOpMode) opMode;
         }
 
@@ -77,13 +77,12 @@ public class MovementController {
         }
     }
 
-    public void rotateInPlace(double power){
+    public void rotateInPlace(double power) {
         rightBackPower = -power;
         rightFrontPower = -power;
         leftBackPower = power;
         leftFrontPower = power;
     }
-
 
 
     public void rotationalForward(double power, double rotation) {
@@ -129,6 +128,7 @@ public class MovementController {
         leftBackPower = 0;
         rightFrontPower = 0;
         rightBackPower = 0;
+        update();
     }
 
     public void update() {
@@ -156,11 +156,12 @@ public class MovementController {
         int[] deltaEncoders = {0, 0};
 
         joystickMovement(0, power);
+        encoderSteps = Math.abs(encoderSteps);
         update();
         while (opModeIsActive() && (Math.abs(deltaEncoders[0]) + Math.abs(deltaEncoders[1]) / 2) < encoderSteps) {
             deltaEncoders[0] = robot.leftBack.getCurrentPosition() - startEncoders[0];
             deltaEncoders[1] = robot.rightBack.getCurrentPosition() - startEncoders[1];
-            telemetry.addData("leftBack: ",deltaEncoders[0]);
+            telemetry.addData("leftBack: ", deltaEncoders[0]);
             telemetry.addData("rightBack: ", deltaEncoders[1]);
 //            telemetry.addData("rightFront: ", robot.rightFront.getCurrentPosition());
 //            telemetry.addData("leftFront: ", robot.leftFront.getCurrentPosition());
@@ -179,7 +180,7 @@ public class MovementController {
         if (approaching) { //drive until distance is smaller than inches
             distance = 9999999;
             while (opModeIsActive() && distance > inches) {
-                distance = distanceSensor.getDistance(DistanceUnit.INCH);
+                distance = robot.getDistance(distanceSensor);
             }
 
         } else { //drive until distance is larger than inches
@@ -207,21 +208,24 @@ public class MovementController {
         power = Math.abs(power);
 
 
-
-
         if (angle < robot.getImuAngle()) {
             power *= -1;
         }
         rotateInPlace(-power);
         update();
 
-        while(opModeIsActive() && Math.abs(angle - robot.getImuAngle()) > 5);
+        while (opModeIsActive() && Math.abs(angle - robot.getImuAngle()) > 5) ;
 
         stop();
         update();
     }
 
+    public void sleep(long millis){
+        long start = System.currentTimeMillis();
+        while(opModeIsActive() && System.currentTimeMillis() - start < millis);
+    }
+
     public boolean opModeIsActive() {
-       return linearOpMode == null || linearOpMode.opModeIsActive();
+        return linearOpMode == null || linearOpMode.opModeIsActive();
     }
 }

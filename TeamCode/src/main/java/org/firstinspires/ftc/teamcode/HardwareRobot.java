@@ -9,6 +9,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 
@@ -119,11 +120,16 @@ public class HardwareRobot {
         clawArm.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         clawArm.setPower(1);
 
-        startAngle = imu.getAngularOrientation().firstAngle;
+        Orientation orientation = imu.getAngularOrientation();
+        startAngle = AngleUnit.DEGREES.fromUnit(orientation.angleUnit, orientation.firstAngle);
     }
 
     public float getImuAngle() {
         Orientation orientation = imu.getAngularOrientation();
         return AngleUnit.DEGREES.fromUnit(orientation.angleUnit, orientation.firstAngle) - startAngle;
+    }
+
+    public double getDistance(Rev2mDistanceSensor sensor){
+        return sensor.getDistance(DistanceUnit.INCH);
     }
 }
