@@ -84,7 +84,19 @@ public class MovementController {
         leftFrontPower = power;
     }
 
+    public void pivotOnRight(double power) {
+        leftFrontPower = power;
+        leftBackPower = power;
+        rightBackPower = 0;
+        rightFrontPower = 0;
+    }
 
+    public void pivotOnLeft(double power) {
+        leftFrontPower = 0;
+        leftBackPower = 0;
+        rightBackPower = power;
+        rightFrontPower = power;
+    }
 
     public void rotationalForward(double power, double rotation) {
         // rotational power calculated from current heading (in degrees)
