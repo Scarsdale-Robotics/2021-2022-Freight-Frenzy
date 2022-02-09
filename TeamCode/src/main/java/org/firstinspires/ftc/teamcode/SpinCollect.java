@@ -3,14 +3,16 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-
 @Autonomous(name="SpinCollect")
 public class SpinCollect extends LinearOpMode {
 
     MovementController mController;
     HardwareRobot robot;
     InDepSystem inDep;
+
+    public void setPowerForwardTurn(double drivePower, double turnPower){
+
+    }
 
     @Override
     public void runOpMode() {
@@ -24,23 +26,44 @@ public class SpinCollect extends LinearOpMode {
         inDep.liftToPickup();
         inDep.waitForArm();
 
-        //position: facing wall, claw down and open
-        //spin 90 degrees right while closing claw
-        mController.rotateToByIMU(.5, 180);
+
+
+
+        //spin 90 degrees right while going forward and closing claw
+        mController.driveByEncoders(0.7,1500);
         inDep.closeClaw();
-        mController.update();
+        double initAngle = robot.getImuAngle();
+        double curAngle = initAngle;
+        while (curAngle<initAngle+90){
+            mController.rotationalModifier((initAngle+90-curAngle)/90);
+            curAngle = robot.getImuAngle();
+            mController.update();
+        }
+
+        //wait until it's done
+
 
         // turn back
-        mController.rotateToByIMU(.5, 90);
+        mController.driveByEncoders(-0.7,1500);
+        initAngle = robot.getImuAngle();
+        curAngle = initAngle;
+        while(curAngle>initAngle-90){
+            mController.rotationalModifier(-(curAngle-initAngle+90)/90);
+            curAngle = robot.getImuAngle();
+            mController.update();
+
+        }
+
+
+
+
 
         //drive to the tower, arm up
         inDep.liftToHubLevel(0);
         mController.driveByTime(-1, 2000);
-        mController.update();
 
         //drop off the cargo
-        mController.rotateToByIMU(.2, -45);
-        mController.update();
+        mController.rotateToByIMU(.2, 120);
         inDep.openClaw();
         }
     }
