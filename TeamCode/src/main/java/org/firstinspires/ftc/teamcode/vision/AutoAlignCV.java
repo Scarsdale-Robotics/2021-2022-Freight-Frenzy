@@ -38,4 +38,8 @@ public class AutoAlignCV {
     public int getXPosition() {
         return pipeline.itemX;
     }
+
+    public int getItemWidth() {
+        return pipeline.itemWidth;
+    }
 }

@@ -14,8 +14,8 @@ import org.firstinspires.ftc.teamcode.vision.AutoAlignCV;
 public class AlignTester extends LinearOpMode {
     @Override
     public void runOpMode() {
-//        HardwareRobot robot = new HardwareRobot(hardwareMap);
-//        MovementController mController = new MovementController(robot, this);
+        HardwareRobot robot = new HardwareRobot(hardwareMap);
+        MovementController mController = new MovementController(robot, this);
 
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         AutoAlignCV detector = new AutoAlignCV(cameraMonitorViewId);
@@ -23,28 +23,26 @@ public class AlignTester extends LinearOpMode {
         waitForStart();
 
         while (opModeIsActive()) {
-            telemetry.addData("Position: ", detector.getXPosition());
+            int x = detector.getXPosition();
+            int width = detector.getItemWidth();
+            telemetry.addData("Position: ", x);
+            telemetry.addData("Area: ", width);
+
+            if (x < 140) {
+                mController.pivotOnLeft(-0.7);
+            } else if (x > 180) {
+                mController.pivotOnRight(-0.7);
+            } else {
+                if(width > 60) {
+                    mController.drive(-0.7);
+                } else {
+                    mController.stop();
+                }
+            }
+
+            mController.update();
+
             telemetry.update();
         }
-
-//        while (opModeIsActive()) {
-//            int x = detector.getXPosition();
-//            telemetry.addData("Position: ", x);
-//
-//
-//            if (x < 140) {
-//                mController.pivotOnLeft(-0.2);
-//                mController.update();
-//            } else if (x > 180) {
-//                mController.pivotOnRight(-0.2);
-//                mController.update();
-//            } else {
-//                mController.stop();
-//                mController.update();
-//                break;
-//            }
-//
-//            telemetry.update();
-//        }
     }
 }
