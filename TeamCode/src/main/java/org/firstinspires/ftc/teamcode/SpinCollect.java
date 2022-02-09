@@ -26,7 +26,7 @@ public class SpinCollect extends LinearOpMode {
         inDep.waitForArm();
 
         //spin 90 degrees right while going forward and closing claw
-        mController.driveByEncoders(0.7,1500);
+        mController.driveByEncoders(0.5,800);
         inDep.closeClaw();
         double initAngle = robot.getImuAngle();
         double curAngle = initAngle;
@@ -37,7 +37,7 @@ public class SpinCollect extends LinearOpMode {
         }
 
         // turn back
-        mController.driveByEncoders(-0.7,1500);
+        mController.driveByEncoders(-0.5,800);
         initAngle = robot.getImuAngle();
         curAngle = initAngle;
         while(curAngle>initAngle-90){
@@ -52,7 +52,7 @@ public class SpinCollect extends LinearOpMode {
         mController.driveByTime(-1, 2000);
 
         //drop off the cargo
-        mController.rotateToByIMU(.2, 120);
-        inDep.openClaw();
+        /*mController.rotateToByIMU(.2, -45);
+        inDep.openClaw();*/
     }
 }
