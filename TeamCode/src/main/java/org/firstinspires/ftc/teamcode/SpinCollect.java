@@ -16,7 +16,6 @@ public class SpinCollect extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
         robot = new HardwareRobot(hardwareMap);
         mController = new MovementController(robot, this);
         inDep = new InDepSystem(robot, this);
@@ -25,9 +24,6 @@ public class SpinCollect extends LinearOpMode {
         // Init the claw
         inDep.liftToPickup();
         inDep.waitForArm();
-
-
-
 
         //spin 90 degrees right while going forward and closing claw
         mController.driveByEncoders(0.7,1500);
@@ -40,9 +36,6 @@ public class SpinCollect extends LinearOpMode {
             mController.update();
         }
 
-        //wait until it's done
-
-
         // turn back
         mController.driveByEncoders(-0.7,1500);
         initAngle = robot.getImuAngle();
@@ -54,10 +47,6 @@ public class SpinCollect extends LinearOpMode {
 
         }
 
-
-
-
-
         //drive to the tower, arm up
         inDep.liftToHubLevel(0);
         mController.driveByTime(-1, 2000);
@@ -65,5 +54,5 @@ public class SpinCollect extends LinearOpMode {
         //drop off the cargo
         mController.rotateToByIMU(.2, 120);
         inDep.openClaw();
-        }
     }
+}
