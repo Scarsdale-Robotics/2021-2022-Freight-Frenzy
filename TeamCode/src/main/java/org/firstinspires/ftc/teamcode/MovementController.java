@@ -152,15 +152,15 @@ public class MovementController {
 
     //Blocking movement calls
     public void driveByEncoders(double power, int encoderSteps) {
-        int[] startEncoders = {robot.leftBack.getCurrentPosition(), robot.rightBack.getCurrentPosition()};
+        int[] startEncoders = {Math.abs(robot.leftBack.getCurrentPosition()), Math.abs(robot.rightBack.getCurrentPosition())};
         int[] deltaEncoders = {0, 0};
 
         joystickMovement(0, power);
         encoderSteps = Math.abs(encoderSteps);
         update();
-        while (opModeIsActive() && (Math.abs(deltaEncoders[0]) + Math.abs(deltaEncoders[1]) / 2) < encoderSteps) {
-            deltaEncoders[0] = robot.leftBack.getCurrentPosition() - startEncoders[0];
-            deltaEncoders[1] = robot.rightBack.getCurrentPosition() - startEncoders[1];
+        while (opModeIsActive() && (Math.abs(deltaEncoders[0]) + Math.abs(deltaEncoders[1])) / 2 < encoderSteps) {
+            deltaEncoders[0] = Math.abs(robot.leftBack.getCurrentPosition()) - startEncoders[0];
+            deltaEncoders[1] = Math.abs(robot.rightBack.getCurrentPosition()) - startEncoders[1];
             telemetry.addData("leftBack: ", deltaEncoders[0]);
             telemetry.addData("rightBack: ", deltaEncoders[1]);
 //            telemetry.addData("rightFront: ", robot.rightFront.getCurrentPosition());
@@ -204,28 +204,47 @@ public class MovementController {
         update();
     }
 
-    public void rotateToByIMU(double power, float angle) {
-        power = Math.abs(power);
+    public void rotateToByIMU(float angle) {
+        double power = 0;
 
 
-        if (angle < robot.getImuAngle()) {
-            power *= -1;
+        while (opModeIsActive() && Math.abs(angle - robot.getImuAngle()) > 2.5) {
+            float delta = Math.abs(angle - robot.getImuAngle());
+            power = Math.pow(delta, 3.0 / 4) / 85;
+
+            if (power < 0.2) power = 0.1;
+            else if (power > 1) power = 1;
+            if (angle > robot.getImuAngle()) {
+                power *= -1;
+            }
+            rotateInPlace(power);
+            update();
         }
-        rotateInPlace(-power);
-        update();
-
-        while (opModeIsActive() && Math.abs(angle - robot.getImuAngle()) > 5) ;
 
         stop();
         update();
     }
 
-    public void sleep(long millis){
+    public void sleep(long millis) {
         long start = System.currentTimeMillis();
-        while(opModeIsActive() && System.currentTimeMillis() - start < millis);
+        while (opModeIsActive() && System.currentTimeMillis() - start < millis) ;
     }
 
     public boolean opModeIsActive() {
         return linearOpMode == null || linearOpMode.opModeIsActive();
+    }
+
+    public void pivotOnRight(double power) {
+        leftFrontPower = power;
+        leftBackPower = power;
+        rightBackPower = 0;
+        rightFrontPower = 0;
+    }
+
+    public void pivotOnLeft(double power) {
+        leftFrontPower = 0;
+        leftBackPower = 0;
+        rightBackPower = power;
+        rightFrontPower = power;
     }
 }

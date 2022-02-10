@@ -34,7 +34,7 @@ public class AutoPickup extends LinearOpMode {
 
         double widthSensorToClaw = 3.317;
 
-        mController.rotateToByIMU(0.5, 90);
+        mController.rotateToByIMU( 90);
 
         inDep.setArmPosition(1000);
         inDep.openClaw();
@@ -55,7 +55,7 @@ public class AutoPickup extends LinearOpMode {
         inDep.setArmPosition(35);
         float angleOffset = 90 - (float)Math.toDegrees(Math.atan(dist/widthSensorToClaw));
 //        angleOffset = 0;
-        mController.rotateToByIMU(0.2, robot.getImuAngle()-angleOffset);
+        mController.rotateToByIMU( robot.getImuAngle()-angleOffset);
 
 
         mController.driveByEncoders(0.5, -500);
