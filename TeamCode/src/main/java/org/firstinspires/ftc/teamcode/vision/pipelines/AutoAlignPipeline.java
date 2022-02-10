@@ -13,11 +13,12 @@ import java.util.List;
 
 public class AutoAlignPipeline extends OpenCvPipeline {
 
-    final Scalar upper_red = new Scalar(140, 255, 255);
-    final Scalar lower_red = new Scalar(100, 150, 60);
+    final Scalar upper_red = new Scalar(140, 250, 255);
+    final Scalar lower_red = new Scalar(110, 150, 0);
 
     public int itemX = -1;
     public int itemY = -1;
+    public int itemWidth = -1;
 
     final Scalar rectangle_color = new Scalar(0, 255, 0);
 
@@ -45,6 +46,7 @@ public class AutoAlignPipeline extends OpenCvPipeline {
         }
         itemX = rect.x + rect.width / 2;
         itemY = rect.y + rect.height / 2;
+        itemWidth = rect.width;
 
         input.copyTo(mask, mask);
 

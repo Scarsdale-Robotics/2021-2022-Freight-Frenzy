@@ -10,7 +10,6 @@ import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvInternalCamera;
 
-@RequiresApi(api = Build.VERSION_CODES.N)
 public class AutoAlignCV {
     OpenCvInternalCamera phoneCam;
     AutoAlignPipeline pipeline;
@@ -38,5 +37,9 @@ public class AutoAlignCV {
 
     public int getXPosition() {
         return pipeline.itemX;
+    }
+
+    public int getItemWidth() {
+        return pipeline.itemWidth;
     }
 }
