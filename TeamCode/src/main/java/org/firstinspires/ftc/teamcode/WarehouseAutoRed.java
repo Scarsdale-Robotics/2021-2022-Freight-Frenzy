@@ -159,8 +159,9 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.driveByEncoders(0.5, 900);
 
         inDep.closeClaw();
-        mController.stop();
-        mController.sleep(1000);
+
+
+
     }
 
 
