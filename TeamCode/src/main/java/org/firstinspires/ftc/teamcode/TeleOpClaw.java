@@ -10,6 +10,9 @@ public class TeleOpClaw extends OpMode {
     HardwareRobot robot;
     InDepSystem inDep;
 
+    long carouselTimer;
+    boolean previousX = false;
+
     @Override
     public void init() {
         robot = new HardwareRobot(hardwareMap);
@@ -52,10 +55,27 @@ public class TeleOpClaw extends OpMode {
         }
 
         if (gamepad1.x) {
-            robot.duckSpinLeft.setPower(-0.5);
-            robot.duckSpinRight.setPower(0.5);
+            mController.drive(-0.1);
+
+            if (!previousX) {
+                previousX = true;
+                carouselTimer = System.currentTimeMillis();
+            }
+            if (System.currentTimeMillis() - carouselTimer < 850.0) {
+                robot.duckSpinLeft.setPower(-0.5);
+                robot.duckSpinRight.setPower(0.5);
+            }
+            if (System.currentTimeMillis() - carouselTimer < 2000) {
+                robot.duckSpinLeft.setPower(-1.0);
+                robot.duckSpinRight.setPower(1.0);
+            }else{
+                robot.duckSpinRight.setPower(0);
+                robot.duckSpinRight.setPower(0);
+
+            }
         } else {
             robot.duckSpinLeft.setPower(0);
+            previousX = false;
             robot.duckSpinRight.setPower(0);
         }
 

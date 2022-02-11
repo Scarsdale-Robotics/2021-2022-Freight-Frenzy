@@ -72,5 +72,14 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.driveByTime(1, 2000);
         mController.rotateToByIMU(0.2, 90);
 
+        //spin to separate a block
+        mController.driveByTime(1, 500);
+        mController.rotationalModifier(1);
+
+        //pick up block?
+        inDep.closeClaw();
+
+
+
     }
 }
