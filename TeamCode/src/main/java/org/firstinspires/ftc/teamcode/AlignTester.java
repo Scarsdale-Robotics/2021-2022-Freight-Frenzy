@@ -1,18 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.vision.AutoAlignCV;
-import org.firstinspires.ftc.teamcode.vision.BarcodeCV;
 
 @Autonomous(name = "AlignTester")
 public class AlignTester extends LinearOpMode {
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -20,9 +14,30 @@ public class AlignTester extends LinearOpMode {
 
         waitForStart();
 
-        while (opModeIsActive())
-        {
-            telemetry.addData("Position: ", detector.getXPosition());
+        HardwareRobot robot = new HardwareRobot(hardwareMap);
+        MovementController mController = new MovementController(robot, this);
+
+        while (opModeIsActive()) {
+            int x = detector.getXPosition();
+            int width = detector.getItemWidth();
+            telemetry.addData("Position: ", x);
+            telemetry.addData("Width: ", width);
+
+            if (x < 140) {
+                mController.pivotOnLeft(-0.7);
+            } else if (x > 180) {
+                mController.pivotOnRight(-0.7);
+            } else {
+                if(width > 30) {
+                    mController.drive(-0.7);
+                } else {
+                    mController.stop();
+                }
+            }
+
+            mController.update();
+
+            telemetry.update();
         }
     }
 }

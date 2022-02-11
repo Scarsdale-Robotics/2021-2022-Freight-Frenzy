@@ -22,7 +22,8 @@ public class TeleOpClaw extends OpMode {
 
     @Override
     public void loop() {
-
+        telemetry.addData("frontDist: ", robot.getDistance(robot.frontDist));
+        telemetry.update();
         double xMovement = 0;
         double yMovement = gamepad1.left_stick_y;
 
