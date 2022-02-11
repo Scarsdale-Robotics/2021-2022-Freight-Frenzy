@@ -152,20 +152,23 @@ public class MovementController {
 
     //Blocking movement calls
     public void driveByEncoders(double power, int encoderSteps) {
-        int[] startEncoders = {Math.abs(robot.leftBack.getCurrentPosition()), Math.abs(robot.rightBack.getCurrentPosition())};
-        int[] deltaEncoders = {0, 0};
+        int lStart = Math.abs(robot.leftBack.getCurrentPosition());
+        int rStart = Math.abs(robot.rightBack.getCurrentPosition());
 
+        int deltaRight = 0;
+        int deltaLeft = 0;
         joystickMovement(0, power);
         encoderSteps = Math.abs(encoderSteps);
         update();
-        while (opModeIsActive() && (Math.abs(deltaEncoders[0]) + Math.abs(deltaEncoders[1])) / 2 < encoderSteps) {
-            deltaEncoders[0] = Math.abs(robot.leftBack.getCurrentPosition()) - startEncoders[0];
-            deltaEncoders[1] = Math.abs(robot.rightBack.getCurrentPosition()) - startEncoders[1];
-            telemetry.addData("leftBack: ", deltaEncoders[0]);
-            telemetry.addData("rightBack: ", deltaEncoders[1]);
-//            telemetry.addData("rightFront: ", robot.rightFront.getCurrentPosition());
-//            telemetry.addData("leftFront: ", robot.leftFront.getCurrentPosition());
-
+        while (opModeIsActive() && (deltaLeft + deltaRight) / 2 < encoderSteps) {
+            deltaLeft = Math.abs(Math.abs(robot.leftBack.getCurrentPosition()) - lStart);
+            deltaRight = Math.abs(Math.abs(robot.rightBack.getCurrentPosition()) - rStart);
+            telemetry.addData("deltaLeft: ", deltaLeft);
+            telemetry.addData("deltaRight: ", deltaRight);
+            telemetry.addData("leftBack: ", robot.leftBack.getCurrentPosition());
+            telemetry.addData("rightBack: ", robot.rightBack.getCurrentPosition());
+            telemetry.addData("leftFront: ", robot.leftFront.getCurrentPosition());
+            telemetry.addData("rightFront: ", robot.rightFront.getCurrentPosition());
             telemetry.update();
         }
         stop();
@@ -212,7 +215,7 @@ public class MovementController {
             float delta = Math.abs(angle - robot.getImuAngle());
             power = Math.pow(delta, 3.0 / 4) / 85;
 
-            if (power < 0.2) power = 0.1;
+            if (power < 0.2) power = 0.15;
             else if (power > 1) power = 1;
             if (angle > robot.getImuAngle()) {
                 power *= -1;

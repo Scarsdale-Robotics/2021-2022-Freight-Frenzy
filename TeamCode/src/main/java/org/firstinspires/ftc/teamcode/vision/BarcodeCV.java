@@ -36,11 +36,11 @@ public class BarcodeCV {
         int itemX = pipeline.itemX;
         int itemY = pipeline.itemY;
 
-        if(itemX <= 0 || itemY <= 0 || Math.abs(100- itemY) > 30) return -1;
+        if(itemX <= 0 || itemY <= 0 || Math.abs(130- itemY) > 30) return -1;
 
-        if(itemX < 74) return 2;
-        if(itemX < 145  ) return 1;
-        return 0;
+        if(itemX > 180) return 0;
+        if(itemX > 100) return 1;
+        return 2;
     }
 
     public int getXPosition() {

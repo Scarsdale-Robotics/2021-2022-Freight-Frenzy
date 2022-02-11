@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.vision.AutoAlignCV;
 import org.firstinspires.ftc.teamcode.vision.BarcodeCV;
 
-@Autonomous(name = "WarehouseRed")
-public class WarehouseAutoRed extends LinearOpMode {
+@Autonomous(name = "WarehouseAutoRedPARKONLY")
+public class WarehouseAutoRed_PARK_ONLY extends LinearOpMode {
 
     BarcodeCV barcodeDetector;
 
@@ -68,7 +68,7 @@ public class WarehouseAutoRed extends LinearOpMode {
 
 
         //rotate to face the warehouse and lower arm
-        inDep.setArmPosition(4100);
+        inDep.setArmPosition(1000);
         mController.rotateToByIMU( 90);
         inDep.openClaw();
 
@@ -81,60 +81,26 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.stop();
 
 
-        autoPickup();
-
-        //move back
-        mController.driveByEncoders(-1, 800);
-        mController.rotateToByIMU( 90);
-
-        inDep.setArmPosition(1000);
-
-        // Drive Back over barrrier
-        mController.driveByTime(-1, 2200);
-
-
-        // Drive
-        inDep.setArmPosition(inDep.levels[2]);
-        mController.rotateToByIMU( 0);
-        autoAlign();
-
-        mController.driveByEncoders(0.4, 500);
-
-        //Open claw
-        inDep.waitForArm();
-        inDep.openClaw();
-        sleep(200);
-
-        mController.driveByEncoders(-0.4, 800);
-
-        mController.rotateToByIMU(180);
-
-        mController.driveByDistance(0.6, robot.backDist, 20, true);
-        mController.rotateToByIMU(90);
-
-        inDep.setArmPosition(3000);
-
-        mController.driveByTime(-1, 2000);
         while (opModeIsActive());
     }
 
     private void autoPickup() {
         double widthSensorToClaw = 3.317;
 
+        inDep.setArmPosition(1000);
         inDep.openClaw();
+        inDep.setClawPosition(0.7, 0.3);
 
-        mController.rotateToByIMU( 45);
+        mController.rotateToByIMU( 75);
 
         long bailTimer = System.currentTimeMillis();
         while (robot.getDistance(robot.frontDist) > 6 && opModeIsActive() && System.currentTimeMillis() - bailTimer < 2000) {
             mController.drive(0.5);
             long netTime = System.currentTimeMillis() - bailTimer;
             double rotPower = 0.15;
+            if (netTime % 3000 < 1.5) rotPower *= -1;
             mController.rotationalModifier(rotPower);
             mController.update();
-
-            telemetry.addData("FrontDist: ", robot.getDistance(robot.frontDist));
-            telemetry.update();
         }
 
         float dist = (float) robot.getDistance(robot.frontDist);
@@ -150,14 +116,21 @@ public class WarehouseAutoRed extends LinearOpMode {
         telemetry.addData("After: ", robot.getImuAngle());
         telemetry.update();
 
-        mController.driveByEncoders(-0.5, -800);
+        mController.driveByEncoders(-0.5, -500);
 
+        inDep.openClaw();
         inDep.setArmPosition(40);
         while (robot.clawArm.isBusy() && opModeIsActive());
-        inDep.setClawPosition(0.5, 0.5);
-        sleep(200);
-        mController.driveByEncoders(0.5, 900);
 
+        mController.driveByEncoders(0.5, (int) (56 * dist) + 500);
+
+
+        //spin and pick up
+
+//        mController.drive(0.3);
+//        mController.rotationalModifier(1);
+//        mController.update();
+//        mController.sleep(400);
         inDep.closeClaw();
         mController.stop();
         mController.sleep(1000);
