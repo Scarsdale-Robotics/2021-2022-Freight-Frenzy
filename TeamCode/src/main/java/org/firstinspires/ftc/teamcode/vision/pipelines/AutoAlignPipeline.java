@@ -13,8 +13,8 @@ import java.util.List;
 
 public class AutoAlignPipeline extends OpenCvPipeline {
 
-    final Scalar upper_red = new Scalar(140, 250, 255);
-    final Scalar lower_red = new Scalar(110, 150, 0);
+    Scalar upper;
+    Scalar lower;
 
     public int itemX = -1;
     public int itemY = -1;
@@ -24,14 +24,18 @@ public class AutoAlignPipeline extends OpenCvPipeline {
 
     Mat mask = new Mat();
     Mat trashMat = new Mat();
-
     Rect rect = new Rect();
+
+    public AutoAlignPipeline(Scalar lower, Scalar upper) {
+        this.lower = lower;
+        this.upper = upper;
+    }
 
     @Override
     public Mat processFrame(Mat input) {
         Imgproc.cvtColor(input, mask, Imgproc.COLOR_BGR2HSV);
 
-        Core.inRange(mask, lower_red, upper_red, mask);
+        Core.inRange(mask, lower, upper, mask);
 
         List<MatOfPoint> contours = new ArrayList<>();
         Imgproc.findContours(mask, contours, trashMat, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_SIMPLE);

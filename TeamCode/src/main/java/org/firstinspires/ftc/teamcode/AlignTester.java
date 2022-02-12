@@ -10,7 +10,7 @@ public class AlignTester extends LinearOpMode {
     @Override
     public void runOpMode() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
-        AutoAlignCV detector = new AutoAlignCV(cameraMonitorViewId);
+        AutoAlignCV detector = new AutoAlignCV(cameraMonitorViewId, true);
 
         waitForStart();
 

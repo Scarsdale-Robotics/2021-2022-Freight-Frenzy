@@ -4,7 +4,9 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import org.checkerframework.checker.units.qual.A;
 import org.firstinspires.ftc.teamcode.vision.pipelines.AutoAlignPipeline;
+import org.opencv.core.Scalar;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -14,8 +16,13 @@ public class AutoAlignCV {
     OpenCvInternalCamera phoneCam;
     AutoAlignPipeline pipeline;
 
-    public AutoAlignCV(int cameraMonitorViewId) {
-        pipeline = new AutoAlignPipeline();
+    public AutoAlignCV(int cameraMonitorViewId, boolean redAlliance) {
+        if(redAlliance) {
+            pipeline = new AutoAlignPipeline(new Scalar(110, 150, 0), new Scalar(140, 250, 255));
+        } else {
+            // replace with correct values
+            pipeline = new AutoAlignPipeline(new Scalar(110, 150, 0), new Scalar(140, 250, 255));
+        }
 
         phoneCam = OpenCvCameraFactory.getInstance().createInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
 
