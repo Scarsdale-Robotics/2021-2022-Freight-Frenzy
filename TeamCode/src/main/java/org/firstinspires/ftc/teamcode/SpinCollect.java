@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import static java.lang.Math.min;
 
 @Autonomous(name="SpinCollect")
 public class SpinCollect extends LinearOpMode {
@@ -9,10 +10,6 @@ public class SpinCollect extends LinearOpMode {
     MovementController mController;
     HardwareRobot robot;
     InDepSystem inDep;
-
-    public void setPowerForwardTurn(double drivePower, double turnPower){
-
-    }
 
     @Override
     public void runOpMode() {
@@ -26,22 +23,25 @@ public class SpinCollect extends LinearOpMode {
         inDep.waitForArm();
 
         //spin 90 degrees right while going forward and closing claw
-        mController.driveByEncoders(0.5,800);
+        mController.drive(0.25);
         inDep.closeClaw();
-        double initAngle = robot.getImuAngle();
-        double curAngle = initAngle;
-        while (curAngle<initAngle+90){
-            mController.rotationalModifier((initAngle+90-curAngle)/90);
+        double curAngle = robot.getImuAngle();
+        double goalAngle = curAngle + 80;
+        double rotateAngle;
+        while (curAngle<goalAngle){
+            rotateAngle = min(1.0,(goalAngle-curAngle)/80 + 0.2);
+            mController.rotationalModifier(rotateAngle*1);
             curAngle = robot.getImuAngle();
             mController.update();
         }
 
         // turn back
-        mController.driveByEncoders(-0.5,800);
-        initAngle = robot.getImuAngle();
-        curAngle = initAngle;
-        while(curAngle>initAngle-90){
-            mController.rotationalModifier(-(curAngle-initAngle+90)/90);
+        mController.drive(-0.25);
+        curAngle = robot.getImuAngle();
+        goalAngle = curAngle-80;
+        while(curAngle>goalAngle){
+            rotateAngle = min(1.0,(curAngle-goalAngle)/80 + 0.2);
+            mController.rotationalModifier(-rotateAngle*1);
             curAngle = robot.getImuAngle();
             mController.update();
 
