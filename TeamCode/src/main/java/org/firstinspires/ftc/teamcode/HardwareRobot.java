@@ -24,6 +24,8 @@ public class HardwareRobot {
     public DcMotor duckSpinRight = null;
 
     public Rev2mDistanceSensor frontDist = null;
+    public Rev2mDistanceSensor highFrontDist = null;
+
     public Rev2mDistanceSensor leftDist = null;
     public Rev2mDistanceSensor rightDist = null;
     public Rev2mDistanceSensor backDist = null;
@@ -70,6 +72,8 @@ public class HardwareRobot {
 
         // sensors
         frontDist = hwMap.get(Rev2mDistanceSensor.class, "frontDist");
+        highFrontDist = hwMap.get(Rev2mDistanceSensor.class, "highFrontDist");
+
         backDist = hwMap.get(Rev2mDistanceSensor.class, "backDist");
         leftDist = hwMap.get(Rev2mDistanceSensor.class, "leftDist");
         rightDist = hwMap.get(Rev2mDistanceSensor.class, "rightDist");

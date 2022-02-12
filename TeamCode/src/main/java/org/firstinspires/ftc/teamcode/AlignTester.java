@@ -24,15 +24,11 @@ public class AlignTester extends LinearOpMode {
             telemetry.addData("Width: ", width);
 
             if (x < 140) {
-                mController.pivotOnLeft(-0.7);
+                mController.rotateInPlace(0.7);
             } else if (x > 180) {
-                mController.pivotOnRight(-0.7);
+                mController.rotateInPlace(-0.7);
             } else {
-                if(width > 30) {
-                    mController.drive(-0.7);
-                } else {
-                    mController.stop();
-                }
+                mController.stop();
             }
 
             mController.update();

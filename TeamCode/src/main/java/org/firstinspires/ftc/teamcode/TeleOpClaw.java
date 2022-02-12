@@ -13,6 +13,8 @@ public class TeleOpClaw extends OpMode {
     long carouselTimer;
     boolean previousX = false;
 
+    float driveModifier = 1;
+    float rotModifier = 1;
     @Override
     public void init() {
         robot = new HardwareRobot(hardwareMap);
@@ -29,8 +31,8 @@ public class TeleOpClaw extends OpMode {
 
         double xLook = gamepad1.right_stick_x / 1.25;
 
-        mController.joystickMovement(xMovement, -yMovement);
-        mController.rotationalModifier(xLook);
+        mController.joystickMovement(xMovement * driveModifier, -yMovement * driveModifier);
+        mController.rotationalModifier(xLook * rotModifier);
 
         if (gamepad2.left_trigger > 0.01) {
             robot.clawArm.setTargetPosition(robot.clawArm.getCurrentPosition() - (int) (100 * gamepad2.left_trigger));
@@ -56,22 +58,22 @@ public class TeleOpClaw extends OpMode {
         }
 
         if (gamepad1.x) {
-            mController.drive(-0.1);
+            mController.drive(-0.025);
 
             if (!previousX) {
                 previousX = true;
                 carouselTimer = System.currentTimeMillis();
             }
-            if (System.currentTimeMillis() - carouselTimer < 850.0) {
-                robot.duckSpinLeft.setPower(-0.5);
-                robot.duckSpinRight.setPower(0.5);
+            if (System.currentTimeMillis() - carouselTimer < 1000.0) {
+                robot.duckSpinLeft.setPower(-0.7);
+                robot.duckSpinRight.setPower(0.7);
             }
-            if (System.currentTimeMillis() - carouselTimer < 2000) {
+            else if (System.currentTimeMillis() - carouselTimer < 2000) {
                 robot.duckSpinLeft.setPower(-1.0);
                 robot.duckSpinRight.setPower(1.0);
-            }else{
+            } else {
                 robot.duckSpinRight.setPower(0);
-                robot.duckSpinRight.setPower(0);
+                robot.duckSpinLeft.setPower(0);
 
             }
         } else {
@@ -88,6 +90,16 @@ public class TeleOpClaw extends OpMode {
             gamepad2.rumble(2000);
             gamepad1.rumble(2000);
         }
+
+        if (gamepad1.b) {
+            driveModifier = 0.3f;
+            rotModifier = 0.3f;
+        } else if (gamepad1.a) {
+            driveModifier = 1f;
+            rotModifier = 1f;
+
+        }
+
 
         mController.update();
     }

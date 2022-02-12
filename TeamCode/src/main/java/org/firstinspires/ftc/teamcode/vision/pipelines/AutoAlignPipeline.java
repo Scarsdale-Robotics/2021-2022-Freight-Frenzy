@@ -13,8 +13,8 @@ import java.util.List;
 
 public class AutoAlignPipeline extends OpenCvPipeline {
 
-    final Scalar upper_red = new Scalar(140, 250, 255);
-    final Scalar lower_red = new Scalar(110, 150, 0);
+    final Scalar upper_red = new Scalar(150, 255, 255);
+    final Scalar lower_red = new Scalar(115, 150, 50);
 
     public int itemX = -1;
     public int itemY = -1;

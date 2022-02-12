@@ -213,10 +213,10 @@ public class MovementController {
 
         while (opModeIsActive() && Math.abs(angle - robot.getImuAngle()) > 2.5) {
             float delta = Math.abs(angle - robot.getImuAngle());
-            power = Math.pow(delta, 3.0 / 4) / 85;
+            power = Math.pow(delta, 1.0 / 3) / 10;
 
-            if (power < 0.2) power = 0.15;
-            else if (power > 1) power = 1;
+            if (power < 0.2) power = 0.2;
+            else if (power > 0.4) power = 1;
             if (angle > robot.getImuAngle()) {
                 power *= -1;
             }

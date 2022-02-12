@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.vision.BarcodeCV;
 public class WarehouseAutoRed extends LinearOpMode {
 
     BarcodeCV barcodeDetector;
+    AutoAlignCV detector;
 
     MovementController mController;
     HardwareRobot robot;
@@ -32,7 +33,7 @@ public class WarehouseAutoRed extends LinearOpMode {
 
 
         //grip the cube
-        inDep.setClawPosition(0.2, 0.80);
+        inDep.setClawPosition(0.2, 0.8);
 
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         barcodeDetector = new BarcodeCV(cameraMonitorViewId);
@@ -43,12 +44,13 @@ public class WarehouseAutoRed extends LinearOpMode {
         //move back from wall towards barcode
         mController.driveByEncoders(-1, 400);
 //        mController.driveByDistance(-3.9, robot.frontDist, 5, false);
-
+        barcodeDetector.close();
+        detector = new AutoAlignCV(cameraMonitorViewId);
         // Set claw arm to correct position by duckLevel
         inDep.liftToHubLevel(bestPos);
 
         //rotate towards shipping hub
-        mController.rotateToByIMU( 32);
+        mController.rotateToByIMU(32);
         inDep.waitForArm();
 
         //drive to alliance shipping hub
@@ -56,36 +58,29 @@ public class WarehouseAutoRed extends LinearOpMode {
 
         //open claw dropping the cube. Delay because of servo latency
         inDep.setClawPosition(0, 1);
-        inDep.waitForClaw();
-
-
-        inDep.setClawPosition(0, 1);
-//        inDep.waitForClaw();
 
 
         //drive away from alliance shipping hub
-        mController.driveByEncoders(1, 800);
+        mController.rotateToByIMU(0);
+        mController.driveByEncoders(1, 700);
 
 
         //rotate to face the warehouse and lower arm
-        inDep.setArmPosition(4100);
-        mController.rotateToByIMU( 90);
-        inDep.openClaw();
-
-        // Drive backwards because there is not enough room accelerate to full speed to get over barriers
-        mController.driveByEncoders(-1, 500);
+        inDep.setArmPosition(2500);
+        mController.rotateToByIMU(90);
 
         // Drive into the warehouse
-        mController.driveByTime(1, 2000);
-//        mController.driveByEncoders(1, 2200);
-        mController.stop();
+        mController.drive(1);
+        mController.update();
+        while (mController.opModeIsActive() && robot.getDistance(robot.highFrontDist) < 24)
+            mController.stop();
 
 
         autoPickup();
 
         //move back
         mController.driveByEncoders(-1, 800);
-        mController.rotateToByIMU( 90);
+        mController.rotateToByIMU(90);
 
         inDep.setArmPosition(1000);
 
@@ -95,35 +90,33 @@ public class WarehouseAutoRed extends LinearOpMode {
 
         // Drive
         inDep.setArmPosition(inDep.levels[2]);
-        mController.rotateToByIMU( 0);
+        mController.rotateToByIMU(0);
         autoAlign();
 
-        mController.driveByEncoders(0.4, 500);
-
+        mController.driveByDistance(-0.4, robot.highFrontDist, 18, false);
         //Open claw
         inDep.waitForArm();
         inDep.openClaw();
         sleep(200);
 
-        mController.driveByEncoders(-0.4, 800);
-
-        mController.rotateToByIMU(180);
-
-        mController.driveByDistance(0.6, robot.backDist, 20, true);
+//        mController.driveByEncoders(0.4, 800);
+//
+//        mController.rotateToByIMU(180);
+//
+//        mController.driveByDistance(-0.6, robot.backDist, 20, true);
         mController.rotateToByIMU(90);
 
         inDep.setArmPosition(3000);
 
-        mController.driveByTime(-1, 2000);
-        while (opModeIsActive());
+        mController.driveByTime(1, 2100);
+        while (opModeIsActive()) ;
     }
 
     private void autoPickup() {
         double widthSensorToClaw = 3.317;
+        inDep.setClawPosition(0.75, 0.25);
 
-        inDep.openClaw();
-
-        mController.rotateToByIMU( 45);
+        mController.rotateToByIMU(75);
 
         long bailTimer = System.currentTimeMillis();
         while (robot.getDistance(robot.frontDist) > 6 && opModeIsActive() && System.currentTimeMillis() - bailTimer < 2000) {
@@ -146,29 +139,26 @@ public class WarehouseAutoRed extends LinearOpMode {
 
         telemetry.addData("Angle: ", robot.getImuAngle());
         telemetry.addData("Offset: ", angleOffset);
-        mController.rotateToByIMU( robot.getImuAngle() + angleOffset);
+        mController.rotateToByIMU(robot.getImuAngle() + angleOffset);
         telemetry.addData("After: ", robot.getImuAngle());
         telemetry.update();
 
         mController.driveByEncoders(-0.5, -800);
 
-        inDep.setArmPosition(40);
-        while (robot.clawArm.isBusy() && opModeIsActive());
-        inDep.setClawPosition(0.5, 0.5);
+        inDep.setArmPosition(150);
+        while (robot.clawArm.isBusy() && opModeIsActive()) ;
         sleep(200);
         mController.driveByEncoders(0.5, 900);
 
         inDep.closeClaw();
 
 
-
     }
 
 
-
-    private void autoAlign(){
-        AutoAlignCV detector = new AutoAlignCV(cameraMonitorViewId);
+    private void autoAlign() {
         long start = System.currentTimeMillis();
+
         while (opModeIsActive() && System.currentTimeMillis() - start < 3000) {
             int x = detector.getXPosition();
             int width = detector.getItemWidth();
@@ -176,15 +166,14 @@ public class WarehouseAutoRed extends LinearOpMode {
             telemetry.addData("Width: ", width);
 
             if (x < 140) {
-                mController.pivotOnLeft(-0.7);
+                mController.rotateInPlace(0.7);
             } else if (x > 180) {
-                mController.pivotOnRight(-0.7);
+                mController.rotateInPlace(-0.7);
             } else {
                 return;
             }
 
             mController.update();
-
             telemetry.update();
         }
     }
