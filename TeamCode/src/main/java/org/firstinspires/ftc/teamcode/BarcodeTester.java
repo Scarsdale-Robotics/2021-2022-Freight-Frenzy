@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.vision.BarcodeCV;
 
-@Autonomous(name = "DuckTester")
+@Autonomous(name = "BarcodeCalibration")
 public class BarcodeTester extends LinearOpMode {
 
     BarcodeCV duckDetector;
@@ -13,7 +13,6 @@ public class BarcodeTester extends LinearOpMode {
     MovementController mController;
     HardwareRobot robot;
 
-    int elevatorLevel = 0;
 
     @Override
     public void runOpMode() {

@@ -74,13 +74,16 @@ public class DuckAutoRed extends LinearOpMode {
         // SPIN THE DUCK
         robot.duckSpinLeft.setPower(0.3);
         robot.duckSpinRight.setPower(-0.3);
+        mController.drive(-0.025);
         sleep(5000);
 
 
         //Drive forward away from the wall a bit
         mController.driveByDistance(0.4, robot.backDist, 20, false);
 
-        //Park
-        mController.driveByDistance(0.4, robot.backDist, 25.5, false);
+        //Park\
+        inDep.setArmPosition(2900);
+        mController.driveByDistance(0.4, robot.backDist, 26, false);
+        while (opModeIsActive());
     }
 }

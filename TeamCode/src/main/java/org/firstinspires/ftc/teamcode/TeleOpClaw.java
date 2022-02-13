@@ -49,7 +49,7 @@ public class TeleOpClaw extends OpMode {
             robot.clawArm.setTargetPosition(robot.clawArm.getCurrentPosition() + (int) (100 * gamepad2.right_trigger));
         }
         if (gamepad2.dpad_left) {
-            robot.clawArm.setTargetPosition(3600);
+            robot.clawArm.setTargetPosition(350);
         } else if (gamepad2.dpad_up) {
             robot.clawArm.setTargetPosition(1625);
         } else if (gamepad2.dpad_right) {

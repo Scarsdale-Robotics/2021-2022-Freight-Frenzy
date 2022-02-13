@@ -94,7 +94,7 @@ public class WarehouseAutoBlue extends LinearOpMode {
         // Drive
         inDep.setArmPosition(inDep.levels[2]);
         mController.rotateToByIMU(0);
-        autoAlign();
+
 
         mController.driveByDistance(-0.4, robot.highFrontDist, 18, false);
         //Open claw
@@ -115,13 +115,13 @@ public class WarehouseAutoBlue extends LinearOpMode {
         double widthSensorToClaw = 3.317;
         inDep.setClawPosition(0.75, 0.25);
 
-        mController.rotateToByIMU(67);
+        mController.rotateToByIMU(-67);
 
         long bailTimer = System.currentTimeMillis();
         while (robot.getDistance(robot.frontDist) > 6 && opModeIsActive() && System.currentTimeMillis() - bailTimer < 2000) {
             mController.drive(0.5);
             long netTime = System.currentTimeMillis() - bailTimer;
-            double rotPower = 0.15;
+            double rotPower = -0.15;
             mController.rotationalModifier(rotPower);
             mController.update();
 

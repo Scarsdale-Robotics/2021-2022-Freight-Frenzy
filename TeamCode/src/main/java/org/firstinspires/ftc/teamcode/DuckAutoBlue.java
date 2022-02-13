@@ -63,7 +63,7 @@ public class DuckAutoBlue extends LinearOpMode {
         inDep.openClaw();
 
         // Back up to the carousel wall
-        mController.driveByDistance(-0.6, robot.backDist, 12, true);
+        mController.driveByDistance(-0.6, robot.backDist, 11.5, true);
 
         // Rotate so back faces the carousel
         mController.rotateToByIMU( -180);
@@ -74,6 +74,8 @@ public class DuckAutoBlue extends LinearOpMode {
         // SPIN THE DUCK
         robot.duckSpinLeft.setPower(0.3);
         robot.duckSpinRight.setPower(-0.3);
+        mController.drive(-0.025);
+
         sleep(5000);
 
 
@@ -81,6 +83,8 @@ public class DuckAutoBlue extends LinearOpMode {
         mController.driveByDistance(0.4, robot.backDist, 20, false);
 
         //Park
-        mController.driveByDistance(0.4, robot.backDist, 25.5, false);
+        inDep.setArmPosition(2900);
+        mController.driveByDistance(0.4, robot.backDist, 26, false);
+        while(opModeIsActive());
     }
 }
