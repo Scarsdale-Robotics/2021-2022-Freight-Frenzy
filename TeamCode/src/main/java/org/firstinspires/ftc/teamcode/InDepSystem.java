@@ -11,7 +11,7 @@ public class InDepSystem {
     LinearOpMode linearOpMode;
     Telemetry telemetry;
 
-    int[] levels = {4600, 4100, 3500};
+    int[] levels = {4700, 4100, 3500};
     final int PICKUP_LEVEL = 0;
     final int BARRIER_LEVEL = 400;
 

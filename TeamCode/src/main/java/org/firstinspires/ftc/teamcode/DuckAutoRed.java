@@ -34,17 +34,17 @@ public class DuckAutoRed extends LinearOpMode {
         int bestPos = barcodeDetector.getBarcodePosition();
 
         //move back from wall towards barcode
-        mController.driveByDistance(-0.5, robot.frontDist, 5, false);
+        mController.driveByDistance(-0.5, robot.frontDist, 10, false);
 
         // Set claw arm to correct position by duckLevel
         inDep.liftToHubLevel(bestPos);
 
         //turn to shipping hub
-        mController.rotateToByIMU(-38);
+        mController.rotateToByIMU(-43);
         inDep.waitForArm();
 
         //drive to alliance shipping hub
-        mController.driveByEncoders(-0.7, 3200);
+        mController.driveByEncoders(-0.7, 1600);
 
         //open claw dropping the cube. Delay because of servo latency
         inDep.setClawPosition(0, 1);
@@ -80,13 +80,7 @@ public class DuckAutoRed extends LinearOpMode {
         //Drive forward away from the wall a bit
         mController.driveByDistance(0.4, robot.backDist, 20, false);
 
-
-        //Rerotate straight
-//        mController.rotateToByIMU(0.2, 180);
-
         //Park
-        mController.driveByDistance(0.4, robot.backDist, 27, false);
-
-
+        mController.driveByDistance(0.4, robot.backDist, 25.5, false);
     }
 }

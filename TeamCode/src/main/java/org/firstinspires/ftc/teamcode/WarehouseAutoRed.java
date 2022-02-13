@@ -29,11 +29,12 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController = new MovementController(robot, this);
         inDep = new InDepSystem(robot, this);
 
+        inDep.setClawPosition(0.2, 0.8);
+
         waitForStart();
 
 
         //grip the cube
-        inDep.setClawPosition(0.2, 0.8);
 
         cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         barcodeDetector = new BarcodeCV(cameraMonitorViewId);
@@ -50,11 +51,11 @@ public class WarehouseAutoRed extends LinearOpMode {
         inDep.liftToHubLevel(bestPos);
 
         //rotate towards shipping hub
-        mController.rotateToByIMU(32);
+        mController.rotateToByIMU(35);
         inDep.waitForArm();
 
         //drive to alliance shipping hub
-        mController.driveByEncoders(-1, 1200);
+        mController.driveByEncoders(-1, 1100);
 
         //open claw dropping the cube. Delay because of servo latency
         inDep.setClawPosition(0, 1);
@@ -70,10 +71,14 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.rotateToByIMU(90);
 
         // Drive into the warehouse
-        mController.drive(1);
-        mController.update();
-        while (mController.opModeIsActive() && robot.getDistance(robot.highFrontDist) < 24)
-            mController.stop();
+//        mController.drive(1);
+//        mController.update();
+//        while (mController.opModeIsActive() && (robot.getDistance(robot.highFrontDist) > 24 || robot.getDistance(robot.highFrontDist) < 5)){
+//            telemetry.addData("Dist: ", robot.getDistance(robot.highFrontDist));
+//            telemetry.update();
+//        }
+//        mController.stop();
+        mController.driveByTime(1, 2100);
 
 
         autoPickup();
@@ -99,16 +104,12 @@ public class WarehouseAutoRed extends LinearOpMode {
         inDep.openClaw();
         sleep(200);
 
-//        mController.driveByEncoders(0.4, 800);
-//
-//        mController.rotateToByIMU(180);
-//
-//        mController.driveByDistance(-0.6, robot.backDist, 20, true);
-        mController.rotateToByIMU(90);
+
+        mController.rotateToByIMU(80);
 
         inDep.setArmPosition(3000);
 
-        mController.driveByTime(1, 2100);
+        mController.driveByTime(1, 2200);
         while (opModeIsActive()) ;
     }
 
@@ -116,7 +117,7 @@ public class WarehouseAutoRed extends LinearOpMode {
         double widthSensorToClaw = 3.317;
         inDep.setClawPosition(0.75, 0.25);
 
-        mController.rotateToByIMU(75);
+        mController.rotateToByIMU(67);
 
         long bailTimer = System.currentTimeMillis();
         while (robot.getDistance(robot.frontDist) > 6 && opModeIsActive() && System.currentTimeMillis() - bailTimer < 2000) {
@@ -134,24 +135,26 @@ public class WarehouseAutoRed extends LinearOpMode {
         mController.stop();
 
 
-        float angleOffset = 90 - (float) Math.toDegrees(Math.atan(dist / widthSensorToClaw));
-        angleOffset = 0;
+        float angleOffset =  (float) Math.toDegrees(Math.atan(widthSensorToClaw / dist));
+        angleOffset = 10;
 
+        telemetry.addData("Dist", dist);
         telemetry.addData("Angle: ", robot.getImuAngle());
         telemetry.addData("Offset: ", angleOffset);
-        mController.rotateToByIMU(robot.getImuAngle() + angleOffset);
+        mController.rotateToByIMU(robot.getImuAngle() - angleOffset);
         telemetry.addData("After: ", robot.getImuAngle());
         telemetry.update();
 
-        mController.driveByEncoders(-0.5, -800);
+        mController.driveByEncoders(-0.5, -600);
 
         inDep.setArmPosition(150);
         while (robot.clawArm.isBusy() && opModeIsActive()) ;
-        sleep(200);
-        mController.driveByEncoders(0.5, 900);
+
+
+        mController.driveByEncoders(0.5, 875);
 
         inDep.closeClaw();
-
+        sleep(200);
 
     }
 

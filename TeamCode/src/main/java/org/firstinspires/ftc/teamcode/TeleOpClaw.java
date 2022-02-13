@@ -4,11 +4,14 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.vision.AutoAlignCV;
+
 @TeleOp(name = "TeleOpClaw")
 public class TeleOpClaw extends OpMode {
     MovementController mController;
     HardwareRobot robot;
     InDepSystem inDep;
+    AutoAlignCV detector;
 
     long carouselTimer;
     boolean previousX = false;
@@ -20,11 +23,16 @@ public class TeleOpClaw extends OpMode {
         robot = new HardwareRobot(hardwareMap);
         mController = new MovementController(robot, this);
         inDep = new InDepSystem(robot, this);
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        detector = new AutoAlignCV(cameraMonitorViewId);
     }
 
     @Override
     public void loop() {
         telemetry.addData("frontDist: ", robot.getDistance(robot.frontDist));
+        telemetry.addData("highFrontDist: ", robot.getDistance(robot.highFrontDist));
+        telemetry.addData("backDist: ", robot.getDistance(robot.backDist));
+
         telemetry.update();
         double xMovement = 0;
         double yMovement = gamepad1.left_stick_y;
@@ -98,6 +106,25 @@ public class TeleOpClaw extends OpMode {
             driveModifier = 1f;
             rotModifier = 1f;
 
+        }
+
+        if(gamepad1.y) {
+            int x = detector.getXPosition();
+            int width = detector.getItemWidth();
+            telemetry.addData("Position: ", x);
+            telemetry.addData("Width: ", width);
+
+            if (x < 140) {
+                mController.rotateInPlace(0.7);
+            } else if (x > 180) {
+                mController.rotateInPlace(-0.7);
+            } else {
+                mController.stop();
+            }
+
+            mController.update();
+
+            telemetry.update();
         }
 
 

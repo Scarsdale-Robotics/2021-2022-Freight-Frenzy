@@ -48,11 +48,11 @@ public class WarehouseAutoRed_PARK_ONLY extends LinearOpMode {
         inDep.liftToHubLevel(bestPos);
 
         //rotate towards shipping hub
-        mController.rotateToByIMU( 32);
+        mController.rotateToByIMU( 35);
         inDep.waitForArm();
 
         //drive to alliance shipping hub
-        mController.driveByEncoders(-1, 1200);
+        mController.driveByEncoders(-1, 1100);
 
         //open claw dropping the cube. Delay because of servo latency
         inDep.setClawPosition(0, 1);
@@ -68,12 +68,11 @@ public class WarehouseAutoRed_PARK_ONLY extends LinearOpMode {
 
 
         //rotate to face the warehouse and lower arm
-        inDep.setArmPosition(1000);
+        inDep.setArmPosition(3000);
         mController.rotateToByIMU( 90);
         inDep.openClaw();
 
         // Drive backwards because there is not enough room accelerate to full speed to get over barriers
-        mController.driveByEncoders(-1, 500);
 
         // Drive into the warehouse
         mController.driveByTime(1, 2000);

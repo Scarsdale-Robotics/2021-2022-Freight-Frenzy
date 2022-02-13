@@ -163,13 +163,13 @@ public class MovementController {
         while (opModeIsActive() && (deltaLeft + deltaRight) / 2 < encoderSteps) {
             deltaLeft = Math.abs(Math.abs(robot.leftBack.getCurrentPosition()) - lStart);
             deltaRight = Math.abs(Math.abs(robot.rightBack.getCurrentPosition()) - rStart);
-            telemetry.addData("deltaLeft: ", deltaLeft);
-            telemetry.addData("deltaRight: ", deltaRight);
-            telemetry.addData("leftBack: ", robot.leftBack.getCurrentPosition());
-            telemetry.addData("rightBack: ", robot.rightBack.getCurrentPosition());
-            telemetry.addData("leftFront: ", robot.leftFront.getCurrentPosition());
-            telemetry.addData("rightFront: ", robot.rightFront.getCurrentPosition());
-            telemetry.update();
+//            telemetry.addData("deltaLeft: ", deltaLeft);
+//            telemetry.addData("deltaRight: ", deltaRight);
+//            telemetry.addData("leftBack: ", robot.leftBack.getCurrentPosition());
+//            telemetry.addData("rightBack: ", robot.rightBack.getCurrentPosition());
+//            telemetry.addData("leftFront: ", robot.leftFront.getCurrentPosition());
+//            telemetry.addData("rightFront: ", robot.rightFront.getCurrentPosition());
+//            telemetry.update();
         }
         stop();
         update();
