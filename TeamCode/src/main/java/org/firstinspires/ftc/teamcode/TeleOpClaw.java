@@ -48,12 +48,12 @@ public class TeleOpClaw extends OpMode {
         if (gamepad2.right_trigger > 0.01) {
             robot.clawArm.setTargetPosition(robot.clawArm.getCurrentPosition() + (int) (100 * gamepad2.right_trigger));
         }
-        if (gamepad2.dpad_left) {
+        if (gamepad2.dpad_right) {
             robot.clawArm.setTargetPosition(350);
         } else if (gamepad2.dpad_up) {
             robot.clawArm.setTargetPosition(1625);
-        } else if (gamepad2.dpad_right) {
-            robot.clawArm.setTargetPosition(300);
+        } else if (gamepad2.dpad_left) {
+            robot.clawArm.setTargetPosition(3200);
         } else if (gamepad2.dpad_down) {
             robot.clawArm.setTargetPosition(0);
         }
@@ -72,9 +72,9 @@ public class TeleOpClaw extends OpMode {
                 previousX = true;
                 carouselTimer = System.currentTimeMillis();
             }
-            if (System.currentTimeMillis() - carouselTimer < 1000.0) {
-                robot.duckSpinLeft.setPower(-0.7);
-                robot.duckSpinRight.setPower(0.7);
+            if (System.currentTimeMillis() - carouselTimer < 1500.0) {
+                robot.duckSpinLeft.setPower(-0.5);
+                robot.duckSpinRight.setPower(0.5);
             }
             else if (System.currentTimeMillis() - carouselTimer < 2000) {
                 robot.duckSpinLeft.setPower(-1.0);
@@ -109,21 +109,24 @@ public class TeleOpClaw extends OpMode {
         }
 
         if(gamepad1.y) {
+            inDep.setArmPosition(inDep.levels[2]);
             int x = detector.getXPosition();
             int width = detector.getItemWidth();
             telemetry.addData("Position: ", x);
             telemetry.addData("Width: ", width);
 
             if (x < 140) {
-                mController.rotateInPlace(0.7);
+                mController.rotateInPlace(0.3);
             } else if (x > 180) {
-                mController.rotateInPlace(-0.7);
+                mController.rotateInPlace(-0.3);
             } else {
-                mController.stop();
+                mController.drive(0);
+                if(robot.getDistance(robot.frontDist) > 5){
+                    mController.drive(0.3);
+                }else {
+//                    inDep.openClaw();
+                }
             }
-
-            mController.update();
-
             telemetry.update();
         }
 

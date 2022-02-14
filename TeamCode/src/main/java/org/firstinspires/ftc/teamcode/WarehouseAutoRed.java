@@ -96,7 +96,6 @@ public class WarehouseAutoRed extends LinearOpMode {
         // Drive
         inDep.setArmPosition(inDep.levels[2]);
         mController.rotateToByIMU(0);
-        autoAlign();
 
         mController.driveByDistance(-0.4, robot.highFrontDist, 18, false);
         //Open claw
@@ -145,13 +144,13 @@ public class WarehouseAutoRed extends LinearOpMode {
         telemetry.addData("After: ", robot.getImuAngle());
         telemetry.update();
 
-        mController.driveByEncoders(-0.5, -600);
+        mController.driveByEncoders(-0.5, -400);
 
         inDep.setArmPosition(150);
         while (robot.clawArm.isBusy() && opModeIsActive()) ;
 
 
-        mController.driveByEncoders(0.5, 875);
+        mController.driveByEncoders(0.5, 400);
 
         inDep.closeClaw();
         sleep(200);

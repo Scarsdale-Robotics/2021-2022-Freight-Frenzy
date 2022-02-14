@@ -69,12 +69,12 @@ public class DuckAutoBlue extends LinearOpMode {
         mController.rotateToByIMU( -180);
 
         //Drive to the carousel
-        mController.driveByDistance(-0.6, robot.backDist, 14.5, true);
+        mController.driveByDistance(-0.6, robot.backDist, 14, true);
 
         // SPIN THE DUCK
         robot.duckSpinLeft.setPower(0.3);
         robot.duckSpinRight.setPower(-0.3);
-        mController.drive(-0.025);
+        mController.drive(-0.05);
 
         sleep(5000);
 
